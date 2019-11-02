@@ -9,6 +9,10 @@
     <version>1.0-SNAPSHOT</version>
     <modules>
         <module>mscx-shop-common</module>
+        <module>mscx-shop-pojo</module>
+        <module>mscx-shop-mapper</module>
+        <module>mscx-shop-service</module>
+        <module>mscx-shop-api</module>
     </modules>
     <packaging>pom</packaging>
 

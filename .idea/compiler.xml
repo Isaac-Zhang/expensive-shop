@@ -6,7 +6,11 @@
         <sourceOutputDir name="target/generated-sources/annotations" />
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
+        <module name="mscx-shop-api" />
         <module name="mscx-shop-common" />
+        <module name="mscx-shop-mapper" />
+        <module name="mscx-shop-pojo" />
+        <module name="mscx-shop-service" />
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel target="11" />
