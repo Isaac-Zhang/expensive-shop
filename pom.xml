@@ -23,7 +23,6 @@
         <module>mscx-shop-mapper</module>
         <module>mscx-shop-service</module>
         <module>mscx-shop-api</module>
-        <module>mybatis-generator-tool</module>
     </modules>
     <packaging>pom</packaging>
 
