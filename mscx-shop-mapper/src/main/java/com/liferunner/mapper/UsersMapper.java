@@ -1,7 +1,8 @@
 package com.liferunner.mapper;
 
+import com.liferunner.custom.CustomMapper;
 import com.liferunner.pojo.Users;
 import tk.mybatis.mapper.common.Mapper;
 
-public interface UsersMapper extends Mapper<Users> {
+public interface UsersMapper extends CustomMapper<Users> {
 }
