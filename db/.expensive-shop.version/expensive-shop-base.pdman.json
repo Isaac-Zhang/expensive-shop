@@ -1,0 +1,49 @@
+{
+  "modules": [
+    {
+      "name": "usercenter",
+      "chnname": "用户中心",
+      "entities": [
+        {
+          "title": "shop_users",
+          "fields": [
+            {
+              "name": "REVISION",
+              "type": "Integer",
+              "remark": "",
+              "chnname": "乐观锁"
+            },
+            {
+              "name": "CREATED_BY",
+              "type": "IdOrKey",
+              "remark": "",
+              "chnname": "创建人"
+            },
+            {
+              "name": "CREATED_TIME",
+              "type": "DateTime",
+              "remark": "",
+              "chnname": "创建时间"
+            },
+            {
+              "name": "UPDATED_BY",
+              "type": "IdOrKey",
+              "remark": "",
+              "chnname": "更新人"
+            },
+            {
+              "name": "UPDATED_TIME",
+              "type": "DateTime",
+              "remark": "",
+              "chnname": "更新时间"
+            }
+          ]
+        }
+      ],
+      "graphCanvas": {}
+    }
+  ],
+  "version": "v0.0.1",
+  "message": "测试版本",
+  "date": "2019/11/3 11:22:26"
+}

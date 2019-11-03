@@ -13,6 +13,15 @@
         <module name="mscx-shop-service" />
       </profile>
     </annotationProcessing>
-    <bytecodeTargetLevel target="11" />
+    <bytecodeTargetLevel target="8" />
+  </component>
+  <component name="JavacSettings">
+    <option name="ADDITIONAL_OPTIONS_OVERRIDE">
+      <module name="mscx-shop-api" options="-parameters" />
+      <module name="mscx-shop-common" options="-parameters" />
+      <module name="mscx-shop-mapper" options="-parameters" />
+      <module name="mscx-shop-pojo" options="-parameters" />
+      <module name="mscx-shop-service" options="-parameters" />
+    </option>
   </component>
 </project>
