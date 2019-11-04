@@ -2,6 +2,8 @@ package com.liferunner.api;
 
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.builder.SpringApplicationBuilder;
+import org.springframework.context.annotation.ComponentScan;
+import tk.mybatis.spring.annotation.MapperScan;
 
 /**
  * ApiApplication for : api启动类
@@ -10,6 +12,10 @@ import org.springframework.boot.builder.SpringApplicationBuilder;
  * @since 2019/11/3
  */
 @SpringBootApplication
+// 扫描 mybatis 通用 mapper 所在的包
+@MapperScan(basePackages = "com.liferunner.mapper")
+// 扫描所有包以及相关组件包
+@ComponentScan(basePackages = {"com.liferunner"})
 public class ApiApplication {
 
     public static void main(String[] args) {

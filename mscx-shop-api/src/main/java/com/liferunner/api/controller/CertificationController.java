@@ -2,7 +2,6 @@ package com.liferunner.api.controller;
 
 import com.liferunner.service.IUserService;
 import com.liferunner.utils.JsonResponse;
-import org.apache.commons.lang3.ObjectUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -19,7 +18,6 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping(name = "/certification")
 public class CertificationController {
-
     @Autowired
     public IUserService userService;
 
