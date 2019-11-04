@@ -83,7 +83,13 @@
             <artifactId>lombok</artifactId>
             <version>1.18.8</version>
         </dependency>
-    </dependencies>
 
+        <!-- 添加工具类依赖 -->
+        <dependency>
+            <groupId>org.apache.commons</groupId>
+            <artifactId>commons-lang3</artifactId>
+            <version>3.9</version>
+        </dependency>
+    </dependencies>
 
 </project>

@@ -1189,7 +1189,7 @@
               "notNull": true
             },
             {
-              "name": "left_msg",
+              "name": "left_message",
               "type": "Name",
               "remark": "",
               "chnname": "买家留言"
