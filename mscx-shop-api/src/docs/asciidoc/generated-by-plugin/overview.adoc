@@ -1,0 +1,39 @@
+= 宝贝实战电商api平台
+
+
+[[_overview]]
+== Overview
+provide 电商 API
+
+
+=== Version information
+[%hardbreaks]
+__Version__ : 1.0.0.RC
+
+
+=== Contact information
+[%hardbreaks]
+__Contact__ : Isaac-Zhang
+__Contact Email__ : magicianisaac@gmail.com
+
+
+=== License information
+[%hardbreaks]
+__License__ : Apache License, Version 2.0
+__License URL__ : https://www.apache.org/licenses/LICENSE-2.0.html
+__Terms of service__ : http://www.life-runner.com
+
+
+=== URI scheme
+[%hardbreaks]
+__Host__ : localhost:8088
+__BasePath__ : /
+
+
+=== Tags
+
+* 用户管理 : User Controller
+* 验证管理 : Certification Controller
+
+
+
