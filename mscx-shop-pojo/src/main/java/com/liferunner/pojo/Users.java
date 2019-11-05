@@ -2,6 +2,8 @@ package com.liferunner.pojo;
 
 import java.util.Date;
 import javax.persistence.*;
+
+import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
@@ -10,6 +12,7 @@ import lombok.ToString;
 @Setter
 @ToString
 @Table(name = "users")
+@Builder
 public class Users {
     /**
      * 主键id 用户id
