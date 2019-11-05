@@ -1,14 +1,11 @@
 package com.liferunner.pojo;
 
+import java.math.BigDecimal;
+import java.util.Date;
+import javax.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
-
-import javax.persistence.Column;
-import javax.persistence.Id;
-import javax.persistence.Table;
-import java.math.BigDecimal;
-import java.util.Date;
 
 @Getter
 @Setter

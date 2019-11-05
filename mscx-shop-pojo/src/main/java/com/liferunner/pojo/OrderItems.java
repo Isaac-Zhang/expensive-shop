@@ -1,12 +1,9 @@
 package com.liferunner.pojo;
 
+import javax.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
-
-import javax.persistence.Column;
-import javax.persistence.Id;
-import javax.persistence.Table;
 
 @Getter
 @Setter

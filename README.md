@@ -148,3 +148,101 @@ springboot 本身是为了做服务化用的，我们为什么要反其道使用
 
 经过上述环节,相信大家已经可以创建出我们项目所需要的架构环境了,下一次我们将开始实际业务的编码实现.
 gogogo.
+
+## Mybatis Generator tool
+
+```java
+@Getter
+@Setter
+@ToString
+@Table(name = "users")
+public class Users {
+    @Column(name = "USER")
+    private String user;
+
+    @Column(name = "CURRENT_CONNECTIONS")
+    private Long currentConnections;
+
+    @Column(name = "TOTAL_CONNECTIONS")
+    private Long totalConnections;
+}
+```
+
+```java
+package com.liferunner.pojo;
+
+import java.util.Date;
+import javax.persistence.*;
+import lombok.Getter;
+import lombok.Setter;
+import lombok.ToString;
+
+@Getter
+@Setter
+@ToString
+@Table(name = "users")
+public class Users {
+    /**
+     * ����id �û�id
+     */
+    @Id
+    private String id;
+
+    /**
+     * �û��� �û���
+     */
+    private String username;
+
+    /**
+     * ���� ����
+     */
+    private String password;
+
+    /**
+     * �ǳ� �ǳ�
+     */
+    private String nickname;
+
+    /**
+     * ��ʵ���� ��ʵ����
+     */
+    private String realname;
+
+    /**
+     * ͷ�� ͷ��
+     */
+    private String face;
+
+    /**
+     * �ֻ��� �ֻ���
+     */
+    private String mobile;
+
+    /**
+     * �����ַ �����ַ
+     */
+    private String email;
+
+    /**
+     * �Ա� �Ա� 1:��  0:Ů  2:����
+     */
+    private Integer sex;
+
+    /**
+     * ���� ����
+     */
+    private Date birthday;
+
+    /**
+     * ����ʱ�� ����ʱ��
+     */
+    @Column(name = "created_time")
+    private Date createdTime;
+
+    /**
+     * ����ʱ�� ����ʱ��
+     */
+    @Column(name = "updated_time")
+    private Date updatedTime;
+}
+```
