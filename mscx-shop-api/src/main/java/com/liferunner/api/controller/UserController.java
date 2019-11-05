@@ -5,6 +5,7 @@ import com.liferunner.service.IUserService;
 import com.liferunner.utils.JsonResponse;
 import lombok.extern.slf4j.Slf4j;
 import lombok.val;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -30,6 +31,18 @@ public class UserController {
     @PostMapping("/create")
     public JsonResponse createUser(@RequestBody UserRequestDTO userRequestDTO) {
         try {
+            if (StringUtils.isBlank(userRequestDTO.getUsername()))
+                return JsonResponse.errorMsg("用户名不能为空");
+            if (null != this.userService.findUserByUserName(userRequestDTO.getUsername())) {
+                return JsonResponse.errorMsg("用户名已存在！");
+            }
+            if (StringUtils.isBlank(userRequestDTO.getPassword()) ||
+                    StringUtils.isBlank(userRequestDTO.getConfimPassword()) ||
+                    userRequestDTO.getPassword().length() < 8) {
+                return JsonResponse.errorMsg("密码为空或长度小于8位");
+            }
+            if (!userRequestDTO.getPassword().equals(userRequestDTO.getConfimPassword()))
+                return JsonResponse.errorMsg("两次密码不一致！");
             val user = this.userService.createUser(userRequestDTO);
             if (null != user)
                 return JsonResponse.ok(user);
