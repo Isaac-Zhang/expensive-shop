@@ -9,58 +9,60 @@ import lombok.ToString;
 @Getter
 @Setter
 @ToString
-@Table(name = "items")
+@Table(name = "`items`")
 public class Items {
     /**
      * 商品主键id
      */
     @Id
+    @Column(name = "`id`")
     private String id;
 
     /**
      * 商品名称 商品名称
      */
-    @Column(name = "item_name")
+    @Column(name = "`item_name`")
     private String itemName;
 
     /**
      * 分类外键id 分类id
      */
-    @Column(name = "cat_id")
+    @Column(name = "`cat_id`")
     private Integer catId;
 
     /**
      * 一级分类外键id 一级分类id，用于优化查询
      */
-    @Column(name = "root_cat_id")
+    @Column(name = "`root_cat_id`")
     private Integer rootCatId;
 
     /**
      * 累计销售 累计销售
      */
-    @Column(name = "sell_counts")
+    @Column(name = "`sell_counts`")
     private Integer sellCounts;
 
     /**
      * 上下架状态 上下架状态,1:上架 2:下架
      */
-    @Column(name = "on_off_status")
+    @Column(name = "`on_off_status`")
     private Integer onOffStatus;
 
     /**
      * 创建时间
      */
-    @Column(name = "created_time")
+    @Column(name = "`created_time`")
     private Date createdTime;
 
     /**
      * 更新时间
      */
-    @Column(name = "updated_time")
+    @Column(name = "`updated_time`")
     private Date updatedTime;
 
     /**
      * 商品内容 商品内容
      */
+    @Column(name = "`content`")
     private String content;
 }

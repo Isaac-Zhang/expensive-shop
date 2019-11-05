@@ -4,21 +4,29 @@
   "http://mybatis.org/dtd/mybatis-generator-config_1_0.dtd">
 
 <generatorConfiguration>
+  <!--引入数据库配置内容-->
   <properties resource="generator/config.properties"/>
 
   <context id="MysqlContext" targetRuntime="MyBatis3Simple" defaultModelType="flat">
-    <property name="beginningDelimiter" value="`"/>
-    <property name="endingDelimiter" value="`"/>
+    <!--配置是否使用通用 Mapper 自带的注释扩展，默认 true-->
+    <!--<property name="useMapperCommentGenerator" value="false"/>-->
 
     <!--解决生成中文乱码问题-->
     <property name="javaFileEncoding" value="UTF-8"/>
 
     <plugin type="tk.mybatis.mapper.generator.MapperPlugin">
+      <!--设置Mapper生成的basic,可自定义-->
       <property name="mappers" value="tk.mybatis.mapper.common.Mapper"/>
+      <!--大小写转换敏感-->
       <property name="caseSensitive" value="true"/>
+      <!--引入lombok注解-->
       <property name="lombok" value="Getter,Setter,ToString"/>
+      <!--分隔符定义-->
+      <property name="beginningDelimiter" value="`"/>
+      <property name="endingDelimiter" value="`"/>
     </plugin>
 
+    <!-- 设置数据库配置 -->
     <jdbcConnection driverClass="${jdbc.driverClass}"
       connectionURL="${jdbc.url}"
       userId="${jdbc.user}"

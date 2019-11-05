@@ -8,17 +8,19 @@ import lombok.ToString;
 @Getter
 @Setter
 @ToString
-@Table(name = "category")
+@Table(name = "`category`")
 public class Category {
     /**
      * 主键 分类id主键
      */
     @Id
+    @Column(name = "`id`")
     private Integer id;
 
     /**
      * 分类名称 分类名称
      */
+    @Column(name = "`name`")
     private String name;
 
     /**
@@ -27,33 +29,36 @@ public class Category {
 2:二级分类
 3:三级小分类
      */
+    @Column(name = "`type`")
     private Integer type;
 
     /**
      * 父id 父id 上一级依赖的id，1级分类则为0，二级三级分别依赖上一级
      */
-    @Column(name = "father_id")
+    @Column(name = "`father_id`")
     private Integer fatherId;
 
     /**
      * 图标 logo
      */
+    @Column(name = "`logo`")
     private String logo;
 
     /**
      * 口号
      */
+    @Column(name = "`slogan`")
     private String slogan;
 
     /**
      * 分类图
      */
-    @Column(name = "cat_image")
+    @Column(name = "`cat_image`")
     private String catImage;
 
     /**
      * 背景颜色
      */
-    @Column(name = "bg_color")
+    @Column(name = "`bg_color`")
     private String bgColor;
 }

@@ -27,18 +27,22 @@
                 <artifactId>mybatis-generator-maven-plugin</artifactId>
                 <version>1.3.6</version>
                 <configuration>
+                    <!-- 设置配置文件路径 -->
                     <configurationFile>
                         ${basedir}/src/main/resources/generator/generatorConfig.xml
                     </configurationFile>
+                    <!--允许覆盖-->
                     <overwrite>true</overwrite>
                     <verbose>true</verbose>
                 </configuration>
                 <dependencies>
+                    <!-- mysql8 驱动-->
                     <dependency>
                         <groupId>mysql</groupId>
                         <artifactId>mysql-connector-java</artifactId>
                         <version>8.0.16</version>
                     </dependency>
+                    <!--通用 Mapper-->
                     <dependency>
                         <groupId>tk.mybatis</groupId>
                         <artifactId>mapper</artifactId>
