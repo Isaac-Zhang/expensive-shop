@@ -3,6 +3,8 @@ package com.liferunner.api.controller;
 import com.liferunner.dto.UserRequestDTO;
 import com.liferunner.service.IUserService;
 import com.liferunner.utils.JsonResponse;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 import lombok.val;
 import org.apache.commons.lang3.StringUtils;
@@ -18,16 +20,20 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequestMapping(name = "/users")
 @Slf4j
+@Api(tags="用户管理")
 public class UserController {
 
     @Autowired
     private IUserService userService;
 
-    @GetMapping("/{id}")
+    @ApiOperation("用户详情")
+    @GetMapping("/get/{id}")
+    //@GetMapping("/{id}") 如果这里设置位这样，每次请求swagger都会进到这里，是一个bug
     public String getUser(@PathVariable Integer id) {
         return "hello, life.";
     }
 
+    @ApiOperation("创建用户")
     @PostMapping("/create")
     public JsonResponse createUser(@RequestBody UserRequestDTO userRequestDTO) {
         try {

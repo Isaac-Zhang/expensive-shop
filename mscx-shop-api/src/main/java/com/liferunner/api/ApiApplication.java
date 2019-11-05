@@ -1,5 +1,6 @@
 package com.liferunner.api;
 
+import com.spring4all.swagger.EnableSwagger2Doc;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.context.annotation.ComponentScan;
@@ -16,6 +17,7 @@ import tk.mybatis.spring.annotation.MapperScan;
 @MapperScan(basePackages = "com.liferunner.mapper")
 // 扫描所有包以及相关组件包
 @ComponentScan(basePackages = {"com.liferunner", "org.n3r.idworker"})
+@EnableSwagger2Doc
 public class ApiApplication {
 
     public static void main(String[] args) {

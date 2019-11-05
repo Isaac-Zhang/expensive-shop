@@ -25,3 +25,18 @@ spring:
 mybatis:
   type-aliases-package: com.liferunner.pojo          # 所有POJO类所在包路径
   mapper-locations: classpath:mapper/*.xml      # mapper映射文件
+
+# 配置swagger2
+swagger:
+  title: 宝贝实战电商api平台
+  description: provide 电商 API
+  version: 1.0.0.RC
+  license: Apache License, Version 2.0
+  license-url: https://www.apache.org/licenses/LICENSE-2.0.html
+  terms-of-service-url: http://www.life-runner.com
+  contact:
+    email: magicianisaac@gmail.com
+    name: Isaac-Zhang
+    url: http://www.life-runner.com
+  base-package: com.liferunner
+  base-path: /**
