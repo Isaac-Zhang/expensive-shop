@@ -19,15 +19,15 @@ import springfox.documentation.annotations.ApiIgnore;
  * @since 2019/11/3
  */
 @RestController
-@RequestMapping(name = "/users")
+@RequestMapping(value = "/users")
 @Slf4j
-@Api(tags="用户管理")
+@Api(tags = "用户管理")
 public class UserController {
 
     @Autowired
     private IUserService userService;
 
-    @ApiOperation(value = "用户详情",notes = "查询用户")
+    @ApiOperation(value = "用户详情", notes = "查询用户")
     @ApiIgnore
     @GetMapping("/get/{id}")
     //@GetMapping("/{id}") 如果这里设置位这样，每次请求swagger都会进到这里，是一个bug
@@ -35,9 +35,10 @@ public class UserController {
         return "hello, life.";
     }
 
-    @ApiOperation(value = "创建用户",notes = "用户注册接口")
+    @ApiOperation(value = "创建用户", notes = "用户注册接口")
     @PostMapping("/create")
     public JsonResponse createUser(@RequestBody UserRequestDTO userRequestDTO) {
+        log.info("======= UserRequestDTO = {}", userRequestDTO);
         try {
             if (StringUtils.isBlank(userRequestDTO.getUsername()))
                 return JsonResponse.errorMsg("用户名不能为空");
@@ -45,11 +46,11 @@ public class UserController {
                 return JsonResponse.errorMsg("用户名已存在！");
             }
             if (StringUtils.isBlank(userRequestDTO.getPassword()) ||
-                    StringUtils.isBlank(userRequestDTO.getConfimPassword()) ||
+                    StringUtils.isBlank(userRequestDTO.getConfirmPassword()) ||
                     userRequestDTO.getPassword().length() < 8) {
                 return JsonResponse.errorMsg("密码为空或长度小于8位");
             }
-            if (!userRequestDTO.getPassword().equals(userRequestDTO.getConfimPassword()))
+            if (!userRequestDTO.getPassword().equals(userRequestDTO.getConfirmPassword()))
                 return JsonResponse.errorMsg("两次密码不一致！");
             val user = this.userService.createUser(userRequestDTO);
             if (null != user)

@@ -20,7 +20,7 @@ import org.springframework.web.bind.annotation.RestController;
  * @since 2019/11/4
  */
 @RestController
-@RequestMapping(name = "/certification")
+@RequestMapping(value = "/certification")
 @Api(tags = "验证管理")
 public class CertificationController {
     @Autowired

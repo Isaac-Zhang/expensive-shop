@@ -1,9 +1,16 @@
 package com.liferunner.api;
 
+import com.liferunner.api.config.CORSConfig;
 import com.spring4all.swagger.EnableSwagger2Doc;
+import lombok.val;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.builder.SpringApplicationBuilder;
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
+import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
+import org.springframework.web.filter.CorsFilter;
 import tk.mybatis.spring.annotation.MapperScan;
 
 /**
@@ -24,5 +31,27 @@ public class ApiApplication {
         new SpringApplicationBuilder()
                 .sources(ApiApplication.class)
                 .run(args);
+    }
+
+    @Autowired
+    private CORSConfig corsConfig;
+
+    /**
+     * 注册跨域配置信息
+     *
+     * @return {@link CorsFilter}
+     */
+    @Bean
+    public CorsFilter corsFilter() {
+        val corsConfiguration = new CorsConfiguration();
+        corsConfiguration.addAllowedOrigin(this.corsConfig.getAllowOrigin());
+        corsConfiguration.addAllowedMethod(this.corsConfig.getAllowedMethod());
+        corsConfiguration.addAllowedHeader(this.corsConfig.getAllowedHeader());
+        corsConfiguration.setAllowCredentials(this.corsConfig.getAllowCredentials());
+
+        val urlBasedCorsConfigurationSource = new UrlBasedCorsConfigurationSource();
+        urlBasedCorsConfigurationSource.registerCorsConfiguration("/**", corsConfiguration);
+
+        return new CorsFilter(urlBasedCorsConfigurationSource);
     }
 }

@@ -24,5 +24,5 @@ public class UserRequestDTO {
     @ApiModelProperty(value = "注册密码", notes = "password", example = "12345678", required = true)
     private String password;
     @ApiModelProperty(value = "确认密码", notes = "confimPassword", example = "12345678", required = true)
-    private String confimPassword;
+    private String confirmPassword;
 }
