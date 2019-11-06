@@ -1,3 +1,5 @@
+[TOC]
+
 # 用户注册
 作为一个现代化电商平台，什么最重要呢？of course 是用户，广大用户群体是支持我们可持续发展的基石，`顾客是上帝`， 虽然在当今上帝已经不被重视了，特别是很多的平台对于老用户就是恨不得赶紧Out...但是用户量是一切的基础，那我们就开始创建我们的上帝吧！
 
@@ -101,7 +103,6 @@ public class UserServiceImpl implements IUserService {
 }
 ```
 这里有几处地方有必要说明一下：
-
 ### UserServiceImpl#findUserByUserName 说明
 
 - `tk.mybatis.mapper.entity.Example` 通过使用Example来构建mybatis的查询参数，如果有多个查询条件，可以通过`example.createCriteria().addxxx`逐一添加。
@@ -233,4 +234,52 @@ public class JsonResponse {
 - 如上文所讲，需要先做各种校验
 - 成功则返回`JsonResponse`
 - 细心的同学可能看到了上文中有几个注解`@Api(tags="用户管理")`,`@ApiOperation("创建用户")`,这个是Swagger 的注解，我们会在下一节和大家详细探讨，以及如何生成`off-line docs`。
+
+## 测试API
+
+---
+在我们每次修改完成之后，都尽可能的`mvn clean install`一次，因为我们隶属不同的project，如果不重新安装一次，偶尔遇到的问题会让人怀疑人生的。
+```shell
+...
+[INFO] expensive-shop ..................................... SUCCESS [  1.220 s]
+[INFO] mscx-shop-common ................................... SUCCESS [  9.440 s]
+[INFO] mscx-shop-pojo ..................................... SUCCESS [  2.020 s]
+[INFO] mscx-shop-mapper ................................... SUCCESS [  1.564 s]
+[INFO] mscx-shop-service .................................. SUCCESS [  1.366 s]
+[INFO] mscx-shop-api ...................................... SUCCESS [  4.614 s]
+[INFO] ------------------------------------------------------------------------
+[INFO] BUILD SUCCESS
+[INFO] ------------------------------------------------------------------------
+[INFO] Total time:  20.739 s
+[INFO] Finished at: 2019-11-06T14:53:55+08:00
+[INFO] ------------------------------------------------------------------------
+```
+当看到上述运行结果之后，就可以启动我们的应用就行测试啦～
+
+### UserController#validateUsername(username) 测试
+
+测试API的方式有很多种，比如`curl localhost:8080/validateUsername`，在比如使用超级流行的`Postman`也是完全ok的，我这里用的是之前在第一篇中和大家所说的一个插件`Restful Toolkit(可以实现和postman一样的简单效果,同时还能帮助我们生成一部分测试信息)`，当我们应用启动之后，效果如下图，
+![rest plugin](https://i.loli.net/2019/11/06/vLFyQY8AkqiZGw3.png)
+
+我们可以看到，插件帮我们生成了几个测试方法，比如我们点击`validateUsername`,下方就会生成当前方法是一个包含`username`参数的`GET`方法，`demoData`是插件默认给我们生成的测试数据。可以随意修改。
+点击Send：
+![result](https://i.loli.net/2019/11/06/YEyKauUHSqjRc4Z.png)
+可以看到请求成功了，并且返回我们自定义的JSON格式数据。
+
+### UserController#createUser(UserRequestDTO)  测试
+接着我们继续测试用户注册接口，请求如下：
+![send](https://i.loli.net/2019/11/06/QDVkT6dxG8qlcYm.png)
+可以看到，当我们选择`create`方法时，插件自动帮我们设置请求类型为`POST`，并且`RequestBody`的默认值也帮助我们生成了，我只修改了默认的`username`和`password`值，`confimPassword`的默认值我没有变动，那按照我们的校验逻辑，它应该返回的是`return JsonResponse.errorMsg("两次密码不一致！");`这一行，点击Send：
+![result](https://i.loli.net/2019/11/06/1R5sMFYhGbnkyrd.png)
+修改`confimPassword`为`12345678`,点击Send：
+![result2](https://i.loli.net/2019/11/06/kPi5mrWJ2zntcws.png)
+可以看到，创建用户成功，并且将当前创建的用户返回到了我们请求客户端。那么我们继续重复点击创建，会怎么样呢？继续Send:
+![result3](https://i.loli.net/2019/11/06/c8HfT5SExjWK6JX.png)
+可以看到，我们的验证重复用户也已经生效啦。
+
+## 下节预告
+
+---
+下一节我们将学习如何使用Swagger自动生成API接口文档给前端，以及如果没有外部网络的情况下，或者需要和第三方平台对接的时候，我们如何生成`离线文档`给到第三方。
+gogogo！
 
