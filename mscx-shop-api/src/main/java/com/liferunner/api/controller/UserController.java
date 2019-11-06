@@ -10,6 +10,7 @@ import lombok.val;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+import springfox.documentation.annotations.ApiIgnore;
 
 /**
  * UserController for : 用户API接口
@@ -26,14 +27,15 @@ public class UserController {
     @Autowired
     private IUserService userService;
 
-    @ApiOperation("用户详情")
+    @ApiOperation(value = "用户详情",notes = "查询用户")
+    @ApiIgnore
     @GetMapping("/get/{id}")
     //@GetMapping("/{id}") 如果这里设置位这样，每次请求swagger都会进到这里，是一个bug
     public String getUser(@PathVariable Integer id) {
         return "hello, life.";
     }
 
-    @ApiOperation("创建用户")
+    @ApiOperation(value = "创建用户",notes = "用户注册接口")
     @PostMapping("/create")
     public JsonResponse createUser(@RequestBody UserRequestDTO userRequestDTO) {
         try {
