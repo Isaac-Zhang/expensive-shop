@@ -4,7 +4,7 @@ import com.liferunner.dto.UserRequestDTO;
 import com.liferunner.pojo.Users;
 
 /**
- * IUserService for : TODO
+ * IUserService for : 用户信息接口
  *
  * @author <a href="mailto:magicianisaac@gmail.com">Isaac.Zhang | 若初</a>
  * @since 2019/11/4
@@ -14,8 +14,8 @@ public interface IUserService {
     /**
      * 根据用户名查询用户是否存在
      *
-     * @param username
-     * @return
+     * @param username 用户名
+     * @return {@link Users}
      */
     Users findUserByUserName(String username);
 

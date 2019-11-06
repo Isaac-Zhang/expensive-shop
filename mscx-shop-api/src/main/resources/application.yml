@@ -28,7 +28,7 @@ mybatis:
 
 # 配置swagger2
 swagger:
-  title: 宝贝实战电商api平台
+  title: 实战电商api平台
   description: provide 电商 API
   version: 1.0.0.RC
   license: Apache License, Version 2.0

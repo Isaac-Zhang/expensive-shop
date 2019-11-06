@@ -1,11 +1,12 @@
 package com.liferunner.utils;
 
 /**
- * JsonResponse for : TODO
+ * JsonResponse for : JSON统一返回对象
  *
  * @author <a href="mailto:magicianisaac@gmail.com">Isaac.Zhang | 若初</a>
  * @since 2019/11/4
  */
+
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.AllArgsConstructor;
 import lombok.Data;
