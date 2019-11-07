@@ -26,4 +26,12 @@ public interface IUserService {
      * @return 当前用户
      */
     Users createUser(UserRequestDTO userRequestDTO) throws Exception;
+
+    /**
+     * 用户登录
+     * @param userRequestDTO 请求dto
+     * @return 登录用户信息
+     * @throws Exception
+     */
+    Users userLogin(UserRequestDTO userRequestDTO) throws Exception;
 }

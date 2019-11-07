@@ -67,4 +67,18 @@ public class UserServiceImpl implements IUserService {
         log.info("======end create user : {}=======", userRequestDTO);
         return user;
     }
+
+    @Override
+    public Users userLogin(UserRequestDTO userRequestDTO) throws Exception {
+        log.info("======用户登录请求：{}", userRequestDTO);
+        Example example = new Example(Users.class);
+        val condition = example.createCriteria();
+        condition.andEqualTo("username", userRequestDTO.getUsername());
+        condition.andEqualTo("password", MD5GeneratorTools.getMD5Str(userRequestDTO.getPassword()));
+        // 千万记住这里传入的是Example对象值，而不是condition
+        //https://blog.csdn.net/pseudonym_/article/details/100112223
+        val user = this.usersMapper.selectOneByExample(example);
+        log.info("======用户登录处理结果：{}", user);
+        return user;
+    }
 }

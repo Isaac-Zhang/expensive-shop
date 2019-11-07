@@ -60,4 +60,23 @@ public class UserController {
         }
         return JsonResponse.errorMsg("创建用户失败");
     }
+
+    @ApiOperation(value = "用户登录", notes = "用户登录接口")
+    @PostMapping("/login")
+    public JsonResponse userLogin(@RequestBody UserRequestDTO userRequestDTO) {
+        try {
+            if (StringUtils.isBlank(userRequestDTO.getUsername()))
+                return JsonResponse.errorMsg("用户名不能为空");
+            if (StringUtils.isBlank(userRequestDTO.getPassword()) ||
+                    userRequestDTO.getPassword().length() < 8) {
+                return JsonResponse.errorMsg("密码为空或长度小于8位");
+            }
+            val user = this.userService.userLogin(userRequestDTO);
+            if (null != user)
+                return JsonResponse.ok(user);
+        } catch (Exception e) {
+            log.error("用户登录失败,{},exception = {}", userRequestDTO, e.getMessage());
+        }
+        return JsonResponse.errorMsg("用户登录失败");
+    }
 }
