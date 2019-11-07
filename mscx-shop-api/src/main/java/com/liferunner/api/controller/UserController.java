@@ -1,16 +1,24 @@
 package com.liferunner.api.controller;
 
+import com.alibaba.fastjson.JSON;
 import com.liferunner.dto.UserRequestDTO;
+import com.liferunner.dto.UserResponseDTO;
 import com.liferunner.service.IUserService;
+import com.liferunner.utils.CookieTools;
 import com.liferunner.utils.JsonResponse;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 import lombok.val;
+import org.apache.commons.lang3.ObjectUtils;
 import org.apache.commons.lang3.StringUtils;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import springfox.documentation.annotations.ApiIgnore;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 /**
  * UserController for : 用户API接口
@@ -37,7 +45,9 @@ public class UserController {
 
     @ApiOperation(value = "创建用户", notes = "用户注册接口")
     @PostMapping("/create")
-    public JsonResponse createUser(@RequestBody UserRequestDTO userRequestDTO) {
+    public JsonResponse createUser(@RequestBody UserRequestDTO userRequestDTO,
+                                   HttpServletRequest request,
+                                   HttpServletResponse response) {
         log.info("======= UserRequestDTO = {}", userRequestDTO);
         try {
             if (StringUtils.isBlank(userRequestDTO.getUsername()))
@@ -53,8 +63,15 @@ public class UserController {
             if (!userRequestDTO.getPassword().equals(userRequestDTO.getConfirmPassword()))
                 return JsonResponse.errorMsg("两次密码不一致！");
             val user = this.userService.createUser(userRequestDTO);
-            if (null != user)
-                return JsonResponse.ok(user);
+            UserResponseDTO userResponseDTO = new UserResponseDTO();
+            BeanUtils.copyProperties(user, userResponseDTO);
+            log.info("BeanUtils copy object {}", userResponseDTO);
+            if (null != userResponseDTO) {
+                // 设置前端存储的cookie信息
+                CookieTools.setCookie(request, response, "user",
+                        JSON.toJSONString(userResponseDTO), true);
+                return JsonResponse.ok(userResponseDTO);
+            }
         } catch (Exception e) {
             log.error("创建用户失败,{}", userRequestDTO);
         }
@@ -63,7 +80,9 @@ public class UserController {
 
     @ApiOperation(value = "用户登录", notes = "用户登录接口")
     @PostMapping("/login")
-    public JsonResponse userLogin(@RequestBody UserRequestDTO userRequestDTO) {
+    public JsonResponse userLogin(@RequestBody UserRequestDTO userRequestDTO,
+                                  HttpServletRequest request,
+                                  HttpServletResponse response) {
         try {
             if (StringUtils.isBlank(userRequestDTO.getUsername()))
                 return JsonResponse.errorMsg("用户名不能为空");
@@ -72,8 +91,15 @@ public class UserController {
                 return JsonResponse.errorMsg("密码为空或长度小于8位");
             }
             val user = this.userService.userLogin(userRequestDTO);
-            if (null != user)
-                return JsonResponse.ok(user);
+            UserResponseDTO userResponseDTO = new UserResponseDTO();
+            BeanUtils.copyProperties(user, userResponseDTO);
+            log.info("BeanUtils copy object {}", userResponseDTO);
+            if (null != userResponseDTO) {
+                // 设置前端存储的cookie信息
+                CookieTools.setCookie(request, response, "user",
+                        JSON.toJSONString(userResponseDTO), true);
+                return JsonResponse.ok(userResponseDTO);
+            }
         } catch (Exception e) {
             log.error("用户登录失败,{},exception = {}", userRequestDTO, e.getMessage());
         }
