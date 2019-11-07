@@ -1,0 +1,42 @@
+
+[[_definitions]]
+== Definitions
+
+[[_jsonresponse]]
+=== JsonResponse
+
+[options="header", cols=".^3,.^4"]
+|===
+|Name|Schema
+|**data** +
+__optional__|object
+|**message** +
+__optional__|string
+|**ok** +
+__optional__|boolean
+|**status** +
+__optional__|integer (int32)
+|===
+
+
+[[_face321d005985f8dd48f83465b65f85]]
+=== 创建用户DTO
+用户注册需要的参数对象
+
+
+[options="header", cols=".^3,.^11,.^4"]
+|===
+|Name|Description|Schema
+|**confirmPassword** +
+__required__|确认密码 +
+**Example** : `"12345678"`|string
+|**password** +
+__required__|注册密码 +
+**Example** : `"12345678"`|string
+|**username** +
+__required__|用户名 +
+**Example** : `"isaaczhang"`|string
+|===
+
+
+

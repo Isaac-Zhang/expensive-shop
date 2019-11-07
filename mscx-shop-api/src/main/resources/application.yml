@@ -28,6 +28,7 @@ mybatis:
 
 # 配置swagger2
 swagger:
+  enabled: true #是否启用swagger，默认：true
   title: 实战电商api平台
   description: provide 电商 API
   version: 1.0.0.RC

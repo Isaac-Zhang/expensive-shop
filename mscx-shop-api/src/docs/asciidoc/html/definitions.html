@@ -524,7 +524,7 @@ table.CodeRay td.code>pre{padding:0}
 <li><a href="#_definitions">Definitions</a>
 <ul class="sectlevel2">
 <li><a href="#_jsonresponse">JsonResponse</a></li>
-<li><a href="#_userrequestdto">UserRequestDTO</a></li>
+<li><a href="#_face321d005985f8dd48f83465b65f85">创建用户DTO</a></li>
 </ul>
 </li>
 </ul>
@@ -572,32 +572,43 @@ table.CodeRay td.code>pre{padding:0}
 </table>
 </div>
 <div class="sect2">
-<h3 id="_userrequestdto">UserRequestDTO</h3>
+<h3 id="_face321d005985f8dd48f83465b65f85">创建用户DTO</h3>
+<div class="paragraph">
+<p>用户注册需要的参数对象</p>
+</div>
 <table class="tableblock frame-all grid-all spread">
 <colgroup>
-<col style="width: 42.8571%;">
-<col style="width: 57.1429%;">
+<col style="width: 16.6666%;">
+<col style="width: 61.1111%;">
+<col style="width: 22.2223%;">
 </colgroup>
 <thead>
 <tr>
 <th class="tableblock halign-left valign-middle">Name</th>
+<th class="tableblock halign-left valign-middle">Description</th>
 <th class="tableblock halign-left valign-middle">Schema</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td class="tableblock halign-left valign-middle"><p class="tableblock"><strong>confimPassword</strong><br>
-<em>optional</em></p></td>
+<td class="tableblock halign-left valign-middle"><p class="tableblock"><strong>confirmPassword</strong><br>
+<em>required</em></p></td>
+<td class="tableblock halign-left valign-middle"><p class="tableblock">确认密码<br>
+<strong>Example</strong> : <code>"12345678"</code></p></td>
 <td class="tableblock halign-left valign-middle"><p class="tableblock">string</p></td>
 </tr>
 <tr>
 <td class="tableblock halign-left valign-middle"><p class="tableblock"><strong>password</strong><br>
-<em>optional</em></p></td>
+<em>required</em></p></td>
+<td class="tableblock halign-left valign-middle"><p class="tableblock">注册密码<br>
+<strong>Example</strong> : <code>"12345678"</code></p></td>
 <td class="tableblock halign-left valign-middle"><p class="tableblock">string</p></td>
 </tr>
 <tr>
 <td class="tableblock halign-left valign-middle"><p class="tableblock"><strong>username</strong><br>
-<em>optional</em></p></td>
+<em>required</em></p></td>
+<td class="tableblock halign-left valign-middle"><p class="tableblock">用户名<br>
+<strong>Example</strong> : <code>"isaaczhang"</code></p></td>
 <td class="tableblock halign-left valign-middle"><p class="tableblock">string</p></td>
 </tr>
 </tbody>
@@ -608,7 +619,7 @@ table.CodeRay td.code>pre{padding:0}
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2019-11-05 23:53:24 CST
+Last updated 2019-11-07 16:50:11 CST
 </div>
 </div>
 </body>

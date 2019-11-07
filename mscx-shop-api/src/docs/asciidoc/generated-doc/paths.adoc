@@ -2,11 +2,67 @@
 [[_paths]]
 == Paths
 
+[[_validateusernameusingget]]
+=== 校验用户名是否可用
+....
+GET /certification/validateUsername
+....
+
+
+==== Description
+校验用户名是否可用
+
+
+==== Parameters
+
+[options="header", cols=".^2,.^3,.^9,.^4"]
+|===
+|Type|Name|Description|Schema
+|**Query**|**username** +
+__required__|用户名|string
+|===
+
+
+==== Responses
+
+[options="header", cols=".^2,.^14,.^4"]
+|===
+|HTTP Code|Description|Schema
+|**200**|OK|<<_jsonresponse,JsonResponse>>
+|**401**|Unauthorized|No Content
+|**403**|Forbidden|No Content
+|**404**|Not Found|No Content
+|===
+
+
+==== Produces
+
+* `*/*`
+
+
+==== Tags
+
+* 验证管理
+
+
+==== Security
+
+[options="header", cols=".^3,.^4,.^13"]
+|===
+|Type|Name|Scopes
+|**apiKey**|**<<_authorization,Authorization>>**|global
+|===
+
+
 [[_createuserusingpost]]
 === 创建用户
 ....
-POST /create
+POST /users/create
 ....
+
+
+==== Description
+用户注册接口
 
 
 ==== Parameters
@@ -15,7 +71,7 @@ POST /create
 |===
 |Type|Name|Description|Schema
 |**Body**|**userRequestDTO** +
-__required__|userRequestDTO|<<_userrequestdto,UserRequestDTO>>
+__required__|userRequestDTO|<<_face321d005985f8dd48f83465b65f85,创建用户DTO>>
 |===
 
 
@@ -45,102 +101,6 @@ __required__|userRequestDTO|<<_userrequestdto,UserRequestDTO>>
 ==== Tags
 
 * 用户管理
-
-
-==== Security
-
-[options="header", cols=".^3,.^4,.^13"]
-|===
-|Type|Name|Scopes
-|**apiKey**|**<<_authorization,Authorization>>**|global
-|===
-
-
-[[_getuserusingget]]
-=== 用户详情
-....
-GET /get/{id}
-....
-
-
-==== Parameters
-
-[options="header", cols=".^2,.^3,.^9,.^4"]
-|===
-|Type|Name|Description|Schema
-|**Path**|**id** +
-__required__|id|integer (int32)
-|===
-
-
-==== Responses
-
-[options="header", cols=".^2,.^14,.^4"]
-|===
-|HTTP Code|Description|Schema
-|**200**|OK|string
-|**401**|Unauthorized|No Content
-|**403**|Forbidden|No Content
-|**404**|Not Found|No Content
-|===
-
-
-==== Produces
-
-* `*/*`
-
-
-==== Tags
-
-* 用户管理
-
-
-==== Security
-
-[options="header", cols=".^3,.^4,.^13"]
-|===
-|Type|Name|Scopes
-|**apiKey**|**<<_authorization,Authorization>>**|global
-|===
-
-
-[[_validateusernameusingget]]
-=== validateUsername
-....
-GET /validateUsername
-....
-
-
-==== Parameters
-
-[options="header", cols=".^2,.^3,.^9,.^4"]
-|===
-|Type|Name|Description|Schema
-|**Query**|**username** +
-__required__|username|string
-|===
-
-
-==== Responses
-
-[options="header", cols=".^2,.^14,.^4"]
-|===
-|HTTP Code|Description|Schema
-|**200**|OK|<<_jsonresponse,JsonResponse>>
-|**401**|Unauthorized|No Content
-|**403**|Forbidden|No Content
-|**404**|Not Found|No Content
-|===
-
-
-==== Produces
-
-* `*/*`
-
-
-==== Tags
-
-* 验证管理
 
 
 ==== Security
