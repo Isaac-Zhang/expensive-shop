@@ -104,6 +104,7 @@ public class UserController {
                 return JsonResponse.ok(userResponseDTO);
             }
         } catch (Exception e) {
+            e.printStackTrace();
             log.error("用户登录失败,{},exception = {}", userRequestDTO, e.getMessage());
         }
         return JsonResponse.errorMsg("用户登录失败");
