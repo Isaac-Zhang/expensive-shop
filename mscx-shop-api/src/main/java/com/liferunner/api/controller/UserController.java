@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import springfox.documentation.annotations.ApiIgnore;
 
@@ -108,5 +109,15 @@ public class UserController {
             log.error("用户登录失败,{},exception = {}", userRequestDTO, e.getMessage());
         }
         return JsonResponse.errorMsg("用户登录失败");
+    }
+
+    @ApiOperation(value = "用户登出",notes = "用户登出",httpMethod = "POST")
+    @PostMapping("/logout")
+    public JsonResponse userLogout(@RequestParam String uid,
+        HttpServletRequest request,HttpServletResponse response){
+        // clear front's user cookies
+        CookieTools.deleteCookie(request,response,"user");
+        // return operational result
+        return JsonResponse.ok();
     }
 }
