@@ -1,4 +1,4 @@
-# 用户登录及首先展示
+# 用户登录及前端展示
 
 ---
 
@@ -169,6 +169,71 @@ public class UserResponseDTO {
         </dependency>
     </dependencies>
   ```
+
+## 用户登出
+
+在用户操作结束之后，我们需要将用户从系统中退出登录，因为我们的用户登录信息会存储在浏览器cookie中，因此，我们需要根据用户的登出操作来删除相关用户缓存:
+
+```java
+    @ApiOperation(value = "用户登出",notes = "用户登出",httpMethod = "POST")
+    @PostMapping("/logout")
+    public JsonResponse userLogout(@RequestParam String uid,
+        HttpServletRequest request,HttpServletResponse response){
+        // clear front's user cookies
+        CookieTools.deleteCookie(request,response,"user");
+        // return operational result
+        return JsonResponse.ok();
+    }
+```
+
+## 开发调试小福利
+
+### java日志追踪
+
+
+
+### sql日志追踪
+在我们开发的过程中，往往会遇到针对数据库的`CRUD`的操作，但是，因为我们使用了`mybatis` 动态生成了简单的SQL查询，而不是手动编写的，比如我们在`UserServiceImpl.java`中实现的用户查询以及用户注册代码中的`tk.mybatis.mapper.entity.Example` 以及 `this.usersMapper.insertSelective(user);`
+
+```java
+
+    public Users findUserByUserName(String username) {
+        // 构建查询条件
+        Example example = new Example(Users.class);
+        val condition = example.createCriteria()
+                .andEqualTo("username", username);
+        return this.usersMapper.selectOneByExample(example);
+    }
+
+    @Transactional(propagation = Propagation.REQUIRED)
+    @Override
+    public Users createUser(UserRequestDTO userRequestDTO) throws Exception {
+        log.info("======begin create user : {}=======", userRequestDTO);
+        val user = Users.builder()
+                .id(sid.next()) //生成分布式id
+                .username(userRequestDTO.getUsername())
+                .password(MD5GeneratorTools.getMD5Str(userRequestDTO.getPassword()))
+                .birthday(DateUtils.parseDate("1970-01-01", "yyyy-MM-dd"))
+                .nickname(userRequestDTO.getUsername())
+                .face(this.FACE_IMG)
+                .sex(SexEnum.secret.type)
+                .createdTime(new Date())
+                .updatedTime(new Date())
+                .build();
+        this.usersMapper.insertSelective(user);
+        log.info("======end create user : {}=======", userRequestDTO);
+        return user;
+    }
+```
+
+一旦遇到了问题之后，我们往往不知道到底是哪里出现了错误，这个时候我们的`SQL`是否有问题我们也不知道，因此，接下来我们来配置一种可以让我们`看`到SQL的小实现：
+
+1.设置日志配置(如图)
+![log4j.properties](https://i.loli.net/2019/11/11/i7W5FKt2DNyRHXS.png)
+2.修改mybatis配置（`log-impl: org.apache.ibatis.logging.stdout.StdOutImpl`）
+![mybatis](https://i.loli.net/2019/11/11/WDdnlL68PmRKpj7.png)
+3.效果演示
+![result](https://i.loli.net/2019/11/11/NDPxlR7O4dh5k8Y.png)
 
 ## 源码下载
 
