@@ -190,9 +190,8 @@ public class UserResponseDTO {
 
 ### java日志追踪
 
-
-
 ### sql日志追踪
+
 在我们开发的过程中，往往会遇到针对数据库的`CRUD`的操作，但是，因为我们使用了`mybatis` 动态生成了简单的SQL查询，而不是手动编写的，比如我们在`UserServiceImpl.java`中实现的用户查询以及用户注册代码中的`tk.mybatis.mapper.entity.Example` 以及 `this.usersMapper.insertSelective(user);`
 
 ```java
@@ -232,8 +231,13 @@ public class UserResponseDTO {
 ![log4j.properties](https://i.loli.net/2019/11/11/i7W5FKt2DNyRHXS.png)
 2.修改mybatis配置（`log-impl: org.apache.ibatis.logging.stdout.StdOutImpl`）
 ![mybatis](https://i.loli.net/2019/11/11/WDdnlL68PmRKpj7.png)
-3.效果演示
+3.`SELECT`效果演示
 ![result](https://i.loli.net/2019/11/11/NDPxlR7O4dh5k8Y.png)
+4.`INSERT`效果演示
+![INSERT](https://i.loli.net/2019/11/11/EyAdcLpTZ1mtRVG.png)
+从上图可以看出控制台JDBC操作进行了2次，其实第一次是对我们的用户名进行校验。第二次`INSERT`是真实的插入。
+
+通过上面的演示结果，大家可以想到，这个日志针在我们日常的开发中解决问题是非常有必要的。但是一定记得，在上生产的时候，日志一定要关闭，否则数据量一旦大了之后，会对系统的性能造成严重伤害！！！
 
 ## 源码下载
 
