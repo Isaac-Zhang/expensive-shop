@@ -190,6 +190,78 @@ public class UserResponseDTO {
 
 ### java日志追踪
 
+一般在电商场景中，对于请求的响应时间有着极其严格的要求，比如你在一个网站买商品的时候，如果每点击一次按钮都要等待，或者系统感觉卡顿一下，你会毫不犹豫的选择右上角的`小红叉`，把它干掉。因此，在我们系统的开发过程中，很多时候需要对我们的请求响应时间进行监控，甚至会通过压力测试来进行测试。但是，让我们在每一个方法中都做这种请求的实现，显然是不合理甚至说是让开发人员难受的，所以，我们来实现一种通用的做法，那就是通过`AOP`，面向切面来实现。关于切面的基本使用，大家可以参考[AOP传送门](https://www.cnblogs.com/xrq730/p/4919025.html)，接下来，开始我们的编码。
+根据`springboot`实现功能三部曲：
+setp 1. 添加依赖
+
+```xml
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-aop</artifactId>
+        </dependency>
+```
+
+step 2. 启动配置（没有就忽略掉这一步）
+setp 3. 加注解
+在我们的`mscx-shop-api`项目中，创建`com.liferunner.api.aspect`package,然后创建`com.liferunner.api.aspect.CommonLogAspect`，代码如下：
+
+```java
+package com.liferunner.api.aspect;
+
+import lombok.extern.slf4j.Slf4j;
+import lombok.val;
+import org.aspectj.lang.ProceedingJoinPoint;
+import org.aspectj.lang.annotation.Around;
+import org.aspectj.lang.annotation.Aspect;
+import org.springframework.stereotype.Component;
+
+import java.util.Date;
+
+/**
+ * CommonLogAspect for : AOP切面实现日志确认
+ *
+ * @author <a href="mailto:magicianisaac@gmail.com">Isaac.Zhang | 若初</a>
+ * @since 2019/11/11
+ */
+@Component
+@Aspect
+@Slf4j
+public class CommonLogAspect {
+
+    @Around("execution(* com.liferunner.api.controller..*.*(..))")
+    public void recordLogTime(ProceedingJoinPoint proceedingJoinPoint) throws Throwable {
+        log.info("----------- {}.{} process log time started.---------------",
+                proceedingJoinPoint.getTarget().getClass(),
+                proceedingJoinPoint.getSignature().getName());
+
+        val startTime = System.currentTimeMillis();
+        proceedingJoinPoint.proceed();
+        val afterTime = System.currentTimeMillis();
+        if (afterTime - startTime > 1000) {
+            log.warn("cost : {}", afterTime - startTime);
+        } else {
+            log.info("cost : {}", afterTime - startTime);
+        }
+
+        log.info("----------- {}.{} process log time ended.---------------",
+                proceedingJoinPoint.getSourceLocation().getClass(),
+                proceedingJoinPoint.getSignature().getName());
+    }
+}
+```
+
+- 第一行日志代表我们想要监控的是哪个类的哪个方法
+- `proceedingJoinPoint.proceed();`表示方法执行
+- 当请求查过1000ms的时候，我们使用`log.warn(...)`进行日志告警
+
+step 4. 效果演示
+- 查询用户耗时
+![get](https://i.loli.net/2019/11/11/rnMmbg3JH4coj7l.jpg)
+- 注册用户耗时
+![insert](https://i.loli.net/2019/11/11/gu52HKWbncXRple.png)
+
+从上图，我们明显能看出来我们每一次的请求耗时，之后就可以针对性的对每一个方法进行优化！！！
+
 ### sql日志追踪
 
 在我们开发的过程中，往往会遇到针对数据库的`CRUD`的操作，但是，因为我们使用了`mybatis` 动态生成了简单的SQL查询，而不是手动编写的，比如我们在`UserServiceImpl.java`中实现的用户查询以及用户注册代码中的`tk.mybatis.mapper.entity.Example` 以及 `this.usersMapper.insertSelective(user);`
