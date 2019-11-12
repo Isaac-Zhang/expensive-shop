@@ -1,11 +1,12 @@
-DROP TABLE carousel;;/*SkipError*/
-CREATE TABLE carousel(
+DROP TABLE slide_ads;;/*SkipError*/
+CREATE TABLE slide_ads(
     id VARCHAR(64) NOT NULL   COMMENT '主键' ,
     image_url VARCHAR(128) NOT NULL   COMMENT '图片 图片地址' ,
     background_color VARCHAR(32)    COMMENT '背景色 背景颜色' ,
     item_id VARCHAR(64)    COMMENT '商品id 商品id' ,
     cat_id VARCHAR(64)    COMMENT '商品分类id 商品分类id' ,
-    type INT NOT NULL   COMMENT '轮播图类型 轮播图类型，用于判断，可以根据商品id或者分类进行页面跳转，1：商品 2：分类' ,
+    image_link_url VARCHAR(256)    COMMENT '图片链接' ,
+    type INT NOT NULL   COMMENT '轮播图类型 轮播图类型，用于判断，可以根据商品id或者分类进行页面跳转，1：商品 2：分类 3：URL' ,
     sort INT NOT NULL   COMMENT '轮播图展示顺序 轮播图展示顺序，从小到大' ,
     is_show INT NOT NULL   COMMENT '是否展示 是否展示，1：展示    0：不展示' ,
     create_time DATETIME NOT NULL   COMMENT '创建时间 创建时间' ,
@@ -13,7 +14,7 @@ CREATE TABLE carousel(
     PRIMARY KEY (id)
 ) COMMENT = '轮播图 ';;
 
-ALTER TABLE carousel COMMENT '轮播图';;
+ALTER TABLE slide_ads COMMENT '轮播图';;
 DROP TABLE category;;/*SkipError*/
 CREATE TABLE category(
     id INT NOT NULL AUTO_INCREMENT  COMMENT '主键 分类id主键' ,

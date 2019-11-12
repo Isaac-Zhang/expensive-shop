@@ -9,8 +9,8 @@ import lombok.ToString;
 @Getter
 @Setter
 @ToString
-@Table(name = "carousel")
-public class Carousel {
+@Table(name = "slide_ads")
+public class SlideAds {
     /**
      * 主键
      */
@@ -40,6 +40,12 @@ public class Carousel {
      */
     @Column(name = "cat_id")
     private String catId;
+
+    /**
+     * 图片跳转URL
+     */
+    @Column(name = "image_link_url")
+    private String imageLinkUrl;
 
     /**
      * 轮播图类型 轮播图类型，用于判断，可以根据商品id或者分类进行页面跳转，1：商品 2：分类

@@ -1,8 +1,7 @@
 package com.liferunner.mapper;
 
 import com.liferunner.custom.CustomMapper;
-import com.liferunner.pojo.Carousel;
-import tk.mybatis.mapper.common.Mapper;
+import com.liferunner.pojo.SlideAds;
 
-public interface CarouselMapper extends CustomMapper<Carousel> {
+public interface CarouselMapper extends CustomMapper<SlideAds> {
 }
