@@ -1,4 +1,4 @@
-DROP TABLE slide_ads;;/*SkipError*/
+DROP TABLE slide_ads;/*SkipError*/
 CREATE TABLE slide_ads(
     id VARCHAR(64) NOT NULL   COMMENT '主键' ,
     image_url VARCHAR(128) NOT NULL   COMMENT '图片 图片地址' ,
