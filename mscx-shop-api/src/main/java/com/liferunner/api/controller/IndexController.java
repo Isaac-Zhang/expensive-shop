@@ -38,7 +38,7 @@ public class IndexController {
             log.info("============未查询到任何轮播广告==============");
             return JsonResponse.ok(Collections.EMPTY_LIST);
         }
-        log.info("============查询所有轮播广告,result={}=============="
+        log.info("============轮播广告查询result：{}=============="
                 , slideAdsList);
         return JsonResponse.ok(slideAdsList);
     }
