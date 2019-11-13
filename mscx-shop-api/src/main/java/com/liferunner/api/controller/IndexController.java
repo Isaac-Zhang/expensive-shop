@@ -1,5 +1,6 @@
 package com.liferunner.api.controller;
 
+import com.liferunner.service.ICategoryService;
 import com.liferunner.service.ISlideAdService;
 import com.liferunner.utils.JsonResponse;
 import io.swagger.annotations.Api;
@@ -26,6 +27,8 @@ public class IndexController {
 
     @Autowired
     private ISlideAdService slideAdService;
+    @Autowired
+    private ICategoryService categoryService;
 
     @GetMapping("/slideAds")
     @ApiOperation(value = "查询轮播广告", notes = "查询轮播广告接口")
@@ -41,5 +44,18 @@ public class IndexController {
         log.info("============轮播广告查询result：{}=============="
                 , slideAdsList);
         return JsonResponse.ok(slideAdsList);
+    }
+
+    @GetMapping("/rootCategorys")
+    @ApiOperation(value = "查询一级分类", notes = "查询一级分类")
+    public JsonResponse findAllRootCategorys() {
+        log.info("============查询一级分类==============");
+        val categoryResponseDTOS = this.categoryService.getAllRootCategorys();
+        if (CollectionUtils.isEmpty(categoryResponseDTOS)) {
+            log.info("============未查询到任何分类==============");
+            return JsonResponse.ok(Collections.EMPTY_LIST);
+        }
+        log.info("============一级分类查询result：{}==============", categoryResponseDTOS);
+        return JsonResponse.ok(categoryResponseDTOS);
     }
 }

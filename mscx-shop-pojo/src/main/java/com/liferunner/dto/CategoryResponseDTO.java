@@ -1,19 +1,20 @@
-package com.liferunner.pojo;
+package com.liferunner.dto;
 
-import javax.persistence.*;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.Data;
 import lombok.ToString;
 
-@Getter
-@Setter
+/**
+ * CategoryResponseDTO for : 分类信息DTO
+ *
+ * @author <a href="mailto:magicianisaac@gmail.com">Isaac.Zhang | 若初</a>
+ * @since 2019/11/13
+ */
+@Data
 @ToString
-@Table(name = "category")
-public class Category {
+public class CategoryResponseDTO {
     /**
      * 主键 分类id主键
      */
-    @Id
     private Integer id;
 
     /**
@@ -23,16 +24,15 @@ public class Category {
 
     /**
      * 分类类型 分类得类型，
-1:一级大分类
-2:二级分类
-3:三级小分类
+     1:一级大分类
+     2:二级分类
+     3:三级小分类
      */
     private Integer type;
 
     /**
      * 父id 父id 上一级依赖的id，1级分类则为0，二级三级分别依赖上一级
      */
-    @Column(name = "father_id")
     private Integer parentId;
 
     /**
@@ -48,12 +48,10 @@ public class Category {
     /**
      * 分类图
      */
-    @Column(name = "cat_image")
     private String catImage;
 
     /**
      * 背景颜色
      */
-    @Column(name = "bg_color")
     private String bgColor;
 }
