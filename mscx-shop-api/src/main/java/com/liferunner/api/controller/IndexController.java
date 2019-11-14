@@ -32,11 +32,10 @@ public class IndexController {
 
     @GetMapping("/slideAds")
     @ApiOperation(value = "查询轮播广告", notes = "查询轮播广告接口")
-    public JsonResponse findAllSlideList(@RequestParam Integer isShow,
-                                         @RequestParam String sortRanking) {
+    public JsonResponse findAllSlideList() {
         log.info("============查询所有轮播广告,isShow={},sortRanking={}=============="
-                , isShow, sortRanking);
-        val slideAdsList = this.slideAdService.findAll(isShow, sortRanking);
+                , 1, "desc");
+        val slideAdsList = this.slideAdService.findAll(1, "desc");
         if (CollectionUtils.isEmpty(slideAdsList)) {
             log.info("============未查询到任何轮播广告==============");
             return JsonResponse.ok(Collections.EMPTY_LIST);
