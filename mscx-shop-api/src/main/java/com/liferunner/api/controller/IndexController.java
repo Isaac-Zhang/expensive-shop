@@ -5,6 +5,7 @@ import com.liferunner.service.ISlideAdService;
 import com.liferunner.utils.JsonResponse;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiParam;
 import lombok.extern.slf4j.Slf4j;
 import lombok.val;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -55,6 +56,21 @@ public class IndexController {
             return JsonResponse.ok(Collections.EMPTY_LIST);
         }
         log.info("============一级分类查询result：{}==============", categoryResponseDTOS);
+        return JsonResponse.ok(categoryResponseDTOS);
+    }
+
+    @GetMapping("/subCategorys/{parentId}")
+    @ApiOperation(value = "查询子分类", notes = "根据一级分类id查询子分类")
+    public JsonResponse findAllSubCategorys(
+            @ApiParam(name = "parentId", value = "一级分类id", required = true)
+            @PathVariable Integer parentId) {
+        log.info("============查询id = {}的子分类==============", parentId);
+        val categoryResponseDTOS = this.categoryService.getAllSubCategorys(parentId);
+        if (CollectionUtils.isEmpty(categoryResponseDTOS)) {
+            log.info("============未查询到任何分类==============");
+            return JsonResponse.ok(Collections.EMPTY_LIST);
+        }
+        log.info("============子分类查询result：{}==============", categoryResponseDTOS);
         return JsonResponse.ok(categoryResponseDTOS);
     }
 }

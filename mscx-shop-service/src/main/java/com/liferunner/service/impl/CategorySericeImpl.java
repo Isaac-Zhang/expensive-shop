@@ -1,6 +1,8 @@
 package com.liferunner.service.impl;
 
+import com.liferunner.custom.CategoryCustomMapper;
 import com.liferunner.dto.CategoryResponseDTO;
+import com.liferunner.dto.SecondSubCategoryResponseDTO;
 import com.liferunner.enums.CategoryTypeEnum;
 import com.liferunner.mapper.CategoryMapper;
 import com.liferunner.pojo.Category;
@@ -10,6 +12,8 @@ import lombok.val;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.CollectionUtils;
 import tk.mybatis.mapper.entity.Example;
 
@@ -27,6 +31,9 @@ import java.util.List;
 public class CategorySericeImpl implements ICategoryService {
     @Autowired
     private CategoryMapper categoryMapper;
+
+    @Autowired
+    private CategoryCustomMapper categoryCustomMapper;
 
     @Override
     public List<CategoryResponseDTO> getAllRootCategorys() {
@@ -46,5 +53,11 @@ public class CategorySericeImpl implements ICategoryService {
             }
         }
         return categoryResponseDTOS;
+    }
+
+    @Override
+    @Transactional(propagation = Propagation.SUPPORTS)
+    public List<SecondSubCategoryResponseDTO> getAllSubCategorys(Integer parentId) {
+        return this.categoryCustomMapper.getSubCategorys(parentId);
     }
 }

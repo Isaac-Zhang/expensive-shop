@@ -1,6 +1,7 @@
 package com.liferunner.service;
 
 import com.liferunner.dto.CategoryResponseDTO;
+import com.liferunner.dto.SecondSubCategoryResponseDTO;
 
 import java.util.List;
 
@@ -18,4 +19,12 @@ public interface ICategoryService {
      * @return
      */
     List<CategoryResponseDTO> getAllRootCategorys();
+
+    /**
+     * 根据一级分类获取子分类
+     *
+     * @param parentId 一级分类id
+     * @return 子分类list
+     */
+    List<SecondSubCategoryResponseDTO> getAllSubCategorys(Integer parentId);
 }

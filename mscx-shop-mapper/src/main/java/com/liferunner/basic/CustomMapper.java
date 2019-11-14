@@ -1,4 +1,4 @@
-package com.liferunner.custom;
+package com.liferunner.basic;
 
 import tk.mybatis.mapper.common.Mapper;
 import tk.mybatis.mapper.common.MySqlMapper;
