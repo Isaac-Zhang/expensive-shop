@@ -5,7 +5,7 @@
         <id column="id" jdbcType="INTEGER" property="id"/>
         <result column="name" jdbcType="VARCHAR" property="name"/>
         <result column="type" jdbcType="INTEGER" property="type"/>
-        <result column="father_id" jdbcType="INTEGER" property="parentId"/>
+        <result column="parentId" jdbcType="INTEGER" property="parentId"/>
         <collection property="thirdSubCategoryResponseDTOList" ofType="com.liferunner.dto.ThirdSubCategoryResponseDTO">
             <id column="subId" jdbcType="INTEGER" property="subId"/>
             <result column="subName" jdbcType="VARCHAR" property="subName"/>

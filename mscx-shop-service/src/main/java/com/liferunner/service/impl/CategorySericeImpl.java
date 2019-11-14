@@ -39,7 +39,7 @@ public class CategorySericeImpl implements ICategoryService {
     public List<CategoryResponseDTO> getAllRootCategorys() {
         Example example = new Example(Category.class);
         val conditions = example.createCriteria();
-        conditions.andEqualTo("type", CategoryTypeEnum.ROOT.value);
+        conditions.andEqualTo("type", CategoryTypeEnum.ROOT.type);
         val categoryList = this.categoryMapper.selectByExample(example);
         //声明返回对象
         List<CategoryResponseDTO> categoryResponseDTOS = new ArrayList<>();
