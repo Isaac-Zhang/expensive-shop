@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.liferunner.custom.ProductCustomMapper">
+    <resultMap id="IndexProductDTO" type="com.liferunner.dto.IndexProductDTO">
+        <id column="rootCategoryId" property="rootCategoryId"/>
+        <result column="rootCategoryName" property="rootCategoryName"/>
+        <result column="slogan" property="slogan"/>
+        <result column="categoryImage" property="categoryImage"/>
+        <result column="bgColor" property="bgColor"/>
+        <collection property="productItemList" ofType="com.liferunner.dto.IndexProductItemDTO">
+            <id column="productId" property="productId"/>
+            <result column="productName" property="productName"/>
+            <result column="productMainImageUrl" property="productMainImageUrl"/>
+            <result column="productCreateTime" property="productCreateTime"/>
+        </collection>
+    </resultMap>
+    <select id="getIndexProductDtoList" resultMap="IndexProductDTO" parameterType="Map">
+        SELECT
+            c.id as rootCategoryId,
+            c.name as rootCategoryName,
+            c.slogan as slogan,
+            c.cat_image as categoryImage,
+            c.bg_color as bgColor,
+            p.id as productId,
+            p.item_name as productName,
+            pi.url as productMainImageUrl,
+            p.created_time as productCreateTime
+        FROM category c
+        LEFT JOIN items p
+        ON c.id = p.root_cat_id
+        LEFT JOIN items_img pi
+        ON p.id = pi.item_id
+        WHERE c.type = 1
+        AND p.root_cat_id = #{paramMap.rootCategoryId}
+        AND pi.is_main = 1
+        LIMIT 0,6;
+    </select>
+</mapper>
