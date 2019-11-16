@@ -4,11 +4,13 @@ import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.liferunner.custom.ProductCustomMapper;
 import com.liferunner.dto.IndexProductDTO;
+import com.liferunner.dto.ProductCommentDTO;
 import com.liferunner.dto.ProductCommentLevelCountsDTO;
 import com.liferunner.mapper.*;
 import com.liferunner.pojo.*;
 import com.liferunner.service.IProductService;
 import com.liferunner.utils.CommonPagedResult;
+import com.liferunner.utils.SecurityTools;
 import io.swagger.models.auth.In;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -104,6 +106,9 @@ public class ProductServiceImpl implements IProductService {
         // mybatis-pagehelper
         PageHelper.startPage(pageNumber, pageSize);
         val productCommentList = this.productCustomMapper.getProductCommentList(paramMap);
+        for (ProductCommentDTO item : productCommentList) {
+            item.setNickname(SecurityTools.HiddenPartString4SecurityDisplay(item.getNickname()));
+        }
         // 获取mybatis插件中获取到信息
         PageInfo<?> pageInfo = new PageInfo<>(productCommentList);
         // 封装为返回到前端分页组件可识别的视图
