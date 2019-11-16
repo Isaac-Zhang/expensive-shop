@@ -116,12 +116,12 @@
     <!-- 数据库表 -->
     <table tableName="carousel"></table>
     <table tableName="category"></table>
-    <table tableName="items"></table>
-    <table tableName="items_comments"></table>
-    <table tableName="items_img"></table>
-    <table tableName="items_param"></table>
-    <table tableName="items_spec"></table>
-    <table tableName="order_items"></table>
+    <table tableName="products"></table>
+    <table tableName="products_comments"></table>
+    <table tableName="products_img"></table>
+    <table tableName="products_param"></table>
+    <table tableName="products_spec"></table>
+    <table tableName="order_products"></table>
     <table tableName="order_status"></table>
     <table tableName="orders"></table>
     <table tableName="shop_users"></table>

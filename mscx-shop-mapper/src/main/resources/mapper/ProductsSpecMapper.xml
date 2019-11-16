@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.liferunner.mapper.ItemsSpecMapper">
-  <resultMap id="BaseResultMap" type="com.liferunner.pojo.ItemsSpec">
+<mapper namespace="com.liferunner.mapper.ProductsSpecMapper">
+  <resultMap id="BaseResultMap" type="com.liferunner.pojo.ProductsSpec">
     <!--
       WARNING - @mbg.generated
     -->
     <id column="id" jdbcType="VARCHAR" property="id" />
-    <result column="item_id" jdbcType="VARCHAR" property="itemId" />
+    <result column="item_id" jdbcType="VARCHAR" property="productId" />
     <result column="name" jdbcType="VARCHAR" property="name" />
     <result column="stock" jdbcType="INTEGER" property="stock" />
     <result column="discounts" jdbcType="DECIMAL" property="discounts" />

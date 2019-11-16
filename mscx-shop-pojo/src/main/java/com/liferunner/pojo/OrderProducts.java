@@ -9,7 +9,7 @@ import lombok.ToString;
 @Setter
 @ToString
 @Table(name = "order_items")
-public class OrderItems {
+public class OrderProducts {
     /**
      * 主键id
      */
@@ -25,32 +25,32 @@ public class OrderItems {
     /**
      * 商品id
      */
-    @Column(name = "item_id")
-    private String itemId;
+    @Column(name = "product_id")
+    private String productId;
 
     /**
      * 商品图片
      */
-    @Column(name = "item_img")
-    private String itemImg;
+    @Column(name = "product_img")
+    private String productImg;
 
     /**
      * 商品名称
      */
-    @Column(name = "item_name")
-    private String itemName;
+    @Column(name = "product_name")
+    private String productName;
 
     /**
      * 规格id
      */
-    @Column(name = "item_spec_id")
-    private String itemSpecId;
+    @Column(name = "product_spec_id")
+    private String productSpecId;
 
     /**
      * 规格名称
      */
-    @Column(name = "item_spec_name")
-    private String itemSpecName;
+    @Column(name = "product_spec_name")
+    private String productSpecName;
 
     /**
      * 成交价格

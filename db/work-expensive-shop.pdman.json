@@ -519,7 +519,7 @@
           "chnname": "用户地址表"
         },
         {
-          "title": "items",
+          "title": "products",
           "fields": [
             {
               "name": "id",
@@ -637,7 +637,7 @@
           "remark": "商品信息相关表：分类表，商品图片表，商品规格表，商品参数表"
         },
         {
-          "title": "items_img",
+          "title": "products_img",
           "fields": [
             {
               "name": "id",
@@ -740,7 +740,7 @@
           "chnname": "商品图片"
         },
         {
-          "title": "items_spec",
+          "title": "products_spec",
           "fields": [
             {
               "name": "id",
@@ -858,7 +858,7 @@
           "remark": "每一件商品都有不同的规格，不同的规格又有不同的价格和优惠力度，规格表为此设计"
         },
         {
-          "title": "items_param",
+          "title": "products_param",
           "fields": [
             {
               "name": "id",
@@ -1003,7 +1003,7 @@
           "chnname": "商品参数"
         },
         {
-          "title": "items_comments",
+          "title": "products_comments",
           "fields": [
             {
               "name": "id",
@@ -1280,7 +1280,7 @@
           "chnname": "订单表"
         },
         {
-          "title": "order_items",
+          "title": "order_products",
           "fields": [
             {
               "name": "id",

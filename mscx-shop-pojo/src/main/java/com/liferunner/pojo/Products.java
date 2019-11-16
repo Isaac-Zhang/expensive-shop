@@ -10,7 +10,7 @@ import lombok.ToString;
 @Setter
 @ToString
 @Table(name = "items")
-public class Items {
+public class Products {
     /**
      * 商品主键id
      */

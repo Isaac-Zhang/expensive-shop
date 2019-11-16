@@ -10,7 +10,7 @@ import lombok.ToString;
 @Setter
 @ToString
 @Table(name = "items_comments")
-public class ItemsComments {
+public class ProductsComments {
     /**
      * id主键
      */
@@ -26,20 +26,20 @@ public class ItemsComments {
     /**
      * 商品id
      */
-    @Column(name = "item_id")
-    private String itemId;
+    @Column(name = "product_id")
+    private String productId;
 
     /**
      * 商品名称
      */
-    @Column(name = "item_name")
-    private String itemName;
+    @Column(name = "product_name")
+    private String productName;
 
     /**
      * 商品规格id 可为空
      */
-    @Column(name = "item_spec_id")
-    private String itemSpecId;
+    @Column(name = "product_spec_id")
+    private String productSpecId;
 
     /**
      * 规格名称 可为空

@@ -3,7 +3,7 @@ CREATE TABLE slide_ads(
     id VARCHAR(64) NOT NULL   COMMENT '主键' ,
     image_url VARCHAR(128) NOT NULL   COMMENT '图片 图片地址' ,
     background_color VARCHAR(32)    COMMENT '背景色 背景颜色' ,
-    item_id VARCHAR(64)    COMMENT '商品id 商品id' ,
+    product_id VARCHAR(64)    COMMENT '商品id 商品id' ,
     cat_id VARCHAR(64)    COMMENT '商品分类id 商品分类id' ,
     image_link_url VARCHAR(256)    COMMENT '图片链接' ,
     type INT NOT NULL   COMMENT '轮播图类型 轮播图类型，用于判断，可以根据商品id或者分类进行页面跳转，1：商品 2：分类 3：URL' ,
@@ -69,10 +69,10 @@ CREATE TABLE user_address(
 ) COMMENT = '用户地址表 ';;
 
 ALTER TABLE user_address COMMENT '用户地址表';;
-DROP TABLE items;;/*SkipError*/
-CREATE TABLE items(
+DROP TABLE products;;/*SkipError*/
+CREATE TABLE products(
     id VARCHAR(64) NOT NULL   COMMENT '商品主键id' ,
-    item_name VARCHAR(32) NOT NULL   COMMENT '商品名称 商品名称' ,
+    product_name VARCHAR(32) NOT NULL   COMMENT '商品名称 商品名称' ,
     cat_id INT NOT NULL   COMMENT '分类外键id 分类id' ,
     root_cat_id INT NOT NULL   COMMENT '一级分类外键id 一级分类id，用于优化查询' ,
     sell_counts INT NOT NULL   COMMENT '累计销售 累计销售' ,
@@ -83,11 +83,11 @@ CREATE TABLE items(
     PRIMARY KEY (id)
 ) COMMENT = '商品表 商品信息相关表：分类表，商品图片表，商品规格表，商品参数表';;
 
-ALTER TABLE items COMMENT '商品表';;
-DROP TABLE items_img;;/*SkipError*/
-CREATE TABLE items_img(
+ALTER TABLE products COMMENT '商品表';;
+DROP TABLE products_img;;/*SkipError*/
+CREATE TABLE products_img(
     id VARCHAR(64) NOT NULL   COMMENT '图片主键' ,
-    item_id VARCHAR(64) NOT NULL   COMMENT '商品外键id 商品外键id' ,
+    product_id VARCHAR(64) NOT NULL   COMMENT '商品外键id 商品外键id' ,
     url VARCHAR(128) NOT NULL   COMMENT '图片地址 图片地址' ,
     sort INT NOT NULL   COMMENT '顺序 图片顺序，从小到大' ,
     is_main INT NOT NULL   COMMENT '是否主图 是否主图，1：是，0：否' ,
@@ -96,11 +96,11 @@ CREATE TABLE items_img(
     PRIMARY KEY (id)
 ) COMMENT = '商品图片 ';;
 
-ALTER TABLE items_img COMMENT '商品图片';;
-DROP TABLE items_spec;;/*SkipError*/
-CREATE TABLE items_spec(
+ALTER TABLE products_img COMMENT '商品图片';;
+DROP TABLE products_spec;;/*SkipError*/
+CREATE TABLE products_spec(
     id VARCHAR(64) NOT NULL   COMMENT '商品规格id' ,
-    item_id VARCHAR(64) NOT NULL   COMMENT '商品外键id' ,
+    product_id VARCHAR(64) NOT NULL   COMMENT '商品外键id' ,
     name VARCHAR(32) NOT NULL   COMMENT '规格名称' ,
     stock INT NOT NULL   COMMENT '库存' ,
     discounts DECIMAL(4,2) NOT NULL   COMMENT '折扣力度' ,
@@ -111,11 +111,11 @@ CREATE TABLE items_spec(
     PRIMARY KEY (id)
 ) COMMENT = '商品规格 每一件商品都有不同的规格，不同的规格又有不同的价格和优惠力度，规格表为此设计';;
 
-ALTER TABLE items_spec COMMENT '商品规格';;
-DROP TABLE items_param;;/*SkipError*/
-CREATE TABLE items_param(
+ALTER TABLE products_spec COMMENT '商品规格';;
+DROP TABLE products_param;;/*SkipError*/
+CREATE TABLE products_param(
     id VARCHAR(64) NOT NULL   COMMENT '商品参数id' ,
-    item_id VARCHAR(32) NOT NULL   COMMENT '商品外键id' ,
+    product_id VARCHAR(32) NOT NULL   COMMENT '商品外键id' ,
     produc_place VARCHAR(32) NOT NULL   COMMENT '产地 产地，例：中国江苏' ,
     foot_period VARCHAR(32) NOT NULL   COMMENT '保质期 保质期，例：180天' ,
     brand VARCHAR(32) NOT NULL   COMMENT '品牌名 品牌名，例：三只大灰狼' ,
@@ -130,14 +130,14 @@ CREATE TABLE items_param(
     PRIMARY KEY (id)
 ) COMMENT = '商品参数 ';;
 
-ALTER TABLE items_param COMMENT '商品参数';;
-DROP TABLE items_comments;;/*SkipError*/
-CREATE TABLE items_comments(
+ALTER TABLE products_param COMMENT '商品参数';;
+DROP TABLE products_comments;;/*SkipError*/
+CREATE TABLE products_comments(
     id VARCHAR(64) NOT NULL   COMMENT 'id主键' ,
     user_id VARCHAR(64)    COMMENT '用户id 用户名须脱敏' ,
-    item_id VARCHAR(64) NOT NULL   COMMENT '商品id' ,
-    item_name VARCHAR(64)    COMMENT '商品名称' ,
-    item_spec_id VARCHAR(64)    COMMENT '商品规格id 可为空' ,
+    product_id VARCHAR(64) NOT NULL   COMMENT '商品id' ,
+    product_name VARCHAR(64)    COMMENT '商品名称' ,
+    product_spec_id VARCHAR(64)    COMMENT '商品规格id 可为空' ,
     sepc_name VARCHAR(32)    COMMENT '规格名称 可为空' ,
     comment_level INT NOT NULL   COMMENT '评价等级 1：好评 2：中评 3：差评' ,
     content VARCHAR(128) NOT NULL   COMMENT '评价内容' ,
@@ -146,7 +146,7 @@ CREATE TABLE items_comments(
     PRIMARY KEY (id)
 ) COMMENT = '商品评价表 ';;
 
-ALTER TABLE items_comments COMMENT '商品评价表';;
+ALTER TABLE products_comments COMMENT '商品评价表';;
 DROP TABLE orders;;/*SkipError*/
 CREATE TABLE orders(
     id VARCHAR(64) NOT NULL   COMMENT '订单主键 同时也是订单编号' ,
@@ -168,21 +168,21 @@ CREATE TABLE orders(
 ) COMMENT = '订单表 ';;
 
 ALTER TABLE orders COMMENT '订单表';;
-DROP TABLE order_items;;/*SkipError*/
-CREATE TABLE order_items(
+DROP TABLE order_products;;/*SkipError*/
+CREATE TABLE order_products(
     id VARCHAR(64) NOT NULL   COMMENT '主键id' ,
     order_id VARCHAR(64) NOT NULL   COMMENT '归属订单id' ,
-    item_id VARCHAR(64) NOT NULL   COMMENT '商品id' ,
-    item_img VARCHAR(128) NOT NULL   COMMENT '商品图片' ,
-    item_name VARCHAR(32) NOT NULL   COMMENT '商品名称' ,
-    item_spec_id VARCHAR(32) NOT NULL   COMMENT '规格id' ,
-    item_spec_name VARCHAR(32) NOT NULL   COMMENT '规格名称' ,
+    product_id VARCHAR(64) NOT NULL   COMMENT '商品id' ,
+    product_img VARCHAR(128) NOT NULL   COMMENT '商品图片' ,
+    product_name VARCHAR(32) NOT NULL   COMMENT '商品名称' ,
+    product_spec_id VARCHAR(32) NOT NULL   COMMENT '规格id' ,
+    product_spec_name VARCHAR(32) NOT NULL   COMMENT '规格名称' ,
     price INT NOT NULL   COMMENT '成交价格' ,
     buy_counts INT NOT NULL   COMMENT '购买数量' ,
     PRIMARY KEY (id)
 ) COMMENT = '订单商品关联表 ';;
 
-ALTER TABLE order_items COMMENT '订单商品关联表';;
+ALTER TABLE order_products COMMENT '订单商品关联表';;
 DROP TABLE order_status;;/*SkipError*/
 CREATE TABLE order_status(
     order_id VARCHAR(64) NOT NULL   COMMENT '订单ID 对应订单表的主键id' ,

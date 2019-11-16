@@ -10,7 +10,7 @@ import lombok.ToString;
 @Setter
 @ToString
 @Table(name = "items_param")
-public class ItemsParam {
+public class ProductsParam {
     /**
      * 商品参数id
      */

@@ -1,6 +1,5 @@
 package com.liferunner.pojo;
 
-import java.math.BigDecimal;
 import java.util.Date;
 import javax.persistence.*;
 import lombok.Getter;
@@ -10,46 +9,35 @@ import lombok.ToString;
 @Getter
 @Setter
 @ToString
-@Table(name = "items_spec")
-public class ItemsSpec {
+@Table(name = "items_img")
+public class ProductsImg {
     /**
-     * 商品规格id
+     * 图片主键
      */
     @Id
     private String id;
 
     /**
-     * 商品外键id
+     * 商品外键id 商品外键id
      */
     @Column(name = "item_id")
     private String itemId;
 
     /**
-     * 规格名称
+     * 图片地址 图片地址
      */
-    private String name;
+    private String url;
 
     /**
-     * 库存
+     * 顺序 图片顺序，从小到大
      */
-    private Integer stock;
+    private Integer sort;
 
     /**
-     * 折扣力度
+     * 是否主图 是否主图，1：是，0：否
      */
-    private BigDecimal discounts;
-
-    /**
-     * 优惠价
-     */
-    @Column(name = "price_discount")
-    private Integer priceDiscount;
-
-    /**
-     * 原价
-     */
-    @Column(name = "price_normal")
-    private Integer priceNormal;
+    @Column(name = "is_main")
+    private Integer isMain;
 
     /**
      * 创建时间

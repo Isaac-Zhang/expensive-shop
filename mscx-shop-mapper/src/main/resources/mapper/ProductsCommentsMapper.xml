@@ -1,15 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.liferunner.mapper.ItemsCommentsMapper">
-  <resultMap id="BaseResultMap" type="com.liferunner.pojo.ItemsComments">
+<mapper namespace="com.liferunner.mapper.ProductsCommentsMapper">
+  <resultMap id="BaseResultMap" type="com.liferunner.pojo.ProductsComments">
     <!--
       WARNING - @mbg.generated
     -->
     <id column="id" jdbcType="VARCHAR" property="id" />
     <result column="user_id" jdbcType="VARCHAR" property="userId" />
-    <result column="item_id" jdbcType="VARCHAR" property="itemId" />
-    <result column="item_name" jdbcType="VARCHAR" property="itemName" />
-    <result column="item_spec_id" jdbcType="VARCHAR" property="itemSpecId" />
+    <result column="item_id" jdbcType="VARCHAR" property="productId" />
+    <result column="item_name" jdbcType="VARCHAR" property="productName" />
+    <result column="item_spec_id" jdbcType="VARCHAR" property="productSpecId" />
     <result column="sepc_name" jdbcType="VARCHAR" property="sepcName" />
     <result column="comment_level" jdbcType="INTEGER" property="commentLevel" />
     <result column="content" jdbcType="VARCHAR" property="content" />
