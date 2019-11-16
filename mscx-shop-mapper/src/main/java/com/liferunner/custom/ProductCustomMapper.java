@@ -1,6 +1,7 @@
 package com.liferunner.custom;
 
 import com.liferunner.dto.IndexProductDTO;
+import com.liferunner.dto.ProductCommentDTO;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
@@ -14,4 +15,6 @@ import java.util.Map;
  */
 public interface ProductCustomMapper {
     List<IndexProductDTO> getIndexProductDtoList(@Param("paramMap") Map<String,Integer> paramMap);
+
+    List<ProductCommentDTO> getProductCommentList(@Param("paramMap") Map<String,Object> paramMap);
 }

@@ -6,6 +6,7 @@ import com.liferunner.pojo.Products;
 import com.liferunner.pojo.ProductsImg;
 import com.liferunner.pojo.ProductsParam;
 import com.liferunner.pojo.ProductsSpec;
+import com.liferunner.utils.CommonPagedResult;
 
 import java.util.List;
 
@@ -60,9 +61,20 @@ public interface IProductService {
     /**
      * 根据商品id 查询评价总数
      *
-     * @param pid 商品id
+     * @param pid   商品id
      * @param level 评价等级
      * @return 评价数
      */
-    Integer countProductCommentLevel(String pid,Integer level);
+    Integer countProductCommentLevel(String pid, Integer level);
+
+    /**
+     * 查询商品评价
+     *
+     * @param pid        商品id
+     * @param level      评价级别
+     * @param pageNumber 当前页码
+     * @param pageSize   每页展示多少条数据
+     * @return 通用分页结果视图
+     */
+    CommonPagedResult getProductComments(String pid, Integer level, Integer pageNumber, Integer pageSize);
 }

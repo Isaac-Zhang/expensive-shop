@@ -1,11 +1,14 @@
 package com.liferunner.service.impl;
 
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
 import com.liferunner.custom.ProductCustomMapper;
 import com.liferunner.dto.IndexProductDTO;
 import com.liferunner.dto.ProductCommentLevelCountsDTO;
 import com.liferunner.mapper.*;
 import com.liferunner.pojo.*;
 import com.liferunner.service.IProductService;
+import com.liferunner.utils.CommonPagedResult;
 import io.swagger.models.auth.In;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -91,5 +94,25 @@ public class ProductServiceImpl implements IProductService {
         condition.setProductId(pid);
         val count = this.productsCommentsMapper.selectCount(condition);
         return count;
+    }
+
+    @Override
+    public CommonPagedResult getProductComments(String pid, Integer level, Integer pageNumber, Integer pageSize) {
+        Map<String, Object> paramMap = new HashMap<>();
+        paramMap.put("productId", pid);
+        paramMap.put("commentLevel", level);
+        // mybatis-pagehelper
+        PageHelper.startPage(pageNumber, pageSize);
+        val productCommentList = this.productCustomMapper.getProductCommentList(paramMap);
+        // 获取mybatis插件中获取到信息
+        PageInfo<?> pageInfo = new PageInfo<>(productCommentList);
+        // 封装为返回到前端分页组件可识别的视图
+        val commonPagedResult = CommonPagedResult.builder()
+                .pageNumber(pageNumber)
+                .rows(productCommentList)
+                .totalPage(pageInfo.getPages())
+                .records(pageInfo.getTotal())
+                .build();
+        return commonPagedResult;
     }
 }

@@ -8,6 +8,7 @@ import com.liferunner.utils.JsonResponse;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
+import io.swagger.models.auth.In;
 import lombok.extern.slf4j.Slf4j;
 import lombok.val;
 import org.apache.commons.lang3.StringUtils;
@@ -24,7 +25,7 @@ import org.springframework.web.bind.annotation.*;
 @Slf4j
 @RequestMapping("/product")
 @Api(value = "商品服务", tags = "查询商品相关接口")
-public class ProductController {
+public class ProductController extends BaseController {
 
     @Autowired
     private IProductService productService;
@@ -79,5 +80,33 @@ public class ProductController {
                 .badCounts(badCounts)
                 .build();
         return JsonResponse.ok(commentLevelCountsDTO);
+    }
+
+    @GetMapping("/comments")
+    @ApiOperation(value = "查询商品评价", notes = "根据商品id查询商品评价")
+    public JsonResponse getProductComment(
+            @ApiParam(name = "pid", value = "商品id", required = true)
+            @RequestParam String pid,
+            @ApiParam(name = "level", value = "评价级别", required = false)
+            @RequestParam Integer level,
+            @ApiParam(name = "pageNumber", value = "当前页码", required = false)
+            @RequestParam Integer pageNumber,
+            @ApiParam(name = "pageSize", value = "每页展示记录数", required = false)
+            @RequestParam Integer pageSize
+    ) {
+        if (StringUtils.isBlank(pid)) {
+            return JsonResponse.errorMsg("商品id不能为空！");
+        }
+        if (null == pageNumber || 0 == pageNumber) {
+            pageNumber = DEFAULT_PAGE_NUMBER;
+        }
+        if (null == pageSize || 0 == pageSize) {
+            pageSize = DEFAULT_PAGE_SIZE;
+        }
+        log.info("============查询商品评价:{}==============", pid);
+
+        val productComments = this.productService.getProductComments(pid, level, pageNumber, pageSize);
+
+        return JsonResponse.ok(productComments);
     }
 }

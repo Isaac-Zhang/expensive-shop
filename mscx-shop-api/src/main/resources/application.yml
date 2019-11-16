@@ -27,7 +27,10 @@ mybatis:
   mapper-locations: classpath*:mapper/*.xml,classpath*:mapper/custom/*.xml      # mapper映射文件
   configuration:
     log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
-
+# mybatis 分页组件配置
+pagehelper:
+  helperDialect: mysql
+  supportMethodsArguments: true
 # 配置swagger2
 swagger:
   enabled: true #是否启用swagger，默认：true

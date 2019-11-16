@@ -16,15 +16,15 @@
     </resultMap>
     <select id="getIndexProductDtoList" resultMap="IndexProductDTO" parameterType="Map">
         SELECT
-            c.id as rootCategoryId,
-            c.name as rootCategoryName,
-            c.slogan as slogan,
-            c.cat_image as categoryImage,
-            c.bg_color as bgColor,
-            p.id as productId,
-            p.item_name as productName,
-            pi.url as productMainImageUrl,
-            p.created_time as productCreateTime
+        c.id as rootCategoryId,
+        c.name as rootCategoryName,
+        c.slogan as slogan,
+        c.cat_image as categoryImage,
+        c.bg_color as bgColor,
+        p.id as productId,
+        p.item_name as productName,
+        pi.url as productMainImageUrl,
+        p.created_time as productCreateTime
         FROM category c
         LEFT JOIN items p
         ON c.id = p.root_cat_id
@@ -34,5 +34,22 @@
         AND p.root_cat_id = #{paramMap.rootCategoryId}
         AND pi.is_main = 1
         LIMIT 0,6;
+    </select>
+
+    <select id="getProductCommentList" resultType="com.liferunner.dto.ProductCommentDTO" parameterType="Map">
+        SELECT
+        pc.comment_level as commentLevel,
+        pc.spec_name as specName,
+        pc.content as content,
+        pc.created_time as createdTime,
+        u.face as userFace,
+        u.nickname as nickname
+        FROM items_comments pc
+        LEFT JOIN users u
+        ON pc.user_id = u.id
+        WHERE pc.item_id = #{paramMap.productId}
+        <if test="paramMap.commentLevel != null and paramMap.commentLevel != ''">
+            AND pc.comment_level = #{paramMap.commentLevel}
+        </if>
     </select>
 </mapper>
