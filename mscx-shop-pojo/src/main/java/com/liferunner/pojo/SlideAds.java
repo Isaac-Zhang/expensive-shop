@@ -33,7 +33,7 @@ public class SlideAds {
      * 商品id 商品id
      */
     @Column(name = "item_id")
-    private String itemId;
+    private String productId;
 
     /**
      * 商品分类id 商品分类id

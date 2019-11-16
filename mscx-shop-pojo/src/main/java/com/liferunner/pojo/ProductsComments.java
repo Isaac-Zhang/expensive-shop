@@ -26,26 +26,26 @@ public class ProductsComments {
     /**
      * 商品id
      */
-    @Column(name = "product_id")
+    @Column(name = "item_id")
     private String productId;
 
     /**
      * 商品名称
      */
-    @Column(name = "product_name")
+    @Column(name = "item_name")
     private String productName;
 
     /**
      * 商品规格id 可为空
      */
-    @Column(name = "product_spec_id")
+    @Column(name = "item_spec_id")
     private String productSpecId;
 
     /**
      * 规格名称 可为空
      */
-    @Column(name = "sepc_name")
-    private String sepcName;
+    @Column(name = "spec_name")
+    private String specName;
 
     /**
      * 评价等级 1：好评 2：中评 3：差评

@@ -1,5 +1,7 @@
 package com.liferunner.api.controller;
 
+import com.liferunner.dto.IndexProductItemDTO;
+import com.liferunner.dto.ProductDetailResponseDTO;
 import com.liferunner.service.ICategoryService;
 import com.liferunner.service.IProductService;
 import com.liferunner.service.ISlideAdService;
@@ -9,6 +11,7 @@ import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import lombok.extern.slf4j.Slf4j;
 import lombok.val;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.CollectionUtils;
 import org.springframework.web.bind.annotation.*;
@@ -89,4 +92,5 @@ public class IndexController {
         }
         return JsonResponse.ok(indexProductDtoList);
     }
+
 }

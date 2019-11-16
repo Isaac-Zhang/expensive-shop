@@ -21,7 +21,7 @@ public class ProductsSpec {
     /**
      * 商品外键id
      */
-    @Column(name = "product_id")
+    @Column(name = "item_id")
     private String productId;
 
     /**

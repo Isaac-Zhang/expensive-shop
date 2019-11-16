@@ -21,7 +21,7 @@ public class ProductsImg {
      * 商品外键id 商品外键id
      */
     @Column(name = "item_id")
-    private String itemId;
+    private String productId;
 
     /**
      * 图片地址 图片地址

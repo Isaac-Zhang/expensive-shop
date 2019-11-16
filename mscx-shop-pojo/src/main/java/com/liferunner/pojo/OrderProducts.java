@@ -25,31 +25,31 @@ public class OrderProducts {
     /**
      * 商品id
      */
-    @Column(name = "product_id")
+    @Column(name = "item_id")
     private String productId;
 
     /**
      * 商品图片
      */
-    @Column(name = "product_img")
+    @Column(name = "item_img")
     private String productImg;
 
     /**
      * 商品名称
      */
-    @Column(name = "product_name")
+    @Column(name = "item_name")
     private String productName;
 
     /**
      * 规格id
      */
-    @Column(name = "product_spec_id")
+    @Column(name = "item_spec_id")
     private String productSpecId;
 
     /**
      * 规格名称
      */
-    @Column(name = "product_spec_name")
+    @Column(name = "item_spec_name")
     private String productSpecName;
 
     /**

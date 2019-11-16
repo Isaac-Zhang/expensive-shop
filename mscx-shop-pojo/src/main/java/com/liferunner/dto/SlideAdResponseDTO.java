@@ -40,7 +40,7 @@ public class SlideAdResponseDTO{
     /**
      * 商品id
      */
-    private String itemId;
+    private String productId;
 
     /**
      * 商品分类id

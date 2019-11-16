@@ -21,7 +21,7 @@ public class Products {
      * 商品名称 商品名称
      */
     @Column(name = "item_name")
-    private String itemName;
+    private String productName;
 
     /**
      * 分类外键id 分类id

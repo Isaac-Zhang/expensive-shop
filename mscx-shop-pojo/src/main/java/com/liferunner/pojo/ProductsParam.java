@@ -21,7 +21,7 @@ public class ProductsParam {
      * 商品外键id
      */
     @Column(name = "item_id")
-    private String itemId;
+    private String productId;
 
     /**
      * 产地 产地，例：中国江苏
