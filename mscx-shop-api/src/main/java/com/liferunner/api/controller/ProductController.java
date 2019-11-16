@@ -1,6 +1,8 @@
 package com.liferunner.api.controller;
 
+import com.liferunner.dto.ProductCommentLevelCountsDTO;
 import com.liferunner.dto.ProductDetailResponseDTO;
+import com.liferunner.enums.ProductCommnetLevelEnum;
 import com.liferunner.service.IProductService;
 import com.liferunner.utils.JsonResponse;
 import io.swagger.annotations.Api;
@@ -10,10 +12,7 @@ import lombok.extern.slf4j.Slf4j;
 import lombok.val;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 /**
  * ProductController for : TODO
@@ -52,5 +51,33 @@ public class ProductController {
         log.info("============查询到商品详情:{}==============", productDetailResponseDTO);
 
         return JsonResponse.ok(productDetailResponseDTO);
+    }
+
+    @GetMapping("/commentLevel")
+    @ApiOperation(value = "查询商品评价数", notes = "根据商品id查询评价等级")
+    public JsonResponse countCommentLevel(
+            @ApiParam(name = "pid", value = "商品id", required = true)
+            @RequestParam String pid) {
+        if (StringUtils.isBlank(pid)) {
+            return JsonResponse.errorMsg("商品id不能为空！");
+        }
+        Integer goodCounts = this.productService.countProductCommentLevel(pid
+                , ProductCommnetLevelEnum.GOOD.type);
+        Integer normalCounts = this.productService.countProductCommentLevel(pid
+                , ProductCommnetLevelEnum.NORMAL.type);
+        Integer badCounts = this.productService.countProductCommentLevel(pid
+                , ProductCommnetLevelEnum.BAD.type);
+
+        Integer totalCounts = goodCounts + normalCounts + badCounts;
+        log.info("============查询到商品评价总数:{}==============", totalCounts);
+
+        val commentLevelCountsDTO = new ProductCommentLevelCountsDTO()
+                .builder()
+                .totalCounts(totalCounts)
+                .goodCounts(goodCounts)
+                .normalCounts(normalCounts)
+                .badCounts(badCounts)
+                .build();
+        return JsonResponse.ok(commentLevelCountsDTO);
     }
 }

@@ -59,7 +59,7 @@ public class UserServiceImpl implements IUserService {
                 .birthday(DateUtils.parseDate("1970-01-01", "yyyy-MM-dd"))
                 .nickname(userRequestDTO.getUsername())
                 .face(this.FACE_IMG)
-                .sex(SexEnum.secret.type)
+                .sex(SexEnum.SECRET.type)
                 .createdTime(new Date())
                 .updatedTime(new Date())
                 .build();

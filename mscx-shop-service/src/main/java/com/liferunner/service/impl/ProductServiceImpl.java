@@ -2,15 +2,11 @@ package com.liferunner.service.impl;
 
 import com.liferunner.custom.ProductCustomMapper;
 import com.liferunner.dto.IndexProductDTO;
-import com.liferunner.mapper.ProductsImgMapper;
-import com.liferunner.mapper.ProductsMapper;
-import com.liferunner.mapper.ProductsParamMapper;
-import com.liferunner.mapper.ProductsSpecMapper;
-import com.liferunner.pojo.Products;
-import com.liferunner.pojo.ProductsImg;
-import com.liferunner.pojo.ProductsParam;
-import com.liferunner.pojo.ProductsSpec;
+import com.liferunner.dto.ProductCommentLevelCountsDTO;
+import com.liferunner.mapper.*;
+import com.liferunner.pojo.*;
 import com.liferunner.service.IProductService;
+import io.swagger.models.auth.In;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import lombok.val;
@@ -42,6 +38,7 @@ public class ProductServiceImpl implements IProductService {
     private final ProductsParamMapper productsParamMapper;
     private final ProductsImgMapper productsImgMapper;
     private final ProductsSpecMapper productsSpecMapper;
+    private final ProductsCommentsMapper productsCommentsMapper;
 
     @Transactional(propagation = Propagation.SUPPORTS)
     @Override
@@ -85,5 +82,14 @@ public class ProductServiceImpl implements IProductService {
         val condition = example.createCriteria();
         condition.andEqualTo("productId", pid);
         return this.productsParamMapper.selectOneByExample(example);
+    }
+
+    @Override
+    public Integer countProductCommentLevel(String pid, Integer level) {
+        ProductsComments condition = new ProductsComments();
+        condition.setCommentLevel(level);
+        condition.setProductId(pid);
+        val count = this.productsCommentsMapper.selectCount(condition);
+        return count;
     }
 }

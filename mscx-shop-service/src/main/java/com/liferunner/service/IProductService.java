@@ -1,6 +1,7 @@
 package com.liferunner.service;
 
 import com.liferunner.dto.IndexProductDTO;
+import com.liferunner.dto.ProductCommentLevelCountsDTO;
 import com.liferunner.pojo.Products;
 import com.liferunner.pojo.ProductsImg;
 import com.liferunner.pojo.ProductsParam;
@@ -55,4 +56,13 @@ public interface IProductService {
      * @return 参数
      */
     ProductsParam findProductParamByPid(String pid);
+
+    /**
+     * 根据商品id 查询评价总数
+     *
+     * @param pid 商品id
+     * @param level 评价等级
+     * @return 评价数
+     */
+    Integer countProductCommentLevel(String pid,Integer level);
 }
