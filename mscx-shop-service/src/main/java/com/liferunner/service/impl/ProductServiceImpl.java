@@ -141,4 +141,25 @@ public class ProductServiceImpl implements IProductService {
                 .build();
         return commonPagedResult;
     }
+
+    // 方法重载
+    @Override
+    public CommonPagedResult searchProductList(Integer categoryId, String sortby, Integer pageNumber, Integer pageSize) {
+        Map<String, Object> paramMap = new HashMap<>();
+        paramMap.put("categoryId", categoryId);
+        paramMap.put("sortby", sortby);
+        // mybatis-pagehelper
+        PageHelper.startPage(pageNumber, pageSize);
+        val searchProductDTOS = this.productCustomMapper.searchProductListByCategoryId(paramMap);
+        // 获取mybatis插件中获取到信息
+        PageInfo<?> pageInfo = new PageInfo<>(searchProductDTOS);
+        // 封装为返回到前端分页组件可识别的视图
+        val commonPagedResult = CommonPagedResult.builder()
+                .pageNumber(pageNumber)
+                .rows(searchProductDTOS)
+                .totalPage(pageInfo.getPages())
+                .records(pageInfo.getTotal())
+                .build();
+        return commonPagedResult;
+    }
 }

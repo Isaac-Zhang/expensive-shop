@@ -136,4 +136,31 @@ public class ProductController extends BaseController {
         val searchResult = this.productService.searchProductList(keyword, sortby, pageNumber, pageSize);
         return JsonResponse.ok(searchResult);
     }
+
+    @GetMapping("/searchByCategoryId")
+    @ApiOperation(value = "查询商品信息列表", notes = "根据商品分类查询商品列表")
+    public JsonResponse searchProductListByCategoryId(
+            @ApiParam(name = "categoryId", value = "商品分类id", required = true)
+            @RequestParam Integer categoryId,
+            @ApiParam(name = "sortby", value = "排序方式", required = false)
+            @RequestParam String sortby,
+            @ApiParam(name = "pageNumber", value = "当前页码", required = false)
+            @RequestParam Integer pageNumber,
+            @ApiParam(name = "pageSize", value = "每页展示记录数", required = false)
+            @RequestParam Integer pageSize
+    ) {
+        if (null == categoryId || categoryId == 0) {
+            return JsonResponse.errorMsg("分类id错误！");
+        }
+        if (null == pageNumber || 0 == pageNumber) {
+            pageNumber = DEFAULT_PAGE_NUMBER;
+        }
+        if (null == pageSize || 0 == pageSize) {
+            pageSize = DEFAULT_PAGE_SIZE;
+        }
+        log.info("============根据分类:{} 搜索列表==============", categoryId);
+
+        val searchResult = this.productService.searchProductList(categoryId, sortby, pageNumber, pageSize);
+        return JsonResponse.ok(searchResult);
+    }
 }

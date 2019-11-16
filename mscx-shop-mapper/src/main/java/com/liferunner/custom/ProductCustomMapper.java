@@ -16,10 +16,11 @@ import java.util.Map;
  */
 public interface ProductCustomMapper {
 
-    List<IndexProductDTO> getIndexProductDtoList(@Param("paramMap") Map<String,Integer> paramMap);
+    List<IndexProductDTO> getIndexProductDtoList(@Param("paramMap") Map<String, Integer> paramMap);
 
-    List<ProductCommentDTO> getProductCommentList(@Param("paramMap") Map<String,Object> paramMap);
+    List<ProductCommentDTO> getProductCommentList(@Param("paramMap") Map<String, Object> paramMap);
 
-    List<SearchProductDTO> searchProductList(@Param("paramMap") Map<String,Object> paramMap);
+    List<SearchProductDTO> searchProductList(@Param("paramMap") Map<String, Object> paramMap);
 
+    List<SearchProductDTO> searchProductListByCategoryId(@Param("paramMap") Map<String, Object> paramMap);
 }

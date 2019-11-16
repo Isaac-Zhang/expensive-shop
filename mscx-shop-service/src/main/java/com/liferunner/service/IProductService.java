@@ -88,4 +88,16 @@ public interface IProductService {
      * @return 通用分页结果视图
      */
     CommonPagedResult searchProductList(String keyword, String sortby, Integer pageNumber, Integer pageSize);
+
+    /**
+     * 根据商品分类查询商品列表
+     *
+     * @param categoryId    分类id
+     * @param sortby     排序方式
+     * @param pageNumber 当前页码
+     * @param pageSize   每页展示多少条数据
+     * @return 通用分页结果视图
+     */
+    CommonPagedResult searchProductList(Integer categoryId, String sortby, Integer pageNumber, Integer pageSize);
+
 }
