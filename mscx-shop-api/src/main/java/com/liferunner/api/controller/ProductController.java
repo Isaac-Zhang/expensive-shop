@@ -109,4 +109,31 @@ public class ProductController extends BaseController {
 
         return JsonResponse.ok(productComments);
     }
+
+    @GetMapping("/search")
+    @ApiOperation(value = "查询商品信息列表", notes = "查询商品信息列表")
+    public JsonResponse searchProductList(
+            @ApiParam(name = "keyword", value = "搜索关键词", required = true)
+            @RequestParam String keyword,
+            @ApiParam(name = "sortby", value = "排序方式", required = false)
+            @RequestParam String sortby,
+            @ApiParam(name = "pageNumber", value = "当前页码", required = false)
+            @RequestParam Integer pageNumber,
+            @ApiParam(name = "pageSize", value = "每页展示记录数", required = false)
+            @RequestParam Integer pageSize
+    ) {
+        if (StringUtils.isBlank(keyword)) {
+            return JsonResponse.errorMsg("搜索关键词不能为空！");
+        }
+        if (null == pageNumber || 0 == pageNumber) {
+            pageNumber = DEFAULT_PAGE_NUMBER;
+        }
+        if (null == pageSize || 0 == pageSize) {
+            pageSize = DEFAULT_PAGE_SIZE;
+        }
+        log.info("============根据关键词:{} 搜索列表==============", keyword);
+
+        val searchResult = this.productService.searchProductList(keyword, sortby, pageNumber, pageSize);
+        return JsonResponse.ok(searchResult);
+    }
 }

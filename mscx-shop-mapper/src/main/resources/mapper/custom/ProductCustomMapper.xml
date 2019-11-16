@@ -52,4 +52,39 @@
             AND pc.comment_level = #{paramMap.commentLevel}
         </if>
     </select>
+
+    <select id="searchProductList" resultType="com.liferunner.dto.SearchProductDTO" parameterType="Map">
+        SELECT
+            p.id as productId,
+            p.item_name as productName,
+            p.sell_counts as sellCounts,
+            pi.url as imgUrl,
+            tp.priceDiscount
+        FROM items p
+        LEFT JOIN items_img pi
+        ON p.id = pi.item_id
+        LEFT JOIN
+        (
+            SELECT item_id, MIN(price_discount) as priceDiscount
+            FROM items_spec
+            GROUP BY item_id
+        ) tp
+        ON tp.item_id = p.id
+        WHERE pi.is_main = 1
+        <if test="paramMap.keyword != null and paramMap.keyword != ''">
+            AND p.item_name LIKE "%${paramMap.keyword}%"
+        </if>
+        ORDER BY
+        <choose>
+            <when test="paramMap.sortby != null and paramMap.sortby == 'sell'">
+                p.sell_counts DESC
+            </when>
+            <when test="paramMap.sortby != null and paramMap.sortby == 'price'">
+                tp.priceDiscount ASC
+            </when>
+            <otherwise>
+                p.created_time DESC
+            </otherwise>
+        </choose>
+    </select>
 </mapper>

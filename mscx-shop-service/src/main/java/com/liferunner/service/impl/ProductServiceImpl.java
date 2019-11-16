@@ -6,6 +6,7 @@ import com.liferunner.custom.ProductCustomMapper;
 import com.liferunner.dto.IndexProductDTO;
 import com.liferunner.dto.ProductCommentDTO;
 import com.liferunner.dto.ProductCommentLevelCountsDTO;
+import com.liferunner.dto.SearchProductDTO;
 import com.liferunner.mapper.*;
 import com.liferunner.pojo.*;
 import com.liferunner.service.IProductService;
@@ -115,6 +116,26 @@ public class ProductServiceImpl implements IProductService {
         val commonPagedResult = CommonPagedResult.builder()
                 .pageNumber(pageNumber)
                 .rows(productCommentList)
+                .totalPage(pageInfo.getPages())
+                .records(pageInfo.getTotal())
+                .build();
+        return commonPagedResult;
+    }
+
+    @Override
+    public CommonPagedResult searchProductList(String keyword, String sortby, Integer pageNumber, Integer pageSize) {
+        Map<String, Object> paramMap = new HashMap<>();
+        paramMap.put("keyword", keyword);
+        paramMap.put("sortby", sortby);
+        // mybatis-pagehelper
+        PageHelper.startPage(pageNumber, pageSize);
+        val searchProductDTOS = this.productCustomMapper.searchProductList(paramMap);
+        // 获取mybatis插件中获取到信息
+        PageInfo<?> pageInfo = new PageInfo<>(searchProductDTOS);
+        // 封装为返回到前端分页组件可识别的视图
+        val commonPagedResult = CommonPagedResult.builder()
+                .pageNumber(pageNumber)
+                .rows(searchProductDTOS)
                 .totalPage(pageInfo.getPages())
                 .records(pageInfo.getTotal())
                 .build();
