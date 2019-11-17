@@ -156,6 +156,34 @@ public class UserController {
         return JsonResponse.ok();
     }
 
+    @ApiOperation(value = "删除用户收货地址", notes = "删除用户收货地址", httpMethod = "POST")
+    @PostMapping("/address/delete")
+    public JsonResponse deleteAddress(
+            @RequestParam String userId,
+            @RequestParam String addressId
+    ) {
+        if (StringUtils.isBlank(userId) || StringUtils.isBlank(addressId)) {
+            JsonResponse.errorMsg("");
+        }
+        //删除地址信息
+        this.userService.deleteAddress(userId, addressId);
+        return JsonResponse.ok();
+    }
+
+    @ApiOperation(value = "设置用户默认收货地址", notes = "设置用户默认收货地址", httpMethod = "POST")
+    @PostMapping("/address/setDefault")
+    public JsonResponse setDefaultAddress(
+            @RequestParam String userId,
+            @RequestParam String addressId
+    ) {
+        if (StringUtils.isBlank(userId) || StringUtils.isBlank(addressId)) {
+            JsonResponse.errorMsg("");
+        }
+        //更新默认地址信息
+        this.userService.updateDefaultAddress(userId, addressId);
+        return JsonResponse.ok();
+    }
+
     /**
      * 为用户地址新增和更新校验信息
      *

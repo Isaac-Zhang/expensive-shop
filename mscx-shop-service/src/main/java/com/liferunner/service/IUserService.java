@@ -61,4 +61,20 @@ public interface IUserService {
      * @param addressRequestDTO
      */
     void updateAddress(UserAddressRequestDTO addressRequestDTO);
+
+    /**
+     * 删除用户收货地址
+     *
+     * @param uid
+     * @param addressId
+     */
+    void deleteAddress(String uid, String addressId);
+
+    /**
+     * 更新默认收货地址
+     *
+     * @param uid
+     * @param addressId
+     */
+    void updateDefaultAddress(String uid, String addressId);
 }

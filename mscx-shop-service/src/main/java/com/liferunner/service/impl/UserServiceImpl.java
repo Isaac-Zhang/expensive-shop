@@ -2,6 +2,7 @@ package com.liferunner.service.impl;
 
 import com.liferunner.dto.UserAddressRequestDTO;
 import com.liferunner.dto.UserRequestDTO;
+import com.liferunner.enums.BooleanEnum;
 import com.liferunner.enums.SexEnum;
 import com.liferunner.mapper.UserAddressMapper;
 import com.liferunner.mapper.UsersMapper;
@@ -134,5 +135,43 @@ public class UserServiceImpl implements IUserService {
         val condition = example.createCriteria();
         condition.andEqualTo("id", addressRequestDTO.getAddressId());
         this.addressMapper.updateByExampleSelective(userAddress, example);
+    }
+
+    @Transactional
+    @Override
+    public void deleteAddress(String uid, String addressId) {
+        Example example = new Example(UserAddress.class);
+        val condition = example.createCriteria();
+        condition.andEqualTo("id", addressId);
+        condition.andEqualTo("userId", uid);
+        this.addressMapper.deleteByExample(example);
+    }
+
+    @Transactional
+    @Override
+    public void updateDefaultAddress(String uid, String addressId) {
+        // 更新数据库默认地址为空
+        Example example = new Example(UserAddress.class);
+        val condition = example.createCriteria();
+        condition.andEqualTo("userId", uid);
+        this.addressMapper.updateByExampleSelective(
+                new UserAddress()
+                        .builder()
+                        .isDefault(BooleanEnum.FALSE.type)
+                        .updatedTime(new Date())
+                        .build(),
+                example
+        );
+
+        //更新当前地址为默认地址
+        condition.andEqualTo("id", addressId);
+        this.addressMapper.updateByExampleSelective(
+                new UserAddress()
+                        .builder()
+                        .isDefault(BooleanEnum.TRUE.type)
+                        .updatedTime(new Date())
+                        .build(),
+                example
+        );
     }
 }
