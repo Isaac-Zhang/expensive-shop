@@ -3,10 +3,7 @@ package com.liferunner.service.impl;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.liferunner.custom.ProductCustomMapper;
-import com.liferunner.dto.IndexProductDTO;
-import com.liferunner.dto.ProductCommentDTO;
-import com.liferunner.dto.ProductCommentLevelCountsDTO;
-import com.liferunner.dto.SearchProductDTO;
+import com.liferunner.dto.*;
 import com.liferunner.mapper.*;
 import com.liferunner.pojo.*;
 import com.liferunner.service.IProductService;
@@ -161,5 +158,13 @@ public class ProductServiceImpl implements IProductService {
                 .records(pageInfo.getTotal())
                 .build();
         return commonPagedResult;
+    }
+
+    @Override
+    public List<ShopcartResponseDTO> refreshShopcart(String specIds) {
+        String[] temp = specIds.split(",");
+        List<String> specIdList = CollectionUtils.arrayToList(temp);
+        val shopcartResponseDTOS = this.productCustomMapper.refreshShopcart(specIdList);
+        return shopcartResponseDTOS;
     }
 }

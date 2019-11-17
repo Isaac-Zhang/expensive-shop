@@ -2,6 +2,7 @@ package com.liferunner.service;
 
 import com.liferunner.dto.IndexProductDTO;
 import com.liferunner.dto.ProductCommentLevelCountsDTO;
+import com.liferunner.dto.ShopcartResponseDTO;
 import com.liferunner.pojo.Products;
 import com.liferunner.pojo.ProductsImg;
 import com.liferunner.pojo.ProductsParam;
@@ -92,7 +93,7 @@ public interface IProductService {
     /**
      * 根据商品分类查询商品列表
      *
-     * @param categoryId    分类id
+     * @param categoryId 分类id
      * @param sortby     排序方式
      * @param pageNumber 当前页码
      * @param pageSize   每页展示多少条数据
@@ -100,4 +101,11 @@ public interface IProductService {
      */
     CommonPagedResult searchProductList(Integer categoryId, String sortby, Integer pageNumber, Integer pageSize);
 
+    /**
+     * 根据规格id列表查询购物车新数据
+     *
+     * @param specIds 规格ids
+     * @return 新数据
+     */
+    List<ShopcartResponseDTO> refreshShopcart(String specIds);
 }
