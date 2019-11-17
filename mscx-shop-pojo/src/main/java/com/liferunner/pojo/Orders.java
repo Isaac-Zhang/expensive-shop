@@ -2,13 +2,13 @@ package com.liferunner.pojo;
 
 import java.util.Date;
 import javax.persistence.*;
-import lombok.Getter;
-import lombok.Setter;
-import lombok.ToString;
 
-@Getter
-@Setter
+import lombok.*;
+
 @ToString
+@AllArgsConstructor
+@NoArgsConstructor
+@Builder
 @Table(name = "orders")
 public class Orders {
     /**

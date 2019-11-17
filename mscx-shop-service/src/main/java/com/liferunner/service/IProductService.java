@@ -108,4 +108,20 @@ public interface IProductService {
      * @return 新数据
      */
     List<ShopcartResponseDTO> refreshShopcart(String specIds);
+
+    /**
+     * 根据商品规格ids查询所有规格
+     *
+     * @param specIds
+     * @return
+     */
+    List<ProductsSpec> getProductSpecByIds(String specIds);
+
+    /**
+     * 下单之后扣减库存
+     * @param specId
+     * @param buyNumber
+     * @return
+     */
+    void decreaseProductSpecStock(String specId, Integer buyNumber);
 }

@@ -174,4 +174,14 @@ public class UserServiceImpl implements IUserService {
                 example
         );
     }
+
+    @Transactional(propagation = Propagation.SUPPORTS)
+    @Override
+    public UserAddress findUserAddress(String uid, String addressId) {
+        Example example = new Example(UserAddress.class);
+        val condition = example.createCriteria();
+        condition.andEqualTo("id", addressId);
+        condition.andEqualTo("userId", uid);
+        return this.addressMapper.selectOneByExample(example);
+    }
 }

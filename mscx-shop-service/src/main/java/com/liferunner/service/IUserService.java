@@ -77,4 +77,13 @@ public interface IUserService {
      * @param addressId
      */
     void updateDefaultAddress(String uid, String addressId);
+
+    /**
+     * 根据用户id和收货地址id查询收货地址
+     *
+     * @param uid
+     * @param addressId
+     */
+    UserAddress findUserAddress(String uid, String addressId);
+
 }

@@ -3,7 +3,7 @@ package com.liferunner.enums;
 import lombok.AllArgsConstructor;
 
 /**
- * CategoryTypeEnum for : TODO
+ * CategoryTypeEnum for : 商品分类enum
  *
  * @author <a href="mailto:magicianisaac@gmail.com">Isaac.Zhang | 若初</a>
  * @since 2019/11/13

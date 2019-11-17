@@ -2,12 +2,13 @@ package com.liferunner.pojo;
 
 import java.util.Date;
 import javax.persistence.*;
-import lombok.Getter;
-import lombok.Setter;
-import lombok.ToString;
 
-@Getter
-@Setter
+import lombok.*;
+
+@Data
+@Builder
+@AllArgsConstructor
+@NoArgsConstructor
 @ToString
 @Table(name = "order_status")
 public class OrderStatus {

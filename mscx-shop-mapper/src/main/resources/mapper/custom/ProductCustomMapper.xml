@@ -38,12 +38,12 @@
 
     <select id="getProductCommentList" resultType="com.liferunner.dto.ProductCommentDTO" parameterType="Map">
         SELECT
-            pc.comment_level as commentLevel,
-            pc.spec_name as specName,
-            pc.content as content,
-            pc.created_time as createdTime,
-            u.face as userFace,
-            u.nickname as nickname
+        pc.comment_level as commentLevel,
+        pc.spec_name as specName,
+        pc.content as content,
+        pc.created_time as createdTime,
+        u.face as userFace,
+        u.nickname as nickname
         FROM items_comments pc
         LEFT JOIN users u
         ON pc.user_id = u.id
@@ -55,11 +55,11 @@
 
     <select id="searchProductList" resultType="com.liferunner.dto.SearchProductDTO" parameterType="Map">
         SELECT
-            p.id as productId,
-            p.item_name as productName,
-            p.sell_counts as sellCounts,
-            pi.url as imgUrl,
-            tp.priceDiscount
+        p.id as productId,
+        p.item_name as productName,
+        p.sell_counts as sellCounts,
+        pi.url as imgUrl,
+        tp.priceDiscount
         FROM items p
         LEFT JOIN items_img pi
         ON p.id = pi.item_id
@@ -89,11 +89,11 @@
     </select>
     <select id="searchProductListByCategoryId" resultType="com.liferunner.dto.SearchProductDTO" parameterType="Map">
         SELECT
-            p.id as productId,
-            p.item_name as productName,
-            p.sell_counts as sellCounts,
-            pi.url as imgUrl,
-            tp.priceDiscount
+        p.id as productId,
+        p.item_name as productName,
+        p.sell_counts as sellCounts,
+        pi.url as imgUrl,
+        tp.priceDiscount
         FROM items p
         LEFT JOIN items_img pi
         ON p.id = pi.item_id
@@ -122,13 +122,13 @@
 
     <select id="refreshShopcart" parameterType="list" resultType="com.liferunner.dto.ShopcartResponseDTO">
         SELECT
-            p.id as productId,
-            p.item_name as productName,
-            pi.url as productImgUrl,
-            ps.id as specId,
-            ps.name as specName,
-            ps.price_discount as priceDiscount,
-            ps.price_normal as priceNormal
+        p.id as productId,
+        p.item_name as productName,
+        pi.url as productImgUrl,
+        ps.id as specId,
+        ps.name as specName,
+        ps.price_discount as priceDiscount,
+        ps.price_normal as priceNormal
         FROM items_spec ps
         LEFT JOIN items p
         ON p.id = ps.item_id
@@ -140,4 +140,19 @@
             #{specId}
         </foreach>
     </select>
+
+    <select id="getAllProductSpec" parameterType="list" resultType="com.liferunner.pojo.ProductsSpec">
+        SELECT
+        *
+        FROM items_spec ps
+        WHERE id IN
+        <foreach collection="specIdList" item="specId" index="index" open="(" separator="," close=")">
+            #{specId}
+        </foreach>
+    </select>
+
+    <update id="decreaseProductSpecStock">
+        UPDATE items_spec SET stock = stock - #{buyNumber}
+        WHERE id = #{specId} AND stock >= #{buyNumber}
+    </update>
 </mapper>

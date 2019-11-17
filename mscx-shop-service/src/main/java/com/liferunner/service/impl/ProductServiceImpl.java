@@ -167,4 +167,20 @@ public class ProductServiceImpl implements IProductService {
         val shopcartResponseDTOS = this.productCustomMapper.refreshShopcart(specIdList);
         return shopcartResponseDTOS;
     }
+
+    @Override
+    public List<ProductsSpec> getProductSpecByIds(String specIds) {
+        return this.productCustomMapper.getAllProductSpec(
+                CollectionUtils.arrayToList(specIds.split(",")));
+    }
+
+    @Transactional
+    @Override
+    public void decreaseProductSpecStock(String specId, Integer buyNumber) {
+        val result = this.productCustomMapper.decreaseProductSpecStock(specId, buyNumber);
+        if (result < 1) {
+            log.error("购买{}件商品,扣减库存失败:{}", buyNumber, specId);
+            throw new RuntimeException("扣减库存失败");
+        }
+    }
 }

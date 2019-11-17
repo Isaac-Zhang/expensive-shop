@@ -4,6 +4,7 @@ import com.liferunner.dto.IndexProductDTO;
 import com.liferunner.dto.ProductCommentDTO;
 import com.liferunner.dto.SearchProductDTO;
 import com.liferunner.dto.ShopcartResponseDTO;
+import com.liferunner.pojo.ProductsSpec;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
@@ -26,4 +27,8 @@ public interface ProductCustomMapper {
     List<SearchProductDTO> searchProductListByCategoryId(@Param("paramMap") Map<String, Object> paramMap);
 
     List<ShopcartResponseDTO> refreshShopcart(@Param("specIdList") List<String> specIdList);
+
+    List<ProductsSpec> getAllProductSpec(@Param("specIdList") List<String> specIds);
+
+    Integer decreaseProductSpecStock(@Param("specId") String specId, @Param("buyNumber") Integer buyNumber);
 }
