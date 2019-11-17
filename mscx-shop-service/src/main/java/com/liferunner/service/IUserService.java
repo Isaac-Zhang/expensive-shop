@@ -1,7 +1,10 @@
 package com.liferunner.service;
 
 import com.liferunner.dto.UserRequestDTO;
+import com.liferunner.pojo.UserAddress;
 import com.liferunner.pojo.Users;
+
+import java.util.List;
 
 /**
  * IUserService for : 用户信息接口
@@ -29,9 +32,18 @@ public interface IUserService {
 
     /**
      * 用户登录
+     *
      * @param userRequestDTO 请求dto
      * @return 登录用户信息
      * @throws Exception
      */
     Users userLogin(UserRequestDTO userRequestDTO) throws Exception;
+
+    /**
+     * 根据用户id获取用户收货地址
+     *
+     * @param uid uid
+     * @return 地址列表
+     */
+    List<UserAddress> getAddressByUserId(String uid);
 }

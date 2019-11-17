@@ -2,7 +2,9 @@ package com.liferunner.service.impl;
 
 import com.liferunner.dto.UserRequestDTO;
 import com.liferunner.enums.SexEnum;
+import com.liferunner.mapper.UserAddressMapper;
 import com.liferunner.mapper.UsersMapper;
+import com.liferunner.pojo.UserAddress;
 import com.liferunner.pojo.Users;
 import com.liferunner.service.IUserService;
 import com.liferunner.utils.MD5GeneratorTools;
@@ -17,6 +19,7 @@ import org.springframework.transaction.annotation.Transactional;
 import tk.mybatis.mapper.entity.Example;
 
 import java.util.Date;
+import java.util.List;
 
 /**
  * UserServiceImpl for : User service 实现
@@ -32,11 +35,13 @@ public class UserServiceImpl implements IUserService {
     // 构造器注入
     private final UsersMapper usersMapper;
     private final Sid sid;
+    private final UserAddressMapper addressMapper;
 
     @Autowired
-    public UserServiceImpl(UsersMapper usersMapper, Sid sid) {
+    public UserServiceImpl(UsersMapper usersMapper, Sid sid, UserAddressMapper addressMapper) {
         this.usersMapper = usersMapper;
         this.sid = sid;
+        this.addressMapper = addressMapper;
     }
 
     @Override
@@ -80,5 +85,15 @@ public class UserServiceImpl implements IUserService {
         val user = this.usersMapper.selectOneByExample(example);
         log.info("======用户登录处理结果：{}", user);
         return user;
+    }
+
+    @Override
+    public List<UserAddress> getAddressByUserId(String uid) {
+        return this.addressMapper.select(
+                new UserAddress()
+                        .builder()
+                        .userId(uid)
+                        .build()
+        );
     }
 }

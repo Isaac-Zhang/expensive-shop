@@ -8,8 +8,10 @@ import com.liferunner.utils.CookieTools;
 import com.liferunner.utils.JsonResponse;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+
 import lombok.extern.slf4j.Slf4j;
 import lombok.val;
 import org.apache.commons.lang3.StringUtils;
@@ -111,13 +113,23 @@ public class UserController {
         return JsonResponse.errorMsg("用户登录失败");
     }
 
-    @ApiOperation(value = "用户登出",notes = "用户登出",httpMethod = "POST")
+    @ApiOperation(value = "用户登出", notes = "用户登出", httpMethod = "POST")
     @PostMapping("/logout")
     public JsonResponse userLogout(@RequestParam String uid,
-        HttpServletRequest request,HttpServletResponse response){
+                                   HttpServletRequest request, HttpServletResponse response) {
         // clear front's user cookies
-        CookieTools.deleteCookie(request,response,"user");
+        CookieTools.deleteCookie(request, response, "user");
         // return operational result
         return JsonResponse.ok();
+    }
+
+    @ApiOperation(value = "用户收货地址", notes = "用户收货地址", httpMethod = "POST")
+    @PostMapping("/address/list")
+    public JsonResponse addrestList(@RequestParam String userId) {
+        if (StringUtils.isBlank(userId)) {
+            return JsonResponse.errorMsg("用户id为空!");
+        }
+        val addressList = this.userService.getAddressByUserId(userId);
+        return JsonResponse.ok(addressList);
     }
 }
