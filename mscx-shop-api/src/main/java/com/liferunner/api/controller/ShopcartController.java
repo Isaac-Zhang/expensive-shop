@@ -30,6 +30,7 @@ public class ShopcartController {
     @Autowired
     private IProductService productService;
 
+    @ApiOperation(tags = "新增商品到购物车", value = "新增商品到购物车")
     @PostMapping("/add")
     public JsonResponse addToShopcart(
             @ApiParam(name = "userId", value = "用户id", required = true)
@@ -61,5 +62,23 @@ public class ShopcartController {
         }
         val shopcartResponseDTOS = this.productService.refreshShopcart(productSpecIds);
         return JsonResponse.ok(shopcartResponseDTOS);
+    }
+
+    @PostMapping("/del")
+    @ApiOperation(tags = "删除购物车数据", value = "删除购物车数据")
+    public JsonResponse del(
+            @ApiParam(name = "userId", value = "用户id", required = true)
+            @RequestParam String userId,
+            @ApiParam(name = "productSpecIds", value = "规格ids", required = true)
+            @RequestParam String productSpecIds
+    ) {
+        // TODO: 实现用户权限校验
+        if (StringUtils.isBlank(userId) || null == productSpecIds) {
+            return JsonResponse.errorMsg("删除购物车参数错误!");
+        }
+
+        // TODO: 在Redis缓存中删除购物车信息
+        log.info("当前需要删除的购物车的商品规格ids:{}", productSpecIds);
+        return JsonResponse.ok();
     }
 }
