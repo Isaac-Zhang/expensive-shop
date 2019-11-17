@@ -1,5 +1,6 @@
 package com.liferunner.service;
 
+import com.liferunner.dto.UserAddressRequestDTO;
 import com.liferunner.dto.UserRequestDTO;
 import com.liferunner.pojo.UserAddress;
 import com.liferunner.pojo.Users;
@@ -46,4 +47,18 @@ public interface IUserService {
      * @return 地址列表
      */
     List<UserAddress> getAddressByUserId(String uid);
+
+    /**
+     * 新增用户收货地址
+     *
+     * @param addressRequestDTO dto
+     */
+    void addAddress(UserAddressRequestDTO addressRequestDTO);
+
+    /**
+     * 更新用户收货地址
+     *
+     * @param addressRequestDTO
+     */
+    void updateAddress(UserAddressRequestDTO addressRequestDTO);
 }

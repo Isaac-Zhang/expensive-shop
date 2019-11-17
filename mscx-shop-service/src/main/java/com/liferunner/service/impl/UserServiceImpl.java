@@ -1,5 +1,6 @@
 package com.liferunner.service.impl;
 
+import com.liferunner.dto.UserAddressRequestDTO;
 import com.liferunner.dto.UserRequestDTO;
 import com.liferunner.enums.SexEnum;
 import com.liferunner.mapper.UserAddressMapper;
@@ -12,10 +13,12 @@ import lombok.extern.slf4j.Slf4j;
 import lombok.val;
 import org.apache.commons.lang3.time.DateUtils;
 import org.n3r.idworker.Sid;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.CollectionUtils;
 import tk.mybatis.mapper.entity.Example;
 
 import java.util.Date;
@@ -95,5 +98,41 @@ public class UserServiceImpl implements IUserService {
                         .userId(uid)
                         .build()
         );
+    }
+
+    @Transactional(propagation = Propagation.REQUIRED)
+    @Override
+    public void addAddress(UserAddressRequestDTO addressRequestDTO) {
+        // 判断是否存在默认地址
+        Integer isDefault = 0;
+        val userAddressList = getAddressByUserId(addressRequestDTO.getUserId());
+        if (CollectionUtils.isEmpty(userAddressList)) {
+            isDefault = 1;
+        }
+        val userAddress = new UserAddress()
+                .builder()
+                .id(sid.nextShort())
+                .isDefault(isDefault)
+                .createdTime(new Date())
+                .updatedTime(new Date())
+                .build();
+        // 通过工具类直接copy相同属性
+        BeanUtils.copyProperties(addressRequestDTO, userAddress);
+        this.addressMapper.insert(userAddress);
+    }
+
+    @Transactional(propagation = Propagation.REQUIRED)
+    @Override
+    public void updateAddress(UserAddressRequestDTO addressRequestDTO) {
+        val userAddress = new UserAddress()
+                .builder()
+                .updatedTime(new Date())
+                .build();
+        // 通过工具类直接copy相同属性
+        BeanUtils.copyProperties(addressRequestDTO, userAddress);
+        Example example = new Example(UserAddress.class);
+        val condition = example.createCriteria();
+        condition.andEqualTo("id", addressRequestDTO.getAddressId());
+        this.addressMapper.updateByExampleSelective(userAddress, example);
     }
 }

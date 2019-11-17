@@ -1,11 +1,13 @@
 package com.liferunner.api.controller;
 
 import com.alibaba.fastjson.JSON;
+import com.liferunner.dto.UserAddressRequestDTO;
 import com.liferunner.dto.UserRequestDTO;
 import com.liferunner.dto.UserResponseDTO;
 import com.liferunner.service.IUserService;
 import com.liferunner.utils.CookieTools;
 import com.liferunner.utils.JsonResponse;
+import com.liferunner.utils.SecurityTools;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 
@@ -125,11 +127,68 @@ public class UserController {
 
     @ApiOperation(value = "用户收货地址", notes = "用户收货地址", httpMethod = "POST")
     @PostMapping("/address/list")
-    public JsonResponse addrestList(@RequestParam String userId) {
+    public JsonResponse addressList(@RequestParam String userId) {
         if (StringUtils.isBlank(userId)) {
             return JsonResponse.errorMsg("用户id为空!");
         }
         val addressList = this.userService.getAddressByUserId(userId);
         return JsonResponse.ok(addressList);
+    }
+
+    @ApiOperation(value = "新增用户收货地址", notes = "新增用户收货地址", httpMethod = "POST")
+    @PostMapping("/address/add")
+    public JsonResponse addAddress(@RequestBody UserAddressRequestDTO userAddressRequestDTO) {
+        JsonResponse validateResult = validateUserAddress(userAddressRequestDTO);
+        if (validateResult.getStatus() != 200) return validateResult;
+        //插入地址信息
+        this.userService.addAddress(userAddressRequestDTO);
+        return JsonResponse.ok();
+    }
+
+    @ApiOperation(value = "更新用户收货地址", notes = "更新用户收货地址", httpMethod = "POST")
+    @PostMapping("/address/update")
+    public JsonResponse updateAddress(
+            @RequestBody UserAddressRequestDTO userAddressRequestDTO) {
+        JsonResponse validateResult = validateUserAddress(userAddressRequestDTO);
+        if (validateResult.getStatus() != 200) return validateResult;
+        //更新地址信息
+        this.userService.updateAddress(userAddressRequestDTO);
+        return JsonResponse.ok();
+    }
+
+    /**
+     * 为用户地址新增和更新校验信息
+     *
+     * @param userAddressRequestDTO
+     * @return
+     */
+    private JsonResponse validateUserAddress(@RequestBody UserAddressRequestDTO userAddressRequestDTO) {
+        if (StringUtils.isBlank(userAddressRequestDTO.getReceiver())) {
+            return JsonResponse.errorMsg("收货人不能为空");
+        }
+        if (userAddressRequestDTO.getReceiver().length() > 12) {
+            return JsonResponse.errorMsg("收货人姓名不能太长");
+        }
+        if (StringUtils.isBlank(userAddressRequestDTO.getMobile())) {
+            return JsonResponse.errorMsg("收货人手机号不能为空");
+        }
+        if (userAddressRequestDTO.getMobile().length() != 11) {
+            return JsonResponse.errorMsg("收货人手机号长度不正确");
+        }
+        boolean isMobileOk = SecurityTools.checkMobile(userAddressRequestDTO.getMobile());
+        if (!isMobileOk) {
+            return JsonResponse.errorMsg("收货人手机号格式不正确");
+        }
+        String province = userAddressRequestDTO.getProvince();
+        String city = userAddressRequestDTO.getCity();
+        String district = userAddressRequestDTO.getDistrict();
+        String detail = userAddressRequestDTO.getDetail();
+        if (StringUtils.isBlank(province) ||
+                StringUtils.isBlank(city) ||
+                StringUtils.isBlank(district) ||
+                StringUtils.isBlank(detail)) {
+            return JsonResponse.errorMsg("收货地址信息不能为空");
+        }
+        return JsonResponse.ok();
     }
 }

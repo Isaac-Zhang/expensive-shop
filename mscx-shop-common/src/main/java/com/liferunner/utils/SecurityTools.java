@@ -1,5 +1,8 @@
 package com.liferunner.utils;
 
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
 /**
  * SecurityTools for : 信息安全处理工具类
  *
@@ -70,5 +73,32 @@ public class SecurityTools {
             }
         }
         return stringBuilder.toString();
+    }
+
+    /**
+     * 检查手机号码
+     *
+     * @param mobile
+     * @return
+     */
+    public static boolean checkMobile(String mobile) {
+        String regex = "^((13[0-9])|(14[5|7])|(15([0-3]|[5-9]))|(17[013678])|(18[0,5-9]))\\d{8}$";
+        Pattern p = Pattern.compile(regex);
+        Matcher m = p.matcher(mobile);
+        boolean isMatch = m.matches();
+        return isMatch;
+    }
+
+    /**
+     * 检查email
+     * @param email
+     * @return
+     */
+    public static boolean checkEmail(String email) {
+        boolean isMatch = true;
+        if (!email.matches("[\\w\\.\\-]+@([\\w\\-]+\\.)+[\\w\\-]+")) {
+            isMatch = false;
+        }
+        return isMatch;
     }
 }
