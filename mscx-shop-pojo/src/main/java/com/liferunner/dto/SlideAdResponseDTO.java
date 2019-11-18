@@ -53,7 +53,7 @@ public class SlideAdResponseDTO{
     private String imageLinkUrl;
 
     /**
-     * 轮播图类型 轮播图类型，用于判断，可以根据商品id或者分类进行页面跳转，1：商品 2：分类
+     * 轮播图类型 用于判断，可以根据商品id或者分类进行页面跳转，1：商品 2：分类 3：链接url
      */
     private Integer type;
 
