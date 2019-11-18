@@ -30,7 +30,7 @@ public class ShopcartController {
     @Autowired
     private IProductService productService;
 
-    @ApiOperation(tags = "新增商品到购物车", value = "新增商品到购物车")
+    @ApiOperation(notes = "新增商品到购物车", value = "新增商品到购物车")
     @PostMapping("/add")
     public JsonResponse addToShopcart(
             @ApiParam(name = "userId", value = "用户id", required = true)
@@ -50,7 +50,7 @@ public class ShopcartController {
         return JsonResponse.ok();
     }
 
-    @ApiOperation(tags = "刷新购物车商品接口", value = "根据商品规格ids刷新购物车")
+    @ApiOperation(notes = "刷新购物车商品接口", value = "根据商品规格ids刷新购物车")
     @GetMapping("/refresh")
     public JsonResponse refreshBySpecIds(
             @ApiParam(name = "productSpecIds", value = "英文逗号分隔的商品多规格ids"
@@ -65,7 +65,7 @@ public class ShopcartController {
     }
 
     @PostMapping("/del")
-    @ApiOperation(tags = "删除购物车数据", value = "删除购物车数据")
+    @ApiOperation(notes = "删除购物车数据", value = "删除购物车数据")
     public JsonResponse del(
             @ApiParam(name = "userId", value = "用户id", required = true)
             @RequestParam String userId,

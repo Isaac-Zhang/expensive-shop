@@ -43,7 +43,7 @@ public class OrderServiceImpl implements IOrderService {
 
     @Transactional(propagation = Propagation.REQUIRED)
     @Override
-    public void createOrder(OrderRequestDTO orderRequestDTO) {
+    public String createOrder(OrderRequestDTO orderRequestDTO) {
         String orderId = sid.next();
         String userId = orderRequestDTO.getUserId();
         val addressId = orderRequestDTO.getAddressId();
@@ -65,15 +65,17 @@ public class OrderServiceImpl implements IOrderService {
             realFee += productsSpec.getPriceDiscount() * buyNumber;
             // 查询商品主图
             val productsImgList = this.productService.getProductImgsByPid(productsSpec.getProductId());
-            String mainImgUrl = productsImgList
+            val productsImg = productsImgList
                     .stream()
-                    .filter(i -> i.getIsMain() == BooleanEnum.TRUE.type)
-                    .map(m -> m.getUrl())
-                    .toString();
+                    .filter(i -> i.getIsMain() == 1)
+                    .findFirst()
+                    .get();
+            String mainImgUrl = productsImg.getUrl();
             val product = this.productService.findProductByPid(productsSpec.getProductId());
             // 准备插入订单子表对象
             val orderProduct = new OrderProducts()
                     .builder()
+                    .id(sid.nextShort())
                     .orderId(orderId)
                     .productId(productsSpec.getProductId())
                     .productImg(mainImgUrl)
@@ -81,6 +83,7 @@ public class OrderServiceImpl implements IOrderService {
                     .productSpecId(productsSpec.getId())
                     .productSpecName(productsSpec.getName())
                     .price(productsSpec.getPriceDiscount())
+                    .buyCounts(buyNumber)
                     .build();
             // 插入订单规格子表
             this.orderProductsMapper.insert(orderProduct);
@@ -125,5 +128,6 @@ public class OrderServiceImpl implements IOrderService {
                 .createdTime(new Date())
                 .build();
         this.orderStatusMapper.insertSelective(orderStatus);
+        return orderId;
     }
 }

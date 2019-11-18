@@ -68,7 +68,7 @@ public class IndexController {
     @GetMapping("/subCategorys/{parentId}")
     @ApiOperation(value = "查询子分类", notes = "根据一级分类id查询子分类")
     public JsonResponse findAllSubCategorys(
-            @ApiParam(name = "parentId", value = "一级分类id", required = true)
+            @ApiParam(name = "parentId", value = "一级分类id", required = true, example = "0")
             @PathVariable Integer parentId) {
         log.info("============查询id = {}的子分类==============", parentId);
         val categoryResponseDTOS = this.categoryService.getAllSubCategorys(parentId);
@@ -83,7 +83,7 @@ public class IndexController {
     @RequestMapping(value = "/findIndexProductItemList/{parentId}", method = RequestMethod.GET)
     @ApiOperation(value = "根据一级分类查询首页展示商品", notes = "根据一级分类查询首页展示商品")
     public JsonResponse findIndexProductItemList(
-            @ApiParam(name = "parentId", value = "一级分类id", required = true)
+            @ApiParam(name = "parentId", value = "一级分类id", required = true, example = "0")
             @PathVariable Integer parentId) {
         val indexProductDtoList = this.productService.getIndexProductDtoList(parentId);
         if (CollectionUtils.isEmpty(indexProductDtoList)) {

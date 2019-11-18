@@ -15,5 +15,5 @@ public interface IOrderService {
      *
      * @param orderRequestDTO
      */
-    void createOrder(OrderRequestDTO orderRequestDTO);
+    String createOrder(OrderRequestDTO orderRequestDTO);
 }

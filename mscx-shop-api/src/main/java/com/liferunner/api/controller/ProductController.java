@@ -87,11 +87,11 @@ public class ProductController extends BaseController {
     public JsonResponse getProductComment(
             @ApiParam(name = "pid", value = "商品id", required = true)
             @RequestParam String pid,
-            @ApiParam(name = "level", value = "评价级别", required = false)
+            @ApiParam(name = "level", value = "评价级别", required = false, example = "0")
             @RequestParam Integer level,
-            @ApiParam(name = "pageNumber", value = "当前页码", required = false)
+            @ApiParam(name = "pageNumber", value = "当前页码", required = false, example = "1")
             @RequestParam Integer pageNumber,
-            @ApiParam(name = "pageSize", value = "每页展示记录数", required = false)
+            @ApiParam(name = "pageSize", value = "每页展示记录数", required = false, example = "10")
             @RequestParam Integer pageSize
     ) {
         if (StringUtils.isBlank(pid)) {
@@ -117,9 +117,9 @@ public class ProductController extends BaseController {
             @RequestParam String keyword,
             @ApiParam(name = "sortby", value = "排序方式", required = false)
             @RequestParam String sortby,
-            @ApiParam(name = "pageNumber", value = "当前页码", required = false)
+            @ApiParam(name = "pageNumber", value = "当前页码", required = false, example = "1")
             @RequestParam Integer pageNumber,
-            @ApiParam(name = "pageSize", value = "每页展示记录数", required = false)
+            @ApiParam(name = "pageSize", value = "每页展示记录数", required = false, example = "10")
             @RequestParam Integer pageSize
     ) {
         if (StringUtils.isBlank(keyword)) {
@@ -140,13 +140,13 @@ public class ProductController extends BaseController {
     @GetMapping("/searchByCategoryId")
     @ApiOperation(value = "查询商品信息列表", notes = "根据商品分类查询商品列表")
     public JsonResponse searchProductListByCategoryId(
-            @ApiParam(name = "categoryId", value = "商品分类id", required = true)
+            @ApiParam(name = "categoryId", value = "商品分类id", required = true, example = "0")
             @RequestParam Integer categoryId,
             @ApiParam(name = "sortby", value = "排序方式", required = false)
             @RequestParam String sortby,
-            @ApiParam(name = "pageNumber", value = "当前页码", required = false)
+            @ApiParam(name = "pageNumber", value = "当前页码", required = false, example = "1")
             @RequestParam Integer pageNumber,
-            @ApiParam(name = "pageSize", value = "每页展示记录数", required = false)
+            @ApiParam(name = "pageSize", value = "每页展示记录数", required = false, example = "10")
             @RequestParam Integer pageSize
     ) {
         if (null == categoryId || categoryId == 0) {

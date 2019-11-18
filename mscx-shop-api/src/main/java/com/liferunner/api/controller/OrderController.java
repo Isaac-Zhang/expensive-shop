@@ -25,14 +25,14 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @Slf4j
 @RequestMapping("/orders")
-@Api(tags = {"订单处理接口API"}, value = "订单controller")
+@Api(tags = "订单处理接口API", value = "订单controller")
 @RequiredArgsConstructor(onConstructor = @__(@Autowired))
 public class OrderController extends BaseController {
 
     private final IOrderService orderService;
 
-    @PostMapping
-    @ApiOperation(tags = {"创建订单API"}, value = "创建订单")
+    @PostMapping("/create")
+    @ApiOperation(notes = "创建订单API", value = "创建订单API")
     public JsonResponse create(@RequestBody OrderRequestDTO orderRequestDTO) {
         if (PayTypeEnum.WECHAT.key != orderRequestDTO.getPayMethod() ||
                 PayTypeEnum.WECHAT.key != orderRequestDTO.getPayMethod()) {
@@ -48,8 +48,8 @@ public class OrderController extends BaseController {
             log.error("支付参数错误!{}", JSON.toJSONString(orderRequestDTO));
             return JsonResponse.errorMsg("支付参数错误!");
         }
-        this.orderService.createOrder(orderRequestDTO);
-        return JsonResponse.ok();
+        String orderId = this.orderService.createOrder(orderRequestDTO);
+        return JsonResponse.ok(orderId);
     }
 
 }

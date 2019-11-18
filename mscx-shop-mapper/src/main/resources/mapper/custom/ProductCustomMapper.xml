@@ -143,7 +143,15 @@
 
     <select id="getAllProductSpec" parameterType="list" resultType="com.liferunner.pojo.ProductsSpec">
         SELECT
-        *
+        id,
+        item_id as productId,
+        name,
+        stock,
+        discounts,
+        price_discount as priceDiscount,
+        price_normal as priceNormal,
+        created_time as createdTime,
+        updated_time as updatedTime
         FROM items_spec ps
         WHERE id IN
         <foreach collection="specIdList" item="specId" index="index" open="(" separator="," close=")">
