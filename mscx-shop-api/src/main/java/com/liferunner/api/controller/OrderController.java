@@ -4,6 +4,7 @@ import com.alibaba.fastjson.JSON;
 import com.liferunner.dto.OrderRequestDTO;
 import com.liferunner.enums.PayTypeEnum;
 import com.liferunner.service.IOrderService;
+import com.liferunner.utils.CookieTools;
 import com.liferunner.utils.JsonResponse;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -15,6 +16,9 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 /**
  * OrderController for : 订单相关controller
@@ -33,7 +37,9 @@ public class OrderController extends BaseController {
 
     @PostMapping("/create")
     @ApiOperation(notes = "创建订单API", value = "创建订单API")
-    public JsonResponse create(@RequestBody OrderRequestDTO orderRequestDTO) {
+    public JsonResponse create(@RequestBody OrderRequestDTO orderRequestDTO,
+                               HttpServletRequest request,
+                               HttpServletResponse response) {
         if (PayTypeEnum.WECHAT.key != orderRequestDTO.getPayMethod() ||
                 PayTypeEnum.WECHAT.key != orderRequestDTO.getPayMethod()) {
             log.error("不支持的支付类型!{}", JSON.toJSONString(orderRequestDTO));
@@ -49,6 +55,9 @@ public class OrderController extends BaseController {
             return JsonResponse.errorMsg("支付参数错误!");
         }
         String orderId = this.orderService.createOrder(orderRequestDTO);
+
+        //TODO : Redis准备就绪之后，需要从Redis中删除掉已经付款的商品信息，并且同步需要删除前端cookie中的商品
+        //暂时屏蔽CookieTools.setCookie(request, response, SHOPCART_COOKIE_NAME, "", true);
         return JsonResponse.ok(orderId);
     }
 

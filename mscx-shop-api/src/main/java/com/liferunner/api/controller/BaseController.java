@@ -19,4 +19,9 @@ public class BaseController {
      * 默认每页展示10条数据
      */
     public final Integer DEFAULT_PAGE_SIZE = 10;
+
+    /**
+     * 默认购物车cookie名
+     */
+    public final String SHOPCART_COOKIE_NAME = "shopcart";
 }
