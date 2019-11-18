@@ -1,7 +1,5 @@
 package com.liferunner.api.controller;
 
-import com.liferunner.dto.IndexProductItemDTO;
-import com.liferunner.dto.ProductDetailResponseDTO;
 import com.liferunner.service.ICategoryService;
 import com.liferunner.service.IProductService;
 import com.liferunner.service.ISlideAdService;
@@ -9,24 +7,26 @@ import com.liferunner.utils.JsonResponse;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
+import java.util.Collections;
 import lombok.extern.slf4j.Slf4j;
 import lombok.val;
-import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.CollectionUtils;
-import org.springframework.web.bind.annotation.*;
-
-import java.util.Collections;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RestController;
 
 /**
- * IndexController for : TODO
+ * IndexController for : 首页controller
  *
  * @author <a href="mailto:magicianisaac@gmail.com">Isaac.Zhang | 若初</a>
  * @since 2019/11/12
  */
 @RestController
 @RequestMapping("/index")
-@Api(value = "首页信息展示", tags = "首页信息展示接口")
+@Api(value = "首页信息controller", tags = "首页信息接口API")
 @Slf4j
 public class IndexController {
 
