@@ -1,6 +1,7 @@
 package com.liferunner.service;
 
 import com.liferunner.dto.OrderRequestDTO;
+import com.liferunner.enums.OrderStatusEnum;
 
 /**
  * IOrderService for : TODO
@@ -16,4 +17,11 @@ public interface IOrderService {
      * @param orderRequestDTO
      */
     String createOrder(OrderRequestDTO orderRequestDTO);
+
+    /**
+     * 订单支付成功，更新订单状态
+     * @param orderId
+     * @param orderStatus
+     */
+    void updateOrderStatus(String orderId, Integer orderStatus);
 }

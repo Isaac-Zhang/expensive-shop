@@ -130,4 +130,17 @@ public class OrderServiceImpl implements IOrderService {
         this.orderStatusMapper.insertSelective(orderStatus);
         return orderId;
     }
+
+    @Transactional(propagation = Propagation.REQUIRED)
+    @Override
+    public void updateOrderStatus(String orderId, Integer orderStatus) {
+        this.orderStatusMapper.updateByPrimaryKeySelective(
+                new OrderStatus()
+                        .builder()
+                        .orderId(orderId)
+                        .payTime(new Date())
+                        .orderStatus(orderStatus)
+                        .build()
+        );
+    }
 }
