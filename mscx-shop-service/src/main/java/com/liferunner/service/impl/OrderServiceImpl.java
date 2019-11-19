@@ -1,6 +1,8 @@
 package com.liferunner.service.impl;
 
+import com.liferunner.dto.MerchantOrderRequestDTO;
 import com.liferunner.dto.OrderRequestDTO;
+import com.liferunner.dto.OrderResponseDTO;
 import com.liferunner.enums.BooleanEnum;
 import com.liferunner.enums.OrderStatusEnum;
 import com.liferunner.mapper.OrderProductsMapper;
@@ -43,7 +45,7 @@ public class OrderServiceImpl implements IOrderService {
 
     @Transactional(propagation = Propagation.REQUIRED)
     @Override
-    public String createOrder(OrderRequestDTO orderRequestDTO) {
+    public OrderResponseDTO createOrder(OrderRequestDTO orderRequestDTO) {
         String orderId = sid.next();
         String userId = orderRequestDTO.getUserId();
         val addressId = orderRequestDTO.getAddressId();
@@ -128,7 +130,19 @@ public class OrderServiceImpl implements IOrderService {
                 .createdTime(new Date())
                 .build();
         this.orderStatusMapper.insertSelective(orderStatus);
-        return orderId;
+        // 构建发送到支付中心的数据对象
+        val merchantOrderRequestDTO = new MerchantOrderRequestDTO()
+                .builder()
+                .merchantOrderId(orderId)
+                .merchantUserId(userId)
+                .amount(realFee + postFee)
+                .payMethod(payMethod)
+                .build();
+        return new OrderResponseDTO()
+                .builder()
+                .orderId(orderId)
+                .merchantOrderRequestDTO(merchantOrderRequestDTO)
+                .build();
     }
 
     @Transactional(propagation = Propagation.REQUIRED)

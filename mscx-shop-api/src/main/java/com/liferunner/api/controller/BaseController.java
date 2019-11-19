@@ -24,4 +24,15 @@ public class BaseController {
      * 默认购物车cookie名
      */
     public final String SHOPCART_COOKIE_NAME = "shopcart";
+
+    /**
+     * 支付中心URL
+     */
+    public final String PAYMENT_SERVER_URL = "http://api.z.mukewang.com/foodie-dev-api/orders/notifyMerchantOrderPaid";
+
+    /**
+     * 支付成功回调URL
+     */
+    public final String PAYMENT_RETURN_URL = "http://localhost:8088/orders/notifyOrderFromWechat";
+
 }
