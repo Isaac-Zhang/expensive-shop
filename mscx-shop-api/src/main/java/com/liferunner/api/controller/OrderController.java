@@ -69,9 +69,11 @@ public class OrderController extends BaseController {
         // TODO: 发送请求到支付中心付款
         val merchantOrderRequestDTO = orderResponseDTO.getMerchantOrderRequestDTO();
         //为了测试支付金额修改为1分钱
-        merchantOrderRequestDTO.setAmount(1);
+       /*  //TODO：请求支付中心，后期添加
+       merchantOrderRequestDTO.setAmount(1);
         merchantOrderRequestDTO.setReturnUrl(PAYMENT_RETURN_URL);
-        HttpHeaders httpHeaders = new HttpHeaders();
+        HttpHeaders httpHeaders
+                = new HttpHeaders();
         httpHeaders.setContentType(MediaType.APPLICATION_JSON);
         httpHeaders.add("imoocUserId", PAYMENT_USER_ID);
         httpHeaders.add("password", PAYMENT_PASSWORD);
@@ -86,7 +88,7 @@ public class OrderController extends BaseController {
         if (paymentResult.getStatus() != 200) {
             log.error("发送错误：{}", paymentResult.getMessage());
             return JsonResponse.errorMsg("支付中心订单创建失败，请联系管理员！");
-        }
+        }*/
         return JsonResponse.ok(orderId);
     }
 
@@ -103,4 +105,10 @@ public class OrderController extends BaseController {
         return JsonResponse.ok();
     }
 
+    @ApiOperation(value = "根据订单号查询订单支付结果", tags = "根据订单号查询订单支付结果")
+    @PostMapping("/getPaidResult")
+    public JsonResponse getPaidResult(@RequestParam String orderId) {
+        val paidResult = this.orderService.getPaidResult(orderId);
+        return JsonResponse.ok(paidResult);
+    }
 }

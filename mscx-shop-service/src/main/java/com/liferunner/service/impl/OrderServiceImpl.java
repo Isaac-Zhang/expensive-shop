@@ -157,4 +157,9 @@ public class OrderServiceImpl implements IOrderService {
                         .build()
         );
     }
+
+    @Override
+    public OrderStatus getPaidResult(String orderId) {
+        return this.orderStatusMapper.selectByPrimaryKey(orderId);
+    }
 }

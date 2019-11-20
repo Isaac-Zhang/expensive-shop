@@ -3,6 +3,7 @@ package com.liferunner.service;
 import com.liferunner.dto.OrderRequestDTO;
 import com.liferunner.dto.OrderResponseDTO;
 import com.liferunner.enums.OrderStatusEnum;
+import com.liferunner.pojo.OrderStatus;
 
 /**
  * IOrderService for : TODO
@@ -21,8 +22,17 @@ public interface IOrderService {
 
     /**
      * 订单支付成功，更新订单状态
+     *
      * @param orderId
      * @param orderStatus
      */
     void updateOrderStatus(String orderId, Integer orderStatus);
+
+    /**
+     * 根据订单id查询订单支付结果
+     *
+     * @param orderId
+     * @return
+     */
+    OrderStatus getPaidResult(String orderId);
 }
