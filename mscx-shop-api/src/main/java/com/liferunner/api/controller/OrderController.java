@@ -73,8 +73,8 @@ public class OrderController extends BaseController {
         merchantOrderRequestDTO.setReturnUrl(PAYMENT_RETURN_URL);
         HttpHeaders httpHeaders = new HttpHeaders();
         httpHeaders.setContentType(MediaType.APPLICATION_JSON);
-        httpHeaders.add("imoocUserId", "imooc");
-        httpHeaders.add("password", "imooc");
+        httpHeaders.add("imoocUserId", PAYMENT_USER_ID);
+        httpHeaders.add("password", PAYMENT_PASSWORD);
         HttpEntity<MerchantOrderRequestDTO> entity =
                 new HttpEntity<>(merchantOrderRequestDTO, httpHeaders);
 

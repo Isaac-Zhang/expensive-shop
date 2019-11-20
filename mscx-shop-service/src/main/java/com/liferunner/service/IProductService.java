@@ -1,18 +1,16 @@
 package com.liferunner.service;
 
 import com.liferunner.dto.IndexProductDTO;
-import com.liferunner.dto.ProductCommentLevelCountsDTO;
 import com.liferunner.dto.ShopcartResponseDTO;
 import com.liferunner.pojo.Products;
 import com.liferunner.pojo.ProductsImg;
 import com.liferunner.pojo.ProductsParam;
 import com.liferunner.pojo.ProductsSpec;
 import com.liferunner.utils.CommonPagedResult;
-
 import java.util.List;
 
 /**
- * IProductService for : TODO
+ * IProductService for : 商品操作相关service
  *
  * @author <a href="mailto:magicianisaac@gmail.com">Isaac.Zhang | 若初</a>
  * @since 2019/11/15

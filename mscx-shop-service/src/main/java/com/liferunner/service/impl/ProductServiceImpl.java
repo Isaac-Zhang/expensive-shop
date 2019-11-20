@@ -25,7 +25,7 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * ProductServiceImpl for : TODO
+ * ProductServiceImpl for : 商品操作相关service
  *
  * @author <a href="mailto:magicianisaac@gmail.com">Isaac.Zhang | 若初</a>
  * @since 2019/11/15

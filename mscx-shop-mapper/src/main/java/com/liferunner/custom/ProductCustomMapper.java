@@ -18,6 +18,12 @@ import java.util.Map;
  */
 public interface ProductCustomMapper {
 
+    /***
+     * 根据一级分类查询商品
+     *
+     * @param paramMap 传递一级分类（map传递多参数）
+     * @return java.util.List<com.liferunner.dto.IndexProductDTO>
+     */
     List<IndexProductDTO> getIndexProductDtoList(@Param("paramMap") Map<String, Integer> paramMap);
 
     List<ProductCommentDTO> getProductCommentList(@Param("paramMap") Map<String, Object> paramMap);

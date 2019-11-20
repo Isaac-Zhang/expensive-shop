@@ -35,4 +35,14 @@ public class BaseController {
      */
     public final String PAYMENT_RETURN_URL = "http://localhost:8088/orders/notifyOrderFromWechat";
 
+    /**
+     * 支付中心账户
+     */
+    public final String PAYMENT_USER_ID ="3120391-497095098";//zhangpan
+
+    /**
+     * 支付中心账户密码
+     */
+    public final String PAYMENT_PASSWORD = "1i12-pow0-pdwq-jgg8";
+
 }
