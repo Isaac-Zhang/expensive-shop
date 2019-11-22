@@ -35,4 +35,9 @@ public interface IOrderService {
      * @return
      */
     OrderStatus getPaidResult(String orderId);
+
+    /**
+     * 定时关闭超时的订单
+     */
+    void AutoCloseOvertimeOrder();
 }

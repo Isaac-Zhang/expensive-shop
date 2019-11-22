@@ -15,14 +15,17 @@ import com.liferunner.pojo.ProductsSpec;
 import com.liferunner.service.IOrderService;
 import com.liferunner.service.IProductService;
 import com.liferunner.service.IUserService;
+import com.liferunner.utils.DateTools;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import lombok.val;
+import org.apache.commons.lang3.time.DateUtils;
 import org.n3r.idworker.Sid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
+import tk.mybatis.mapper.entity.Example;
 
 import java.util.Date;
 
@@ -161,5 +164,35 @@ public class OrderServiceImpl implements IOrderService {
     @Override
     public OrderStatus getPaidResult(String orderId) {
         return this.orderStatusMapper.selectByPrimaryKey(orderId);
+    }
+
+    @Transactional(propagation = Propagation.REQUIRED)
+    @Override
+    public void AutoCloseOvertimeOrder() {
+        Example example = new Example(OrderStatus.class);
+        val condition = example.createCriteria();
+        condition.andEqualTo("orderStatus", OrderStatusEnum.WAIT_PAY.key);
+        val orderStatusList = this.orderStatusMapper.selectByExample(example);
+        //获取到未支付订单
+        for (OrderStatus item : orderStatusList) {
+            val between = DateTools.daysBetween(item.getCreatedTime(), new Date());
+            if (between > 0) {
+                closeOrder(item.getOrderId());
+            }
+        }
+    }
+
+    @Transactional
+    /**
+     * 根据orderId关闭订单
+     */
+    private void closeOrder(String orderId) {
+        this.orderStatusMapper.updateByPrimaryKeySelective(
+                OrderStatus.builder()
+                        .orderStatus(OrderStatusEnum.CLOSE.key)
+                        .closeTime(new Date())
+                        .orderId(orderId)
+                        .build()
+        );
     }
 }
