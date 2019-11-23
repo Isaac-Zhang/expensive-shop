@@ -18,10 +18,16 @@ import java.util.Date;
 @AllArgsConstructor
 @Builder
 public class ProductCommentDTO {
+    //评价等级
     private Integer commentLevel;
+    //规格名称
     private String specName;
+    //评价内容
     private String content;
+    //评价时间
     private Date createdTime;
+    //用户头像
     private String userFace;
+    //用户昵称
     private String nickname;
 }

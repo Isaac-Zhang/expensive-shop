@@ -23,8 +23,8 @@ public class OrderJob {
     @Autowired
     private IOrderService orderService;
 
-    //    @Scheduled(cron = "0 0 0/1 * * ? *")
-    @Scheduled(cron = "0/5 * * * * ?")
+    @Scheduled(cron = "0 0 0/1 * * ?")
+//    @Scheduled(cron = "0/5 * * * * ?")
     public void closeOrder() {
         log.info("Auto close order on : {}", new Date());
         this.orderService.AutoCloseOvertimeOrder();

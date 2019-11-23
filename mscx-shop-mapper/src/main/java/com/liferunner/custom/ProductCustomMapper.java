@@ -26,6 +26,17 @@ public interface ProductCustomMapper {
      */
     List<IndexProductDTO> getIndexProductDtoList(@Param("paramMap") Map<String, Integer> paramMap);
 
+    /***
+     * 根据商品id 和 评价等级查询评价信息
+     * <code>
+     *         Map<String, Object> paramMap = new HashMap<>();
+     *         paramMap.put("productId", pid);
+     *         paramMap.put("commentLevel", level);
+     *</code>
+     * @param paramMap
+     * @return java.util.List<com.liferunner.dto.ProductCommentDTO>
+     * @throws
+     */
     List<ProductCommentDTO> getProductCommentList(@Param("paramMap") Map<String, Object> paramMap);
 
     List<SearchProductDTO> searchProductList(@Param("paramMap") Map<String, Object> paramMap);
