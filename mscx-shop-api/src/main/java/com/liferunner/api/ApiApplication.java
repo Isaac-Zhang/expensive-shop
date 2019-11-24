@@ -14,6 +14,8 @@ import org.springframework.web.client.RestTemplate;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 import org.springframework.web.filter.CorsFilter;
+import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
+import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 import tk.mybatis.spring.annotation.MapperScan;
 
 /**
@@ -32,7 +34,7 @@ import tk.mybatis.spring.annotation.MapperScan;
 @ComponentScan(basePackages = {"com.liferunner", "org.n3r.idworker"})
 @EnableSwagger2Doc
 @EnableScheduling
-public class ApiApplication {
+public class ApiApplication implements WebMvcConfigurer {
 
     public static void main(String[] args) {
         new SpringApplicationBuilder()
@@ -63,12 +65,27 @@ public class ApiApplication {
     }
 
     /**
+     * 静态资源文件路径映射配置
+     *
+     * @param registry
+     */
+    @Override
+    public void addResourceHandlers(ResourceHandlerRegistry registry) {
+        registry.addResourceHandler("/**")
+                //添加Swagger2文件路径映射
+                .addResourceLocations("classpath:META-INF/resources/")
+                //添加上传图片文件地址路径映射
+                .addResourceLocations("file:/promotion/sources/expensive-shop/");
+    }
+
+    /**
      * 注入 RestTemplate
+     *
      * @param builder
      * @return
      */
     @Bean
-    public RestTemplate restTemplate(RestTemplateBuilder builder){
+    public RestTemplate restTemplate(RestTemplateBuilder builder) {
         return builder.build();
     }
 }
