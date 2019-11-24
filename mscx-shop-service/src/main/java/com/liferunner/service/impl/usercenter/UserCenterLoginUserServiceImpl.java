@@ -11,6 +11,8 @@ import lombok.var;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Date;
 
@@ -27,6 +29,7 @@ public class UserCenterLoginUserServiceImpl implements IUserCenterLoginUserServi
 
     private final UsersMapper usersMapper;
 
+    @Transactional(propagation = Propagation.SUPPORTS)
     @Override
     public Users findUserById(String uid) {
         Users user = this.usersMapper.selectByPrimaryKey(uid);
@@ -34,11 +37,23 @@ public class UserCenterLoginUserServiceImpl implements IUserCenterLoginUserServi
         return user;
     }
 
+    @Transactional(propagation = Propagation.REQUIRED)
     @Override
     public Users updateUser(String uid, UserUpdateRequestDTO userUpdateRequestDTO) {
         Users user = new Users();
         BeanUtils.copyProperties(userUpdateRequestDTO, user);
         user.setId(uid);
+        user.setUpdatedTime(new Date());
+        var userResult = this.usersMapper.updateByPrimaryKeySelective(user);
+        return this.usersMapper.selectByPrimaryKey(uid);
+    }
+
+    @Transactional(propagation = Propagation.REQUIRED)
+    @Override
+    public Users updateUserFace(String uid, String faceUrl) {
+        Users user = new Users();
+        user.setId(uid);
+        user.setFace(faceUrl);
         user.setUpdatedTime(new Date());
         var userResult = this.usersMapper.updateByPrimaryKeySelective(user);
         return this.usersMapper.selectByPrimaryKey(uid);

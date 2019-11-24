@@ -59,6 +59,10 @@ public class BaseController {
                     File.separator + "sources" +
                     File.separator + "expensive-shop" +
                     File.separator + "face-img";
+    /**
+     * 图片存储的web地址前缀
+     */
+    public static final String IMG_FACE_BASE_WEB_URL = "http://127.0.0.1:8088/";
 
     public static Map<String, String> getErrorsMap(BindingResult result) {
         Map<String, String> resultMap = new HashMap<>();

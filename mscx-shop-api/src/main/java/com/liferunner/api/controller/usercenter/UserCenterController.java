@@ -98,7 +98,9 @@ public class UserCenterController extends BaseController {
     @ApiOperation(tags = "用户头像上传", value = "用户头像上传")
     public JsonResponse uploadFile(
             @RequestParam String uid,
-            MultipartFile file
+            MultipartFile file,
+            HttpServletRequest request,
+            HttpServletResponse response
     ) {
         if (null == file) {
             return JsonResponse.errorMsg("文件不能为空");
@@ -120,6 +122,7 @@ public class UserCenterController extends BaseController {
                 + "." + fileSuffix;
         //文件上传的最终保存位置
         String fileSavePath = filePathDir + uploadPathPrefix + File.separator + newFileName;
+        String faceWebUrl = IMG_FACE_BASE_WEB_URL + "/face-img/" + uid + "/" + newFileName;
         File fileOut = new File(fileSavePath);
         if (fileOut.getParentFile() != null) {
             //创建存储文件夹
@@ -141,6 +144,21 @@ public class UserCenterController extends BaseController {
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
+            }
+        }
+        val userFace = this.userCenterLoginUserService.updateUserFace(uid, faceWebUrl);
+        if (null != userFace) {
+            UserResponseDTO userResponseDTO = new UserResponseDTO();
+            BeanUtils.copyProperties(userFace, userResponseDTO);
+            log.info("BeanUtils copy object {}", userResponseDTO);
+            if (null != userResponseDTO) {
+                // 设置前端存储的cookie信息
+                CookieTools.setCookie(request, response, "user",
+                        JSON.toJSONString(userResponseDTO), true);
+                log.info("==========update user:{} success by uid:{}",
+                        JSON.toJSONString(userResponseDTO),
+                        uid);
+                return JsonResponse.ok(userResponseDTO);
             }
         }
         return JsonResponse.ok();

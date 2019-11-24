@@ -27,4 +27,13 @@ public interface IUserCenterLoginUserService {
      * @return
      */
     Users updateUser(String uid, UserUpdateRequestDTO userUpdateRequestDTO);
+
+    /**
+     * 更新用户头像
+     *
+     * @param uid
+     * @param faceUrl
+     * @return
+     */
+    Users updateUserFace(String uid, String faceUrl);
 }
