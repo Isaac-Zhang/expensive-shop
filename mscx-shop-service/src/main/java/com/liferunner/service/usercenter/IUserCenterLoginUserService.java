@@ -1,5 +1,6 @@
 package com.liferunner.service.usercenter;
 
+import com.liferunner.dto.UserUpdateRequestDTO;
 import com.liferunner.pojo.Users;
 
 /**
@@ -17,4 +18,13 @@ public interface IUserCenterLoginUserService {
      * @return
      */
     Users findUserById(String uid);
+
+    /**
+     * 更新用户信息
+     *
+     * @param uid
+     * @param userUpdateRequestDTO
+     * @return
+     */
+    Users updateUser(String uid, UserUpdateRequestDTO userUpdateRequestDTO);
 }

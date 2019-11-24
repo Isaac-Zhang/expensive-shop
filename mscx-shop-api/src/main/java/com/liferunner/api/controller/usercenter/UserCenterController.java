@@ -1,17 +1,22 @@
 package com.liferunner.api.controller.usercenter;
 
+import com.alibaba.fastjson.JSON;
+import com.liferunner.dto.UserResponseDTO;
+import com.liferunner.dto.UserUpdateRequestDTO;
 import com.liferunner.service.usercenter.IUserCenterLoginUserService;
+import com.liferunner.utils.CookieTools;
 import com.liferunner.utils.JsonResponse;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import lombok.val;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 /**
  * UserCenterController for : 用户中心controller
@@ -38,5 +43,37 @@ public class UserCenterController {
             return JsonResponse.ok(user);
         }
         return JsonResponse.errorMsg("获取用户信息失败");
+    }
+
+    @PostMapping("/update")
+    @ApiOperation(tags = "根据用户id更新用户", value = "根据用户id更新用户")
+    public JsonResponse updateUser(
+            @RequestParam String uid,
+            @RequestBody UserUpdateRequestDTO userUpdateRequestDTO,
+            HttpServletRequest request,
+            HttpServletResponse response
+    ) {
+        log.info("==========update user:{} begin by uid:{}",
+                JSON.toJSONString(userUpdateRequestDTO),
+                uid);
+        val updateUser = this.userCenterLoginUserService.updateUser(uid, userUpdateRequestDTO);
+        if (null != updateUser) {
+            UserResponseDTO userResponseDTO = new UserResponseDTO();
+            BeanUtils.copyProperties(updateUser, userResponseDTO);
+            log.info("BeanUtils copy object {}", userResponseDTO);
+            if (null != userResponseDTO) {
+                // 设置前端存储的cookie信息
+                CookieTools.setCookie(request, response, "user",
+                        JSON.toJSONString(userResponseDTO), true);
+                log.info("==========update user:{} success by uid:{}",
+                        JSON.toJSONString(userResponseDTO),
+                        uid);
+                return JsonResponse.ok(userResponseDTO);
+            }
+        }
+        log.warn("==========update user failed:{} by uid:{}",
+                JSON.toJSONString(userUpdateRequestDTO),
+                uid);
+        return JsonResponse.errorMsg("更新用户失败");
     }
 }
