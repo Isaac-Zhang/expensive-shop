@@ -1,6 +1,11 @@
 package com.liferunner.api.controller;
 
+import lombok.val;
 import org.springframework.stereotype.Controller;
+import org.springframework.validation.BindingResult;
+
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * BaseController for : controller 基类
@@ -38,11 +43,20 @@ public class BaseController {
     /**
      * 支付中心账户
      */
-    public final String PAYMENT_USER_ID ="3120391-497095098";//zhangpan
+    public final String PAYMENT_USER_ID = "3120391-497095098";//zhangpan
 
     /**
      * 支付中心账户密码
      */
     public final String PAYMENT_PASSWORD = "1i12-pow0-pdwq-jgg8";
 
+    public Map<String, String> getErrorsMap(BindingResult result) {
+        Map<String, String> resultMap = new HashMap<>();
+        result.getFieldErrors().stream().forEach(e -> {
+            val field = e.getField();
+            val error = e.getDefaultMessage();
+            resultMap.put(field, String.valueOf(error));
+        });
+        return resultMap;
+    }
 }

@@ -1,6 +1,7 @@
 package com.liferunner.api.controller.usercenter;
 
 import com.alibaba.fastjson.JSON;
+import com.liferunner.api.controller.BaseController;
 import com.liferunner.dto.UserResponseDTO;
 import com.liferunner.dto.UserUpdateRequestDTO;
 import com.liferunner.service.usercenter.IUserCenterLoginUserService;
@@ -13,10 +14,12 @@ import lombok.extern.slf4j.Slf4j;
 import lombok.val;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.validation.Valid;
 
 /**
  * UserCenterController for : 用户中心controller
@@ -29,7 +32,7 @@ import javax.servlet.http.HttpServletResponse;
 @RequestMapping("/usercenter")
 @RequiredArgsConstructor(onConstructor = @__(@Autowired))
 @Api(tags = "用户中心相关API接口", value = "用户中心controller")
-public class UserCenterController {
+public class UserCenterController extends BaseController {
     private final IUserCenterLoginUserService userCenterLoginUserService;
 
     /**
@@ -49,10 +52,15 @@ public class UserCenterController {
     @ApiOperation(tags = "根据用户id更新用户", value = "根据用户id更新用户")
     public JsonResponse updateUser(
             @RequestParam String uid,
-            @RequestBody UserUpdateRequestDTO userUpdateRequestDTO,
+            @RequestBody @Valid UserUpdateRequestDTO userUpdateRequestDTO,
+            BindingResult result,
             HttpServletRequest request,
             HttpServletResponse response
     ) {
+        if (result.hasErrors()) {
+            val errorsMap = getErrorsMap(result);
+            return JsonResponse.errorMap(errorsMap);
+        }
         log.info("==========update user:{} begin by uid:{}",
                 JSON.toJSONString(userUpdateRequestDTO),
                 uid);
