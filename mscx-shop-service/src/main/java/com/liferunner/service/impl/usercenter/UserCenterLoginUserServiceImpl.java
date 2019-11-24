@@ -1,12 +1,18 @@
 package com.liferunner.service.impl.usercenter;
 
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
+import com.liferunner.custom.OrderCustomMapper;
+import com.liferunner.dto.UserOrderResponseDTO;
 import com.liferunner.dto.UserUpdateRequestDTO;
 import com.liferunner.mapper.UsersMapper;
 import com.liferunner.pojo.Users;
 import com.liferunner.service.usercenter.IUserCenterLoginUserService;
+import com.liferunner.utils.CommonPagedResult;
 import com.liferunner.utils.SecurityTools;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import lombok.val;
 import lombok.var;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,6 +21,9 @@ import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  * UserCenterLoginUserServiceImpl for : 实现用户中心登录用户相关操作service
@@ -28,6 +37,7 @@ import java.util.Date;
 public class UserCenterLoginUserServiceImpl implements IUserCenterLoginUserService {
 
     private final UsersMapper usersMapper;
+    private final OrderCustomMapper orderCustomMapper;
 
     @Transactional(propagation = Propagation.SUPPORTS)
     @Override
@@ -57,5 +67,28 @@ public class UserCenterLoginUserServiceImpl implements IUserCenterLoginUserServi
         user.setUpdatedTime(new Date());
         var userResult = this.usersMapper.updateByPrimaryKeySelective(user);
         return this.usersMapper.selectByPrimaryKey(uid);
+    }
+
+    @Transactional(propagation = Propagation.SUPPORTS)
+    @Override
+    public CommonPagedResult getUserOrderList(String uid, Integer orderStatus,Integer pageNumber,Integer pageSize) {
+        Map<String, Object> paramMap = new HashMap<>();
+        paramMap.put("userId", uid);
+        if (orderStatus != null) {
+            paramMap.put("orderStatus", orderStatus);
+        }
+        // mybatis-pagehelper
+        PageHelper.startPage(pageNumber, pageSize);
+
+        val userOrderList = this.orderCustomMapper.getUserOrderList(paramMap);
+        // 获取mybatis插件中获取到信息
+        PageInfo<?> pageInfo = new PageInfo<>(userOrderList);
+        // 封装为返回到前端分页组件可识别的视图
+        return CommonPagedResult.builder()
+                .pageNumber(pageNumber)
+                .rows(userOrderList)
+                .totalPage(pageInfo.getPages())
+                .records(pageInfo.getTotal())
+                .build();
     }
 }

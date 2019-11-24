@@ -17,6 +17,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.apache.tomcat.util.http.fileupload.IOUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.util.CollectionUtils;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -168,5 +169,16 @@ public class UserCenterController extends BaseController {
             }
         }
         return JsonResponse.ok();
+    }
+
+    @PostMapping("/userorders")
+    @ApiOperation(notes = "查询用户订单", value = "查询用户订单")
+    public JsonResponse getUserOrderList(
+            @RequestParam String userId,
+            @RequestParam Integer orderStatus,
+            @RequestParam Integer pageNumber,
+            @RequestParam Integer pageSize) {
+        val userOrderList = this.userCenterLoginUserService.getUserOrderList(userId, orderStatus,pageNumber,pageSize);
+        return JsonResponse.ok(userOrderList);
     }
 }

@@ -1,7 +1,11 @@
 package com.liferunner.service.usercenter;
 
+import com.liferunner.dto.UserOrderResponseDTO;
 import com.liferunner.dto.UserUpdateRequestDTO;
 import com.liferunner.pojo.Users;
+import com.liferunner.utils.CommonPagedResult;
+
+import java.util.List;
 
 /**
  * IUserCenterLoginUserService for : 实现用户中心登录用户的相关service
@@ -36,4 +40,13 @@ public interface IUserCenterLoginUserService {
      * @return
      */
     Users updateUserFace(String uid, String faceUrl);
+
+    /**
+     * 根据用户id查询用户订单
+     *
+     * @param uid
+     * @param orderStatus
+     * @return
+     */
+    public CommonPagedResult getUserOrderList(String uid, Integer orderStatus, Integer pageNumber, Integer pageSize);
 }
