@@ -4,6 +4,7 @@ import lombok.val;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 
+import java.io.File;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -19,16 +20,16 @@ public class BaseController {
     /**
      * 默认展示第1页
      */
-    public final Integer DEFAULT_PAGE_NUMBER = 1;
+    public static final Integer DEFAULT_PAGE_NUMBER = 1;
     /**
      * 默认每页展示10条数据
      */
-    public final Integer DEFAULT_PAGE_SIZE = 10;
+    public static final Integer DEFAULT_PAGE_SIZE = 10;
 
     /**
      * 默认购物车cookie名
      */
-    public final String SHOPCART_COOKIE_NAME = "shopcart";
+    public static final String SHOPCART_COOKIE_NAME = "shopcart";
 
     /**
      * 支付中心URL
@@ -38,19 +39,28 @@ public class BaseController {
     /**
      * 支付成功回调URL
      */
-    public final String PAYMENT_RETURN_URL = "http://localhost:8088/orders/notifyOrderFromWechat";
+    public static final String PAYMENT_RETURN_URL = "http://localhost:8088/orders/notifyOrderFromWechat";
 
     /**
      * 支付中心账户
      */
-    public final String PAYMENT_USER_ID = "3120391-497095098";//zhangpan
+    public static final String PAYMENT_USER_ID = "3120391-497095098";//zhangpan
 
     /**
      * 支付中心账户密码
      */
-    public final String PAYMENT_PASSWORD = "1i12-pow0-pdwq-jgg8";
+    public static final String PAYMENT_PASSWORD = "1i12-pow0-pdwq-jgg8";
 
-    public Map<String, String> getErrorsMap(BindingResult result) {
+    /**
+     * 文件上传路径
+     */
+    public static final String IMG_FACE_UPLOAD_PATH =
+            File.separator + "promotion" +
+                    File.separator + "sources" +
+                    File.separator + "expensive-shop" +
+                    File.separator + "face-img";
+
+    public static Map<String, String> getErrorsMap(BindingResult result) {
         Map<String, String> resultMap = new HashMap<>();
         result.getFieldErrors().stream().forEach(e -> {
             val field = e.getField();

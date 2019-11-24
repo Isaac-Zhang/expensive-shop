@@ -6,20 +6,29 @@ import com.liferunner.dto.UserResponseDTO;
 import com.liferunner.dto.UserUpdateRequestDTO;
 import com.liferunner.service.usercenter.IUserCenterLoginUserService;
 import com.liferunner.utils.CookieTools;
+import com.liferunner.utils.DateTools;
 import com.liferunner.utils.JsonResponse;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import lombok.val;
+import org.apache.commons.lang3.StringUtils;
+import org.apache.tomcat.util.http.fileupload.IOUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.util.Date;
 
 /**
  * UserCenterController for : 用户中心controller
@@ -83,5 +92,57 @@ public class UserCenterController extends BaseController {
                 JSON.toJSONString(userUpdateRequestDTO),
                 uid);
         return JsonResponse.errorMsg("更新用户失败");
+    }
+
+    @PostMapping("/upload")
+    @ApiOperation(tags = "用户头像上传", value = "用户头像上传")
+    public JsonResponse uploadFile(
+            @RequestParam String uid,
+            MultipartFile file
+    ) {
+        if (null == file) {
+            return JsonResponse.errorMsg("文件不能为空");
+        }
+        String filePathDir = IMG_FACE_UPLOAD_PATH;
+        // 每个用户单独存储一个目录
+        String uploadPathPrefix = File.separator + uid;
+        //获取文件名称
+        String filename = file.getOriginalFilename();
+        if (StringUtils.isBlank(filename)) {
+            return JsonResponse.errorMsg("文件名称不能为空");
+        }
+        //文件重命名
+        String[] fileNameArray = filename.split("\\.");
+        //获取文件后缀名
+        String fileSuffix = fileNameArray[fileNameArray.length - 1];
+        String newFileName = "face-" + uid + "-"
+                + System.currentTimeMillis()
+                + "." + fileSuffix;
+        //文件上传的最终保存位置
+        String fileSavePath = filePathDir + uploadPathPrefix + File.separator + newFileName;
+        File fileOut = new File(fileSavePath);
+        if (fileOut.getParentFile() != null) {
+            //创建存储文件夹
+            fileOut.getParentFile().mkdirs();
+            //输出文件到保存目录
+            FileOutputStream outputStream = null;
+            try {
+                outputStream = new FileOutputStream(fileOut);
+                InputStream inputStream = file.getInputStream();
+                IOUtils.copy(inputStream, outputStream);
+            } catch (IOException e) {
+                e.printStackTrace();
+            } finally {
+                try {
+                    if (outputStream != null) {
+                        outputStream.flush();
+                        outputStream.close();
+                    }
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+        return JsonResponse.ok();
     }
 }
