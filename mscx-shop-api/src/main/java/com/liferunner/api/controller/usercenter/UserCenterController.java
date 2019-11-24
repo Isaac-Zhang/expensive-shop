@@ -115,8 +115,14 @@ public class UserCenterController extends BaseController {
         }
         //文件重命名
         String[] fileNameArray = filename.split("\\.");
+
         //获取文件后缀名
         String fileSuffix = fileNameArray[fileNameArray.length - 1];
+        if (!(fileSuffix.equalsIgnoreCase("png") ||
+                fileSuffix.equalsIgnoreCase("jpg") ||
+                fileSuffix.equalsIgnoreCase("jpeg"))) {
+            return JsonResponse.errorMsg("上传图片格式错误！");
+        }
         String newFileName = "face-" + uid + "-"
                 + System.currentTimeMillis()
                 + "." + fileSuffix;
