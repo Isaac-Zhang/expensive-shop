@@ -49,7 +49,7 @@ public class UserCenterController extends BaseController {
      * @return
      */
     @PostMapping("/userinfo")
-    @ApiOperation(tags = "根据用户id获取用户", value = "根据用户id获取用户")
+    @ApiOperation(notes = "根据用户id获取用户", value = "根据用户id获取用户")
     public JsonResponse findUserByUid(@RequestParam String uid) {
         val user = this.userCenterLoginUserService.findUserById(uid);
         if (null != user) {
@@ -59,7 +59,7 @@ public class UserCenterController extends BaseController {
     }
 
     @PostMapping("/update")
-    @ApiOperation(tags = "根据用户id更新用户", value = "根据用户id更新用户")
+    @ApiOperation(notes = "根据用户id更新用户", value = "根据用户id更新用户")
     public JsonResponse updateUser(
             @RequestParam String uid,
             @RequestBody @Valid UserUpdateRequestDTO userUpdateRequestDTO,
@@ -96,7 +96,7 @@ public class UserCenterController extends BaseController {
     }
 
     @PostMapping("/upload")
-    @ApiOperation(tags = "用户头像上传", value = "用户头像上传")
+    @ApiOperation(notes = "用户头像上传", value = "用户头像上传")
     public JsonResponse uploadFile(
             @RequestParam String uid,
             MultipartFile file,
