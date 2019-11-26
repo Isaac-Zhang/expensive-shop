@@ -16,4 +16,6 @@ import java.util.Map;
 public interface OrderCustomMapper {
 
     List<UserOrderResponseDTO> getUserOrderList(@Param("paramMap") Map<String, Object> paramMap);
+
+    Integer CountOrderByStatus(@Param("paramMap") Map<String, Object> paramMap);
 }

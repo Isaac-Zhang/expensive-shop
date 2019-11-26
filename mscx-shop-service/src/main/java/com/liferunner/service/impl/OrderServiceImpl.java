@@ -1,8 +1,10 @@
 package com.liferunner.service.impl;
 
+import com.liferunner.custom.OrderCustomMapper;
 import com.liferunner.dto.MerchantOrderRequestDTO;
 import com.liferunner.dto.OrderRequestDTO;
 import com.liferunner.dto.OrderResponseDTO;
+import com.liferunner.dto.UserCenterCounterResponseDTO;
 import com.liferunner.enums.BooleanEnum;
 import com.liferunner.enums.OrderStatusEnum;
 import com.liferunner.mapper.OrderProductsMapper;
@@ -16,6 +18,8 @@ import com.liferunner.service.IOrderService;
 import com.liferunner.service.IProductService;
 import com.liferunner.service.IUserService;
 import com.liferunner.utils.DateTools;
+import java.util.HashMap;
+import java.util.Map;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import lombok.val;
@@ -41,6 +45,7 @@ import java.util.Date;
 public class OrderServiceImpl implements IOrderService {
 
     private final OrdersMapper ordersMapper;
+    private final OrderCustomMapper orderCustomMapper;
     private final OrderProductsMapper orderProductsMapper;
     private final Sid sid;
     private final IUserService userService;
@@ -193,6 +198,32 @@ public class OrderServiceImpl implements IOrderService {
         return this.ordersMapper.updateByPrimaryKeySelective(
             Orders.builder().id(orderId).isDelete(BooleanEnum.TRUE.type).build()
         );
+    }
+
+    @Override
+    public UserCenterCounterResponseDTO CountOrderByStatus(String userId) {
+        Map<String, Object> map = new HashMap<>();
+        map.put("userId", userId);
+
+        map.put("orderStatus", OrderStatusEnum.WAIT_PAY.key);
+        int waitPayCounts = this.orderCustomMapper.CountOrderByStatus(map);
+
+        map.put("orderStatus", OrderStatusEnum.WAIT_DELIVER.key);
+        int waitDeliverCounts = this.orderCustomMapper.CountOrderByStatus(map);
+
+        map.put("orderStatus", OrderStatusEnum.WAIT_RECEIVE.key);
+        int waitReceiveCounts = this.orderCustomMapper.CountOrderByStatus(map);
+
+        map.put("orderStatus", OrderStatusEnum.SUCCESS.key);
+        map.put("isComment", BooleanEnum.FALSE.type);
+        int waitCommentCounts = this.orderCustomMapper.CountOrderByStatus(map);
+
+        return UserCenterCounterResponseDTO.builder()
+            .waitPayCounts(waitPayCounts)
+            .waitDeliverCounts(waitDeliverCounts)
+            .waitReceiveCounts(waitReceiveCounts)
+            .waitCommentCounts(waitCommentCounts)
+            .build();
     }
 
     @Transactional(propagation = Propagation.REQUIRED, rollbackFor = Exception.class)

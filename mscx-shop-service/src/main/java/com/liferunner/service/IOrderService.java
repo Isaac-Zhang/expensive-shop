@@ -2,6 +2,7 @@ package com.liferunner.service;
 
 import com.liferunner.dto.OrderRequestDTO;
 import com.liferunner.dto.OrderResponseDTO;
+import com.liferunner.dto.UserCenterCounterResponseDTO;
 import com.liferunner.enums.OrderStatusEnum;
 import com.liferunner.pojo.OrderStatus;
 import com.liferunner.pojo.Orders;
@@ -44,5 +45,22 @@ public interface IOrderService {
 
     Orders getOrderById(String orderId);
 
+    /***
+     * 订单删除
+     *
+     * @author <a href="mailto:zhangpan@geekplus.com.cn">Isaac.Zhang | 若初</a>
+     * @param orderId
+     * @return int
+     * @throws
+     */
     int deleteOrder(String orderId);
+
+    /***
+     * 根据订单状态统计数
+     *
+     * @param userId
+     * @return java.lang.Integer
+     * @throws
+     */
+    UserCenterCounterResponseDTO CountOrderByStatus(String userId);
 }

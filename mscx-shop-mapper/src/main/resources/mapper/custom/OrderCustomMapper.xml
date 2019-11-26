@@ -56,4 +56,22 @@
         where
         oi.order_id = #{orderId}
     </select>
+
+  <select id="CountOrderByStatus" parameterType="Map" resultType="int">
+    SELECT
+    count(*)
+    FROM
+    orders o
+    LEFT JOIN
+    order_status os
+    on
+    o.id = os.order_id
+    WHERE
+    o.user_id = #{paramMap.userId}
+    AND
+    os.order_status = #{paramMap.orderStatus}
+    <if test="paramMap.isComment != null">
+      and o.is_comment = #{paramMap.isComment}
+    </if>
+  </select>
 </mapper>

@@ -253,5 +253,17 @@ public class UserCenterController extends BaseController {
         return JsonResponse.errorMsg("订单删除失败！");
     }
 
+    @PostMapping("/countOrderStatus")
+    @ApiOperation(notes = "统计订单状态流转数", value = "统计订单状态流转数")
+    public JsonResponse countOrderStatus(
+        @ApiParam(name = "userId", value = "用户id", required = true)
+        @RequestParam String userId
+    ) {
+        if (StringUtils.isBlank(userId)) {
+            return JsonResponse.errorMsg("参数错误");
+        }
+        val userCenterCounterResponseDTO = this.orderService.CountOrderByStatus(userId);
+        return JsonResponse.ok(userCenterCounterResponseDTO);
+    }
 
 }
