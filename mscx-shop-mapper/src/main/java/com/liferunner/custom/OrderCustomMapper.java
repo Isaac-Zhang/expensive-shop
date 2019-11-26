@@ -1,6 +1,7 @@
 package com.liferunner.custom;
 
 import com.liferunner.dto.UserOrderResponseDTO;
+import com.liferunner.pojo.OrderStatus;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.web.bind.annotation.RequestParam;
 
@@ -18,4 +19,6 @@ public interface OrderCustomMapper {
     List<UserOrderResponseDTO> getUserOrderList(@Param("paramMap") Map<String, Object> paramMap);
 
     Integer CountOrderByStatus(@Param("paramMap") Map<String, Object> paramMap);
+
+    List<OrderStatus> getMyOrderJournal(@Param("paramMap") Map<String, Object> map);
 }

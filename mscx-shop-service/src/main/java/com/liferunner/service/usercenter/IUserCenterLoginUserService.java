@@ -70,5 +70,17 @@ public interface IUserCenterLoginUserService {
      * @return boolean
      * @throws
      */
-    boolean updateReceiveOrderStatus(String orderId,Integer orderStatus);
+    boolean updateReceiveOrderStatus(String orderId, Integer orderStatus);
+
+    /***
+     * 获取用户订单日志
+     *
+     * @author <a href="mailto:zhangpan@geekplus.com.cn">Isaac.Zhang | 若初</a>
+     * @param userId
+     * @param pageNumber
+     * @param pageSize
+     * @return com.liferunner.utils.CommonPagedResult
+     * @throws
+     */
+    CommonPagedResult getOrdersTrend(String userId, Integer pageNumber, Integer pageSize);
 }

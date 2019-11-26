@@ -7,6 +7,7 @@ import com.liferunner.dto.UserUpdateRequestDTO;
 import com.liferunner.enums.OrderStatusEnum;
 import com.liferunner.service.IOrderService;
 import com.liferunner.service.usercenter.IUserCenterLoginUserService;
+import com.liferunner.utils.CommonPagedResult;
 import com.liferunner.utils.CookieTools;
 import com.liferunner.utils.DateTools;
 import com.liferunner.utils.JsonResponse;
@@ -264,6 +265,33 @@ public class UserCenterController extends BaseController {
         }
         val userCenterCounterResponseDTO = this.orderService.CountOrderByStatus(userId);
         return JsonResponse.ok(userCenterCounterResponseDTO);
+    }
+
+    @ApiOperation(value = "查询订单日志动向", notes = "查询订单日志动向", httpMethod = "POST")
+    @PostMapping("/trend")
+    public JsonResponse trend(
+        @ApiParam(name = "userId", value = "用户id", required = true)
+        @RequestParam String userId,
+        @ApiParam(name = "pageNumber", value = "查询下一页的第几页", required = false)
+        @RequestParam Integer pageNumber,
+        @ApiParam(name = "pageSize", value = "分页的每一页显示的条数", required = false)
+        @RequestParam Integer pageSize) {
+
+        if (StringUtils.isBlank(userId)) {
+            return JsonResponse.errorMsg(null);
+        }
+        if (null == pageNumber || 0 == pageNumber) {
+            pageNumber = DEFAULT_PAGE_NUMBER;
+        }
+        if (null == pageSize || 0 == pageSize) {
+            pageSize = DEFAULT_PAGE_SIZE;
+        }
+
+        CommonPagedResult commonPagedResult = this.userCenterLoginUserService.getOrdersTrend(userId,
+            pageNumber,
+            pageSize);
+
+        return JsonResponse.ok(commonPagedResult);
     }
 
 }

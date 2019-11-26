@@ -95,6 +95,7 @@ public class UserCenterLoginUserServiceImpl implements IUserCenterLoginUserServi
             .build();
     }
 
+    @Transactional(propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
     @Override
     public boolean updateDeliverOrderStatus(String orderId, Integer orderStatus) {
         val result = this.orderStatusMapper.updateByPrimaryKeySelective(
@@ -107,6 +108,7 @@ public class UserCenterLoginUserServiceImpl implements IUserCenterLoginUserServi
         return result > 0 ? true : false;
     }
 
+    @Transactional(propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
     @Override
     public boolean updateReceiveOrderStatus(String orderId, Integer orderStatus) {
         val result = this.orderStatusMapper.updateByPrimaryKeySelective(
@@ -117,5 +119,23 @@ public class UserCenterLoginUserServiceImpl implements IUserCenterLoginUserServi
                 .build()
         );
         return result > 0 ? true : false;
+    }
+
+    @Transactional(propagation = Propagation.SUPPORTS)
+    @Override
+    public CommonPagedResult getOrdersTrend(String userId, Integer pageNumber, Integer pageSize) {
+
+        Map<String, Object> map = new HashMap<>();
+        map.put("userId", userId);
+
+        PageHelper.startPage(pageNumber, pageSize);
+        List<OrderStatus> list = this.orderCustomMapper.getMyOrderJournal(map);
+        PageInfo<?> pageInfo = new PageInfo<>(list);
+        return CommonPagedResult.builder()
+            .pageNumber(pageNumber)
+            .rows(list)
+            .totalPage(pageInfo.getPages())
+            .records(pageInfo.getTotal())
+            .build();
     }
 }
