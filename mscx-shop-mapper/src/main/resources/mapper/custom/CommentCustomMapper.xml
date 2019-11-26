@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.liferunner.custom.CommentCustomMapper">
+
+  <insert id="saveUserComments" parameterType="Map">
+    INSERT INTO
+    items_comments
+    (
+    id,
+    user_id,
+    item_id,
+    item_name,
+    item_spec_id,
+    sepc_name,
+    comment_level,
+    content,
+    created_time,
+    updated_time
+    )
+    VALUES
+    <foreach collection="commentList" item="item" index="index" separator=",">
+      (
+      #{item.commentId},
+      #{userId},
+      #{item.productId},
+      #{item.productName},
+      #{item.productSpecId},
+      #{item.productSpecName},
+      #{item.commentLevel},
+      #{item.content},
+      now(),
+      now()
+      )
+    </foreach>
+  </insert>
+
+  <resultMap id="UserCommentDTO" type="com.liferunner.dto.UserCommentResponseDTO">
+    <id column="commentId" property="commentId"/>
+    <result column="content" property="content"/>
+    <result column="createdTime" property="createdTime"/>
+    <result column="productId" property="productId"/>
+    <result column="productName" property="productName"/>
+    <result column="productSpecName" property="productSpecName"/>
+    <result column="productImg" property="productImg"/>
+  </resultMap>
+
+  <select id="getUserCommentList" parameterType="Map" resultMap="UserCommentDTO">
+    SELECT
+        ic.id as commentId,
+        ic.content as content,
+        ic.created_time as createdTime,
+        ic.item_id as productId,
+        ic.item_name as productName,
+        ic.sepc_name as productSpecName,
+        ii.url as productImg
+    FROM
+        items_comments ic
+    LEFT JOIN
+        items_img ii
+    ON
+        ic.item_id = ii.item_id
+    WHERE
+        ic.user_id = #{paramMap.userId}
+    AND
+        ii.is_main = 1
+    ORDER BY
+        ic.created_time
+    desc
+  </select>
+</mapper>

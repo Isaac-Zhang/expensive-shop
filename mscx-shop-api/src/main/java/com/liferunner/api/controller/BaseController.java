@@ -1,6 +1,10 @@
 package com.liferunner.api.controller;
 
+import com.liferunner.enums.BooleanEnum;
+import com.liferunner.pojo.Orders;
+import com.liferunner.service.IOrderService;
 import lombok.val;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 
@@ -55,10 +59,10 @@ public class BaseController {
      * 文件上传路径
      */
     public static final String IMG_FACE_UPLOAD_PATH =
-            File.separator + "promotion" +
-                    File.separator + "sources" +
-                    File.separator + "expensive-shop" +
-                    File.separator + "face-img";
+        File.separator + "promotion" +
+            File.separator + "sources" +
+            File.separator + "expensive-shop" +
+            File.separator + "face-img";
     /**
      * 图片存储的web地址前缀
      */
@@ -72,5 +76,21 @@ public class BaseController {
             resultMap.put(field, String.valueOf(error));
         });
         return resultMap;
+    }
+
+    @Autowired
+    private IOrderService orderService;
+
+    /***
+     * 验证当前订单是否属于当前用户
+     * 防止恶意更新
+     */
+    public boolean validateRelationshipUserAndOrder(String userId, String orderId) {
+        Orders order = this.orderService.getOrderById(orderId);
+        if (null != order && order.getUserId().equalsIgnoreCase(userId) && order.getIsDelete()
+            .equals(BooleanEnum.FALSE.type)) {
+            return true;
+        }
+        return false;
     }
 }

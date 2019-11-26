@@ -39,6 +39,7 @@ import java.util.Date;
 @Slf4j
 @RequiredArgsConstructor(onConstructor = @__(@Autowired))
 public class OrderServiceImpl implements IOrderService {
+
     private final OrdersMapper ordersMapper;
     private final OrderProductsMapper orderProductsMapper;
     private final Sid sid;
@@ -71,93 +72,93 @@ public class OrderServiceImpl implements IOrderService {
             // 查询商品主图
             val productsImgList = this.productService.getProductImgsByPid(productsSpec.getProductId());
             val productsImg = productsImgList
-                    .stream()
-                    .filter(i -> i.getIsMain() == 1)
-                    .findFirst()
-                    .get();
+                .stream()
+                .filter(i -> i.getIsMain() == 1)
+                .findFirst()
+                .get();
             String mainImgUrl = productsImg.getUrl();
             val product = this.productService.findProductByPid(productsSpec.getProductId());
             // 准备插入订单子表对象
-            val orderProduct = new OrderProducts()
-                    .builder()
-                    .id(sid.nextShort())
-                    .orderId(orderId)
-                    .productId(productsSpec.getProductId())
-                    .productImg(mainImgUrl)
-                    .productName(product.getProductName())
-                    .productSpecId(productsSpec.getId())
-                    .productSpecName(productsSpec.getName())
-                    .price(productsSpec.getPriceDiscount())
-                    .buyCounts(buyNumber)
-                    .build();
+            val orderProduct = OrderProducts
+                .builder()
+                .id(sid.nextShort())
+                .orderId(orderId)
+                .productId(productsSpec.getProductId())
+                .productImg(mainImgUrl)
+                .productName(product.getProductName())
+                .productSpecId(productsSpec.getId())
+                .productSpecName(productsSpec.getName())
+                .price(productsSpec.getPriceDiscount())
+                .buyCounts(buyNumber)
+                .build();
             // 插入订单规格子表
             this.orderProductsMapper.insert(orderProduct);
             // 扣减当前商品规格库存
             this.productService.decreaseProductSpecStock(productsSpec.getId(), buyNumber);
         }
         // 创建订单主表
-        val order = new Orders()
-                .builder()
-                .id(orderId)
-                .userId(userId)
-                .payMethod(payMethod)
-                .postAmount(postFee)
-                .leftMsg(orderComment)
-                .receiverName(userAddress.getReceiver())
-                .receiverMobile(userAddress.getMobile())
-                .receiverAddress(
-                        new StringBuilder()
-                                .append(userAddress.getProvince())
-                                .append(" ")
-                                .append(userAddress.getCity())
-                                .append(" ")
-                                .append(userAddress.getDistrict())
-                                .append(" ")
-                                .append(userAddress.getDetail())
-                                .toString()
-                )
-                .isComment(BooleanEnum.FALSE.type)
-                .isDelete(BooleanEnum.FALSE.type)
-                .createdTime(new Date())
-                .updatedTime(new Date())
-                .realPayAmount(realFee)
-                .totalAmount(totalFee)
-                .build();
+        val order = Orders
+            .builder()
+            .id(orderId)
+            .userId(userId)
+            .payMethod(payMethod)
+            .postAmount(postFee)
+            .leftMsg(orderComment)
+            .receiverName(userAddress.getReceiver())
+            .receiverMobile(userAddress.getMobile())
+            .receiverAddress(
+                new StringBuilder()
+                    .append(userAddress.getProvince())
+                    .append(" ")
+                    .append(userAddress.getCity())
+                    .append(" ")
+                    .append(userAddress.getDistrict())
+                    .append(" ")
+                    .append(userAddress.getDetail())
+                    .toString()
+            )
+            .isComment(BooleanEnum.FALSE.type)
+            .isDelete(BooleanEnum.FALSE.type)
+            .createdTime(new Date())
+            .updatedTime(new Date())
+            .realPayAmount(realFee)
+            .totalAmount(totalFee)
+            .build();
         // 插入订单主表
         this.ordersMapper.insert(order);
         // 插入订单状态子表
-        val orderStatus = new OrderStatus()
-                .builder()
-                .orderId(orderId)
-                .orderStatus(OrderStatusEnum.WAIT_PAY.key)
-                .createdTime(new Date())
-                .build();
+        val orderStatus = OrderStatus
+            .builder()
+            .orderId(orderId)
+            .orderStatus(OrderStatusEnum.WAIT_PAY.key)
+            .createdTime(new Date())
+            .build();
         this.orderStatusMapper.insertSelective(orderStatus);
         // 构建发送到支付中心的数据对象
-        val merchantOrderRequestDTO = new MerchantOrderRequestDTO()
-                .builder()
-                .merchantOrderId(orderId)
-                .merchantUserId(userId)
-                .amount(realFee + postFee)
-                .payMethod(payMethod)
-                .build();
-        return new OrderResponseDTO()
-                .builder()
-                .orderId(orderId)
-                .merchantOrderRequestDTO(merchantOrderRequestDTO)
-                .build();
+        val merchantOrderRequestDTO = MerchantOrderRequestDTO
+            .builder()
+            .merchantOrderId(orderId)
+            .merchantUserId(userId)
+            .amount(realFee + postFee)
+            .payMethod(payMethod)
+            .build();
+        return OrderResponseDTO
+            .builder()
+            .orderId(orderId)
+            .merchantOrderRequestDTO(merchantOrderRequestDTO)
+            .build();
     }
 
-    @Transactional(propagation = Propagation.REQUIRED)
+    @Transactional(propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
     @Override
     public void updateOrderStatus(String orderId, Integer orderStatus) {
         this.orderStatusMapper.updateByPrimaryKeySelective(
-                new OrderStatus()
-                        .builder()
-                        .orderId(orderId)
-                        .payTime(new Date())
-                        .orderStatus(orderStatus)
-                        .build()
+            OrderStatus
+                .builder()
+                .orderId(orderId)
+                .payTime(new Date())
+                .orderStatus(orderStatus)
+                .build()
         );
     }
 
@@ -166,7 +167,7 @@ public class OrderServiceImpl implements IOrderService {
         return this.orderStatusMapper.selectByPrimaryKey(orderId);
     }
 
-    @Transactional(propagation = Propagation.REQUIRED)
+    @Transactional(propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
     @Override
     public void AutoCloseOvertimeOrder() {
         Example example = new Example(OrderStatus.class);
@@ -182,17 +183,29 @@ public class OrderServiceImpl implements IOrderService {
         }
     }
 
-    @Transactional
+    @Override
+    public Orders getOrderById(String orderId) {
+        return this.ordersMapper.selectByPrimaryKey(orderId);
+    }
+
+    @Override
+    public int deleteOrder(String orderId) {
+        return this.ordersMapper.updateByPrimaryKeySelective(
+            Orders.builder().id(orderId).isDelete(BooleanEnum.TRUE.type).build()
+        );
+    }
+
+    @Transactional(propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
     /**
      * 根据orderId关闭订单
      */
-    private void closeOrder(String orderId) {
+    protected void closeOrder(String orderId) {
         this.orderStatusMapper.updateByPrimaryKeySelective(
-                OrderStatus.builder()
-                        .orderStatus(OrderStatusEnum.CLOSE.key)
-                        .closeTime(new Date())
-                        .orderId(orderId)
-                        .build()
+            OrderStatus.builder()
+                .orderStatus(OrderStatusEnum.CLOSE.key)
+                .closeTime(new Date())
+                .orderId(orderId)
+                .build()
         );
     }
 }

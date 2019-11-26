@@ -8,6 +8,7 @@ import lombok.*;
 @ToString
 @AllArgsConstructor
 @NoArgsConstructor
+@Data
 @Builder
 @Table(name = "orders")
 public class Orders {

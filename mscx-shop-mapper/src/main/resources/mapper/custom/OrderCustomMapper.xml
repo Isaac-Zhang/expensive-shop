@@ -1,67 +1,59 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.liferunner.custom.OrderCustomMapper">
-    <resultMap id="userOrderDTO" type="com.liferunner.dto.UserOrderResponseDTO">
-        <id column="orderId" property="orderId"/>
-        <result column="createdTime" property="createdTime"/>
-        <result column="payMethod" property="payMethod"/>
-        <result column="realPayAmount" property="realPayAmount"/>
-        <result column="postAmount" property="postAmount"/>
-        <result column="orderStatus" property="orderStatus"/>
-        <result column="isComment" property="isComment"/>
-        <collection property="orderItemList" ofType="com.liferunner.dto.UserOrderItemResponseDTO">
-                    <!--select="getSubItems"-->
-                    <!--column="orderId"-->
-
-            <result column="productId" property="productId"/>
-            <result column="productName" property="productName"/>
-            <result column="productImage" property="productImage"/>
-            <result column="productSpecName" property="productSpecName"/>
-            <result column="buyCounts" property="buyCounts"/>
-            <result column="price" property="price"/>
-        </collection>
-    </resultMap>
-    <select id="getUserOrderList" resultMap="userOrderDTO" parameterType="Map">
-        SELECT
-        o.id as orderId,
-        o.created_time as createdTime,
-        o.pay_method as payMethod,
-        o.real_pay_amount as realPayAmount,
-        o.post_amount as postAmount,
-        os.order_status as orderStatus,
+  <resultMap id="userOrderDTO" type="com.liferunner.dto.UserOrderResponseDTO">
+    <id column="orderId" property="orderId"/>
+    <result column="createdTime" property="createdTime"/>
+    <result column="payMethod" property="payMethod"/>
+    <result column="realPayAmount" property="realPayAmount"/>
+    <result column="postAmount" property="postAmount"/>
+    <result column="orderStatus" property="orderStatus"/>
+    <result column="isComment" property="isComment"/>
+    <collection property="orderItemList"
+      select="getOrderSubItems"
+      column="orderId"
+      ofType="com.liferunner.dto.UserOrderItemResponseDTO">
+      <result column="productId" property="productId"/>
+      <result column="productName" property="productName"/>
+      <result column="productImage" property="productImage"/>
+      <result column="productSpecName" property="productSpecName"/>
+      <result column="buyCounts" property="buyCounts"/>
+      <result column="price" property="price"/>
+    </collection>
+  </resultMap>
+  <select id="getUserOrderList" resultMap="userOrderDTO" parameterType="Map">
+    SELECT
+    o.id as orderId,
+    o.created_time as createdTime,
+    o.pay_method as payMethod,
+    o.real_pay_amount as realPayAmount,
+    o.post_amount as postAmount,
+    os.order_status as orderStatus
+    FROM
+    orders o
+    LEFT JOIN order_items oi
+    ON o.id=oi.order_id
+    LEFT JOIN order_status os
+    ON o.id = os.order_id
+    WHERE o.user_id = #{paramMap.userId}
+    AND o.is_delete = 0
+    <if test="paramMap.orderStatus != null">
+      and os.order_status = #{paramMap.orderStatus}
+    </if>
+    ORDER BY o.created_time asc
+  </select>
+  <!-- 解决mybatis-pagehelper 不支持嵌套对象分页查询bug-->
+  <select id="getOrderSubItems" parameterType="String" resultType="com.liferunner.dto.UserOrderItemResponseDTO">
+        select
         oi.item_id as productId,
         oi.item_name as productName,
         oi.item_img as productImage,
         oi.item_spec_name as productSpecName,
         oi.buy_counts as buyCounts,
         oi.price as price
-        FROM
-        orders o
-        LEFT JOIN order_items oi
-        ON o.id=oi.order_id
-        LEFT JOIN order_status os
-        ON o.id = os.order_id
-        WHERE o.user_id = #{paramMap.userId}
-        AND o.is_delete = 0
-        <if test="paramMap.orderStatus != null">
-            and os.order_status = #{paramMap.orderStatus}
-        </if>
-        ORDER BY o.created_time asc
+        from
+        order_items oi
+        where
+        oi.order_id = #{orderId}
     </select>
-
-    <!--<select id="getSubItems" parameterType="String" resultType="com.imooc.pojo.vo.MySubOrderItemVO">-->
-
-        <!--select-->
-        <!--oi.item_id as itemId,-->
-        <!--oi.item_name as itemName,-->
-        <!--oi.item_img as itemImg,-->
-        <!--oi.item_spec_name as itemSpecName,-->
-        <!--oi.buy_counts as buyCounts,-->
-        <!--oi.price as price-->
-        <!--from-->
-        <!--order_items oi-->
-        <!--where-->
-        <!--oi.order_id = #{orderId}-->
-
-    <!--</select>-->
 </mapper>

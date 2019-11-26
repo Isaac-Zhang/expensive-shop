@@ -48,5 +48,27 @@ public interface IUserCenterLoginUserService {
      * @param orderStatus
      * @return
      */
-    public CommonPagedResult getUserOrderList(String uid, Integer orderStatus, Integer pageNumber, Integer pageSize);
+    CommonPagedResult getUserOrderList(String uid, Integer orderStatus, Integer pageNumber, Integer pageSize);
+
+    /***
+     * 更新订单发货
+     *
+     * @author <a href="mailto:zhangpan@geekplus.com.cn">Isaac.Zhang | 若初</a>
+     * @param orderId
+     * @param orderStatus
+     * @return boolean
+     * @throws
+     */
+    boolean updateDeliverOrderStatus(String orderId, Integer orderStatus);
+
+    /***
+     * 更新订单收货
+     *
+     * @author <a href="mailto:zhangpan@geekplus.com.cn">Isaac.Zhang | 若初</a>
+     * @param orderId
+     * @param orderStatus
+     * @return boolean
+     * @throws
+     */
+    boolean updateReceiveOrderStatus(String orderId,Integer orderStatus);
 }

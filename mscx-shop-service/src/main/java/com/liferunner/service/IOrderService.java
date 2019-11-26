@@ -4,6 +4,7 @@ import com.liferunner.dto.OrderRequestDTO;
 import com.liferunner.dto.OrderResponseDTO;
 import com.liferunner.enums.OrderStatusEnum;
 import com.liferunner.pojo.OrderStatus;
+import com.liferunner.pojo.Orders;
 
 /**
  * IOrderService for : TODO
@@ -40,4 +41,8 @@ public interface IOrderService {
      * 定时关闭超时的订单
      */
     void AutoCloseOvertimeOrder();
+
+    Orders getOrderById(String orderId);
+
+    int deleteOrder(String orderId);
 }

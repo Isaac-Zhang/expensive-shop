@@ -3,13 +3,25 @@ package com.liferunner.service.impl;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.liferunner.custom.ProductCustomMapper;
-import com.liferunner.dto.*;
-import com.liferunner.mapper.*;
-import com.liferunner.pojo.*;
+import com.liferunner.dto.IndexProductDTO;
+import com.liferunner.dto.ProductCommentDTO;
+import com.liferunner.dto.ShopcartResponseDTO;
+import com.liferunner.mapper.ProductsCommentsMapper;
+import com.liferunner.mapper.ProductsImgMapper;
+import com.liferunner.mapper.ProductsMapper;
+import com.liferunner.mapper.ProductsParamMapper;
+import com.liferunner.mapper.ProductsSpecMapper;
+import com.liferunner.pojo.Products;
+import com.liferunner.pojo.ProductsComments;
+import com.liferunner.pojo.ProductsImg;
+import com.liferunner.pojo.ProductsParam;
+import com.liferunner.pojo.ProductsSpec;
 import com.liferunner.service.IProductService;
 import com.liferunner.utils.CommonPagedResult;
 import com.liferunner.utils.SecurityTools;
-import io.swagger.models.auth.In;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import lombok.val;
@@ -19,10 +31,6 @@ import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.CollectionUtils;
 import tk.mybatis.mapper.entity.Example;
-
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 
 /**
  * ProductServiceImpl for : 商品操作相关service

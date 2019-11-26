@@ -4,12 +4,15 @@ import com.alibaba.fastjson.JSON;
 import com.liferunner.api.controller.BaseController;
 import com.liferunner.dto.UserResponseDTO;
 import com.liferunner.dto.UserUpdateRequestDTO;
+import com.liferunner.enums.OrderStatusEnum;
+import com.liferunner.service.IOrderService;
 import com.liferunner.service.usercenter.IUserCenterLoginUserService;
 import com.liferunner.utils.CookieTools;
 import com.liferunner.utils.DateTools;
 import com.liferunner.utils.JsonResponse;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiParam;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import lombok.val;
@@ -43,7 +46,9 @@ import java.util.Date;
 @RequiredArgsConstructor(onConstructor = @__(@Autowired))
 @Api(tags = "用户中心相关API接口", value = "用户中心controller")
 public class UserCenterController extends BaseController {
+
     private final IUserCenterLoginUserService userCenterLoginUserService;
+    private final IOrderService orderService;
 
     /**
      * @return
@@ -61,19 +66,19 @@ public class UserCenterController extends BaseController {
     @PostMapping("/update")
     @ApiOperation(notes = "根据用户id更新用户", value = "根据用户id更新用户")
     public JsonResponse updateUser(
-            @RequestParam String uid,
-            @RequestBody @Valid UserUpdateRequestDTO userUpdateRequestDTO,
-            BindingResult result,
-            HttpServletRequest request,
-            HttpServletResponse response
+        @RequestParam String uid,
+        @RequestBody @Valid UserUpdateRequestDTO userUpdateRequestDTO,
+        BindingResult result,
+        HttpServletRequest request,
+        HttpServletResponse response
     ) {
         if (result.hasErrors()) {
             val errorsMap = getErrorsMap(result);
             return JsonResponse.errorMap(errorsMap);
         }
         log.info("==========update user:{} begin by uid:{}",
-                JSON.toJSONString(userUpdateRequestDTO),
-                uid);
+            JSON.toJSONString(userUpdateRequestDTO),
+            uid);
         val updateUser = this.userCenterLoginUserService.updateUser(uid, userUpdateRequestDTO);
         if (null != updateUser) {
             UserResponseDTO userResponseDTO = new UserResponseDTO();
@@ -82,26 +87,26 @@ public class UserCenterController extends BaseController {
             if (null != userResponseDTO) {
                 // 设置前端存储的cookie信息
                 CookieTools.setCookie(request, response, "user",
-                        JSON.toJSONString(userResponseDTO), true);
+                    JSON.toJSONString(userResponseDTO), true);
                 log.info("==========update user:{} success by uid:{}",
-                        JSON.toJSONString(userResponseDTO),
-                        uid);
+                    JSON.toJSONString(userResponseDTO),
+                    uid);
                 return JsonResponse.ok(userResponseDTO);
             }
         }
         log.warn("==========update user failed:{} by uid:{}",
-                JSON.toJSONString(userUpdateRequestDTO),
-                uid);
+            JSON.toJSONString(userUpdateRequestDTO),
+            uid);
         return JsonResponse.errorMsg("更新用户失败");
     }
 
     @PostMapping("/upload")
     @ApiOperation(notes = "用户头像上传", value = "用户头像上传")
     public JsonResponse uploadFile(
-            @RequestParam String uid,
-            MultipartFile file,
-            HttpServletRequest request,
-            HttpServletResponse response
+        @RequestParam String uid,
+        MultipartFile file,
+        HttpServletRequest request,
+        HttpServletResponse response
     ) {
         if (null == file) {
             return JsonResponse.errorMsg("文件不能为空");
@@ -120,13 +125,13 @@ public class UserCenterController extends BaseController {
         //获取文件后缀名
         String fileSuffix = fileNameArray[fileNameArray.length - 1];
         if (!(fileSuffix.equalsIgnoreCase("png") ||
-                fileSuffix.equalsIgnoreCase("jpg") ||
-                fileSuffix.equalsIgnoreCase("jpeg"))) {
+            fileSuffix.equalsIgnoreCase("jpg") ||
+            fileSuffix.equalsIgnoreCase("jpeg"))) {
             return JsonResponse.errorMsg("上传图片格式错误！");
         }
         String newFileName = "face-" + uid + "-"
-                + System.currentTimeMillis()
-                + "." + fileSuffix;
+            + System.currentTimeMillis()
+            + "." + fileSuffix;
         //文件上传的最终保存位置
         String fileSavePath = filePathDir + uploadPathPrefix + File.separator + newFileName;
         String faceWebUrl = IMG_FACE_BASE_WEB_URL + "/face-img/" + uid + "/" + newFileName;
@@ -161,10 +166,10 @@ public class UserCenterController extends BaseController {
             if (null != userResponseDTO) {
                 // 设置前端存储的cookie信息
                 CookieTools.setCookie(request, response, "user",
-                        JSON.toJSONString(userResponseDTO), true);
+                    JSON.toJSONString(userResponseDTO), true);
                 log.info("==========update user:{} success by uid:{}",
-                        JSON.toJSONString(userResponseDTO),
-                        uid);
+                    JSON.toJSONString(userResponseDTO),
+                    uid);
                 return JsonResponse.ok(userResponseDTO);
             }
         }
@@ -174,11 +179,79 @@ public class UserCenterController extends BaseController {
     @PostMapping("/userorders")
     @ApiOperation(notes = "查询用户订单", value = "查询用户订单")
     public JsonResponse getUserOrderList(
-            @RequestParam String userId,
-            @RequestParam Integer orderStatus,
-            @RequestParam Integer pageNumber,
-            @RequestParam Integer pageSize) {
-        val userOrderList = this.userCenterLoginUserService.getUserOrderList(userId, orderStatus,pageNumber,pageSize);
+        @RequestParam String userId,
+        @RequestParam Integer orderStatus,
+        @RequestParam Integer pageNumber,
+        @RequestParam Integer pageSize) {
+        val userOrderList = this.userCenterLoginUserService.getUserOrderList(userId, orderStatus, pageNumber, pageSize);
         return JsonResponse.ok(userOrderList);
     }
+
+    @PostMapping("/marchantDeliverGoods")
+    @ApiOperation(notes = "模拟商户发货", value = "模拟订单发货")
+    public JsonResponse marchantDeliverGoods(@RequestParam String orderId) {
+        if (StringUtils.isBlank(orderId)) {
+            log.warn("发货订单号码不正确！");
+            return JsonResponse.errorMsg("发货订单号码不正确");
+        }
+        //todo：更新订单之前，订单状态必须是已付款待发货
+
+        //更新订单状态信息 从付款未发货-->已发货待查收
+        val result = this.userCenterLoginUserService
+            .updateDeliverOrderStatus(orderId, OrderStatusEnum.WAIT_RECEIVE.key);
+        if (result) {
+            return JsonResponse.ok();
+        }
+        log.warn("订单:{} 发货更新状态失败！", orderId);
+        return JsonResponse.errorMsg("发货更新状态失败！");
+    }
+
+    @PostMapping("confirmReceive")
+    @ApiOperation(notes = "用户确认收货", value = "用户确认收货")
+    public JsonResponse confirmReceive(
+        @ApiParam(name = "userId", value = "用户id", required = true)
+        @RequestParam String userId,
+        @ApiParam(name = "orderId", value = "订单id", required = true)
+        @RequestParam String orderId
+    ) {
+        if (StringUtils.isBlank(userId) || StringUtils.isBlank(orderId)) {
+            return JsonResponse.errorMsg("用户确认订单参数错误");
+        }
+
+        //验证订单和用户关系
+        val relationship = validateRelationshipUserAndOrder(userId, orderId);
+        if (relationship) {
+            //验证通过之后，更新用户订单状态
+            val result = this.userCenterLoginUserService.updateReceiveOrderStatus(orderId, OrderStatusEnum.SUCCESS.key);
+            return JsonResponse.ok("收货完成");
+        }
+
+        return JsonResponse.errorMsg("确认收货失败！");
+    }
+
+    @PostMapping("/delete")
+    @ApiOperation(notes = "用户删除订单", value = "用户删除订单")
+    public JsonResponse deleteOrder(
+        @ApiParam(name = "userId", value = "用户id", required = true)
+        @RequestParam String userId,
+        @ApiParam(name = "orderId", value = "订单id", required = true)
+        @RequestParam String orderId
+    ) {
+        if (StringUtils.isBlank(userId) || StringUtils.isBlank(orderId)) {
+            return JsonResponse.errorMsg("用户确认订单参数错误");
+        }
+
+        //验证订单和用户关系
+        val relationship = validateRelationshipUserAndOrder(userId, orderId);
+        if (relationship) {
+            // 逻辑删除订单
+            val result = this.orderService.deleteOrder(orderId);
+            return result > 0 ? JsonResponse.errorMsg("订单删除成功！")
+                : JsonResponse.errorMsg("订单删除失败！");
+        }
+
+        return JsonResponse.errorMsg("订单删除失败！");
+    }
+
+
 }

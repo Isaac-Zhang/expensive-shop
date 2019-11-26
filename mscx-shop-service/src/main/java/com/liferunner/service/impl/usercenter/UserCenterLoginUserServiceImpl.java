@@ -5,7 +5,9 @@ import com.github.pagehelper.PageInfo;
 import com.liferunner.custom.OrderCustomMapper;
 import com.liferunner.dto.UserOrderResponseDTO;
 import com.liferunner.dto.UserUpdateRequestDTO;
+import com.liferunner.mapper.OrderStatusMapper;
 import com.liferunner.mapper.UsersMapper;
+import com.liferunner.pojo.OrderStatus;
 import com.liferunner.pojo.Users;
 import com.liferunner.service.usercenter.IUserCenterLoginUserService;
 import com.liferunner.utils.CommonPagedResult;
@@ -38,6 +40,7 @@ public class UserCenterLoginUserServiceImpl implements IUserCenterLoginUserServi
 
     private final UsersMapper usersMapper;
     private final OrderCustomMapper orderCustomMapper;
+    private final OrderStatusMapper orderStatusMapper;
 
     @Transactional(propagation = Propagation.SUPPORTS)
     @Override
@@ -71,7 +74,7 @@ public class UserCenterLoginUserServiceImpl implements IUserCenterLoginUserServi
 
     @Transactional(propagation = Propagation.SUPPORTS)
     @Override
-    public CommonPagedResult getUserOrderList(String uid, Integer orderStatus,Integer pageNumber,Integer pageSize) {
+    public CommonPagedResult getUserOrderList(String uid, Integer orderStatus, Integer pageNumber, Integer pageSize) {
         Map<String, Object> paramMap = new HashMap<>();
         paramMap.put("userId", uid);
         if (orderStatus != null) {
@@ -85,10 +88,34 @@ public class UserCenterLoginUserServiceImpl implements IUserCenterLoginUserServi
         PageInfo<?> pageInfo = new PageInfo<>(userOrderList);
         // 封装为返回到前端分页组件可识别的视图
         return CommonPagedResult.builder()
-                .pageNumber(pageNumber)
-                .rows(userOrderList)
-                .totalPage(pageInfo.getPages())
-                .records(pageInfo.getTotal())
-                .build();
+            .pageNumber(pageNumber)
+            .rows(userOrderList)
+            .totalPage(pageInfo.getPages())
+            .records(pageInfo.getTotal())
+            .build();
+    }
+
+    @Override
+    public boolean updateDeliverOrderStatus(String orderId, Integer orderStatus) {
+        val result = this.orderStatusMapper.updateByPrimaryKeySelective(
+            OrderStatus.builder()
+                .orderId(orderId)
+                .orderStatus(orderStatus)
+                .deliverTime(new Date())
+                .build()
+        );
+        return result > 0 ? true : false;
+    }
+
+    @Override
+    public boolean updateReceiveOrderStatus(String orderId, Integer orderStatus) {
+        val result = this.orderStatusMapper.updateByPrimaryKeySelective(
+            OrderStatus.builder()
+                .orderId(orderId)
+                .orderStatus(orderStatus)
+                .successTime(new Date())
+                .build()
+        );
+        return result > 0 ? true : false;
     }
 }
