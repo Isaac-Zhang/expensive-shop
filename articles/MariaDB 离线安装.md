@@ -1,58 +1,38 @@
-# 什么是mariaDB?
+# 在CentOS7中安装MariaDB
 
 - 在线安装（慢的要命）
 - RPM离线安装(CentOS7.X)
 
 ## 在线安装
 
-1. 打开官方网站 [https://mariadb.org/](https://mariadb.org/)
-
-   ![图1](https://i.loli.net/2019/11/28/sz6HE4UWpFow1Iq.png)
-
-2. 点击[Download](https://mariadb.org/download/),跳转到下一页面
-
-   ![图2](https://i.loli.net/2019/11/28/Y5sSlmVwQBbev3D.png)
-
-3. 继续点击[Download](https://downloads.mariadb.org/),进到下页
-
-   ![图3](https://i.loli.net/2019/11/28/6b5QMzlNBGHIVgt.png)
-
-4. 点击红框中的[链接](https://downloads.mariadb.org/mariadb/repositories/#mirror=23Media),进到一下页面
-
-   ![图4](https://i.loli.net/2019/11/28/g8MQc9P7r3WY4Nb.png)
-
-5. 根据自己的服务器的类型/版本来选择要安装的数据库版本.
-
+1. 打开官方网站 [https://mariadb.org/](https://mariadb.org/)  
+   ![图1](https://i.loli.net/2019/11/28/sz6HE4UWpFow1Iq.png)  
+2. 点击[Download](https://mariadb.org/download/),跳转到下一页面  
+   ![图2](https://i.loli.net/2019/11/28/Y5sSlmVwQBbev3D.png)  
+3. 继续点击[Download](https://downloads.mariadb.org/),进到下页  
+   ![图3](https://i.loli.net/2019/11/28/6b5QMzlNBGHIVgt.png)  
+4. 点击红框中的[链接]   (https://downloads.mariadb.org/mariadb/repositories/#mirror=23Media),进到一下页面  
+   ![图4](https://i.loli.net/2019/11/28/g8MQc9P7r3WY4Nb.png)  
+5. 根据自己的服务器的类型/版本来选择要安装的数据库版本.  
 按照上述步骤可以在线安装。
 
 ## 离线安装
 
-1. 点击图4中的[baseurl](http://yum.mariadb.org/10.4/centos7-amd64)
-
-   ![图5](https://i.loli.net/2019/11/28/FmUgKchBzXIZqYL.png)
-
-2. 点击[rpms](http://yum.mariadb.org/10.4/centos7-amd64/rpms/), 可以看到一堆rpm包，不要着急，继续看下一步
-
-   ![图6](https://i.loli.net/2019/11/28/cenNqMOkym87dKu.png)
-
+1. 点击图4中的[baseurl](http://yum.mariadb.org/10.4/centos7-amd64)  
+   ![图5](https://i.loli.net/2019/11/28/FmUgKchBzXIZqYL.png)  
+2. 点击[rpms](http://yum.mariadb.org/10.4/centos7-amd64/rpms/), 可以看到一堆rpm包，不要着急，继续看下一步  
+   ![图6](https://i.loli.net/2019/11/28/cenNqMOkym87dKu.png)  
 3. 打开[MariaDB org](mariadb.org) --> [Learn](https://mariadb.org/learn/)   --> [[MariaDB Knowledge Base](https://mariadb.com/kb/en/)] --> [MariaDB Server](https://mariadb.com/kb/en/documentation/) --> 
 
    [Getting, Installing, and Upgrading MariaDB](https://mariadb.com/kb/en/getting-installing-and-upgrading-mariadb/)  -->  [MariaDB Binary Packages](https://mariadb.com/kb/en/library/binary-packages/)  -->  [Installing MariaDB RPM Files](https://mariadb.com/kb/en/library/rpm/)  -->  [MariaDB Installation (Version 10.1.21) via RPMs on CentOS 7](https://mariadb.com/kb/en/library/mariadb-installation-version-10121-via-rpms-on-centos-7/)
 
-   最终的url点击之后，就可以看到如下图所示界面：
-
-   ![图7](https://i.loli.net/2019/11/28/wU6dILyTPWxzHqm.png)
-
-   本来完全可以提供最终的一个url，提供一步一步点击的按钮连接，是为了方便大家来学习路线思路，而不能只拿结果。
-
-4. 还记得我们之前第二步看到的一堆rpm包吗？ 下载第三步方框中的package,当然，这个文档的版本稍有点落后，但是我们只需要搜索前缀名称就行了，比如搜索`client`:
-
-   ![图8](https://i.loli.net/2019/11/28/2tBqoXAGNclwyFV.png)
-
-   我们下载最新版本就可以了。
-
-接下来进入正式步骤了哦～：
-
+   最终的url点击之后，就可以看到如下图所示界面：  
+   ![图7](https://i.loli.net/2019/11/28/wU6dILyTPWxzHqm.png)  
+   本来完全可以提供最终的一个url，提供一步一步点击的按钮连接，是为了方便大家来学习路线思路，而不能只拿结果。  
+4. 还记得我们之前第二步看到的一堆rpm包吗？ 下载第三步方框中的package,当然，这个文档的版本稍有点落后，但是我们只需要搜索前缀名称就行了，比如搜索`client`:  
+   ![图8](https://i.loli.net/2019/11/28/2tBqoXAGNclwyFV.png)  
+   我们下载最新版本就可以了。  
+接下来进入正式步骤了哦～：  
 在图7中有`Step by step installation`:
 
 > Step by step installation:
@@ -62,8 +42,7 @@
 > - 3) rpm -ivh jemalloc-devel-3.6.0-1.el7.x86_64.rpm
 > - 4) rpm -ivh MariaDB-10.1.21-centos7-x86_64-common.rpm MariaDB-10.1.21-centos7-x86_64-compat.rpm MariaDB-10.1.21-centos7-x86_64-client.rpm galera-25.3.19-1.rhel7.el7.centos.x86_64.rpm MariaDB-10.1.21-centos7-x86_64-server.rpm
 
-按照步骤我们开始：
-
+按照步骤我们开始：  
 1. 安装依赖信息，命令行执行：
 
    ```powershell
@@ -194,7 +173,58 @@
    Consider joining MariaDB's strong and vibrant community:
    https://mariadb.org/get-involved/
    ```
+   
 
-   重要安装成功了。。。
+终于安装成功了。。。
 
-   ![joke2](https://i.loli.net/2019/11/28/cVUZXjDeyunHRp5.png)
+![joke2](https://i.loli.net/2019/11/28/cVUZXjDeyunHRp5.png)
+
+接下来，最后一步配置数据库：
+
+```powershell
+# 启动mariaDB,(因为mariaDB是mysql作者写的新的数据库，其实服务和mysql是一样的，所以启动使用的是下面)
+[root@iZ2ze7s2v0b78922wia32rZ ~]# service mysql start
+# 安全配置
+[root@iZ2ze7s2v0b78922wia32rZ ~]# mysql_secure_installation
+# 输入root密码，安装后第一次启动为空，直接回车
+Enter current password for root (enter for none): 
+# step 1： 是否切换到unix_socket安全认证，否
+Switch to unix_socket authentication [Y/n] n
+# step 2: 更改密码，选择修改
+Change the root password? [Y/n] y
+# step 3: 移除匿名用户，选择是
+Remove anonymous users? [Y/n] y
+# step 4: 是否允许root远程登录，根据个人需求，因为我是测试服务器选择允许
+Disallow root login remotely? [Y/n] y
+# step 5: 移除test数据库
+Remove test database and access to it? [Y/n] y
+# step 6: 重新加载权限表
+Reload privilege tables now? [Y/n] y
+# 看到下面，说明成功啦！！！
+All done!  If you've completed all of the above steps, your MariaDB
+installation should now be secure.
+Thanks for using MariaDB!
+```
+
+## 测试
+
+登录数据库：
+
+```mysql
+[root@iZ2ze7s2v0b78922wia32rZ ~]# mysql -u root -p
+```
+
+修改root远程连接权限
+
+```mariadb
+MariaDB [(none)]> grant all privileges on *.* to 'root'@'%' identified by 'your password';
+Query OK, 0 rows affected (0.001 sec)
+
+MariaDB [(none)]> flush privileges;
+Query OK, 0 rows affected (0.000 sec)
+```
+
+客户端远程连接
+
+![远程连接成功示意图](https://i.loli.net/2019/11/29/THKMLAEqYe2wuU4.png)
+
