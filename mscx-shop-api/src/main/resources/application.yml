@@ -1,5 +1,4 @@
 server:
-  port: 8088
   tomcat:
     uri-encoding: UTF-8
   max-http-header-size: 80KB
@@ -9,9 +8,6 @@ spring:
   datasource:                                           # 数据源的相关配置
     type: com.zaxxer.hikari.HikariDataSource          # 数据源类型：HikariCP
     driver-class-name: com.mysql.cj.jdbc.Driver          # mysql驱动
-    url: jdbc:mysql://localhost:3306/expensiveshop?characterEncoding=UTF-8&useSSL=false&useUnicode=true&serverTimezone=Hongkong
-    username: root
-    password: 12345678
     hikari:
       connection-timeout: 30000       # 等待连接池分配连接的最大时长（毫秒），超过这个时长还没可用的连接则发生SQLException， 默认:30秒
       minimum-idle: 5                 # 最小连接数
@@ -25,12 +21,12 @@ spring:
     multipart:
       max-file-size: 204800 #文件大小不能超过200kb
       max-request-size: 512000 #请求大小不能超过500kb
+  profiles:
+    active: dev
 # mybatis 配置
 mybatis:
   type-aliases-package: com.liferunner.pojo          # 所有POJO类所在包路径
   mapper-locations: classpath*:mapper/*.xml,classpath*:mapper/custom/*.xml      # mapper映射文件
-  configuration:
-    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
 # mybatis 分页组件配置
 pagehelper:
   helperDialect: mysql
@@ -50,11 +46,4 @@ swagger:
     url: http://www.life-runner.com
   base-package: com.liferunner
   base-path: /**
-
-shop:
-  cors:
-    allowOrigin: http://localhost:8080
-    allowCredentials: true
-    allowedMethod: '*'
-    allowedHeader: '*'
 
