@@ -38,7 +38,8 @@ public class BaseController {
     /**
      * 支付中心URL
      */
-    public final String PAYMENT_SERVER_URL = "http://api.z.mukewang.com/foodie-dev-api/orders/notifyMerchantOrderPaid";
+    public static final String PAYMENT_SERVER_URL = "http://api.z.mukewang"
+        + ".com/foodie-dev-api/orders/notifyMerchantOrderPaid";
 
     /**
      * 支付成功回调URL

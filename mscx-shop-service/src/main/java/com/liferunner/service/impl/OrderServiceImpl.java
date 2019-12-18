@@ -174,7 +174,7 @@ public class OrderServiceImpl implements IOrderService {
 
     @Transactional(propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
     @Override
-    public void AutoCloseOvertimeOrder() {
+    public void autoCloseOvertimeOrder() {
         Example example = new Example(OrderStatus.class);
         val condition = example.createCriteria();
         condition.andEqualTo("orderStatus", OrderStatusEnum.WAIT_PAY.key);
@@ -201,7 +201,7 @@ public class OrderServiceImpl implements IOrderService {
     }
 
     @Override
-    public UserCenterCounterResponseDTO CountOrderByStatus(String userId) {
+    public UserCenterCounterResponseDTO countOrderByStatus(String userId) {
         Map<String, Object> map = new HashMap<>();
         map.put("userId", userId);
 

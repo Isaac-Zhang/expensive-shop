@@ -263,7 +263,7 @@ public class UserCenterController extends BaseController {
         if (StringUtils.isBlank(userId)) {
             return JsonResponse.errorMsg("参数错误");
         }
-        val userCenterCounterResponseDTO = this.orderService.CountOrderByStatus(userId);
+        val userCenterCounterResponseDTO = this.orderService.countOrderByStatus(userId);
         return JsonResponse.ok(userCenterCounterResponseDTO);
     }
 

@@ -3,7 +3,6 @@ package com.liferunner.service.impl.usercenter;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.liferunner.custom.OrderCustomMapper;
-import com.liferunner.dto.UserOrderResponseDTO;
 import com.liferunner.dto.UserUpdateRequestDTO;
 import com.liferunner.mapper.OrderStatusMapper;
 import com.liferunner.mapper.UsersMapper;
@@ -46,7 +45,7 @@ public class UserCenterLoginUserServiceImpl implements IUserCenterLoginUserServi
     @Override
     public Users findUserById(String uid) {
         Users user = this.usersMapper.selectByPrimaryKey(uid);
-        user.setPassword(SecurityTools.HiddenPartString4SecurityDisplay(user.getPassword()));
+        user.setPassword(SecurityTools.hiddenPartString4SecurityDisplay(user.getPassword()));
         return user;
     }
 

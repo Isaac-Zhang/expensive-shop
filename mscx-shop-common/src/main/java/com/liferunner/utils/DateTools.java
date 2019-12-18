@@ -484,7 +484,7 @@ public class DateTools {
         SimpleDateFormat formater = new SimpleDateFormat(
                 "dd");
         String cur_day = formater.format(date);
-        return Integer.valueOf(cur_day);
+        return Integer.parseInt(cur_day);
     }
     
     /**

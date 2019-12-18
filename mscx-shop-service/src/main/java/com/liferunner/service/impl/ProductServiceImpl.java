@@ -113,7 +113,7 @@ public class ProductServiceImpl implements IProductService {
         PageHelper.startPage(pageNumber, pageSize);
         val productCommentList = this.productCustomMapper.getProductCommentList(paramMap);
         for (ProductCommentDTO item : productCommentList) {
-            item.setNickname(SecurityTools.HiddenPartString4SecurityDisplay(item.getNickname()));
+            item.setNickname(SecurityTools.hiddenPartString4SecurityDisplay(item.getNickname()));
         }
         // 获取mybatis插件中获取到信息
         PageInfo<?> pageInfo = new PageInfo<>(productCommentList);

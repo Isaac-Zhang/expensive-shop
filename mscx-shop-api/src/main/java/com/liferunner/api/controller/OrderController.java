@@ -46,8 +46,8 @@ public class OrderController extends BaseController {
     public JsonResponse create(@RequestBody OrderRequestDTO orderRequestDTO,
                                HttpServletRequest request,
                                HttpServletResponse response) {
-        if (PayTypeEnum.WECHAT.key != orderRequestDTO.getPayMethod() ||
-                PayTypeEnum.WECHAT.key != orderRequestDTO.getPayMethod()) {
+        if (!PayTypeEnum.WECHAT.key.equals(orderRequestDTO.getPayMethod()) ||
+            !PayTypeEnum.WECHAT.key.equals(orderRequestDTO.getPayMethod())) {
             log.error("不支持的支付类型!{}", JSON.toJSONString(orderRequestDTO));
             return JsonResponse.errorMsg("不支持的支付类型!");
         }

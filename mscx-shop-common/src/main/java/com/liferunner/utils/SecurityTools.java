@@ -31,10 +31,11 @@ public class SecurityTools {
      * @param value
      * @return
      */
-    public static String HiddenPartString4SecurityDisplay(String value) {
+    public static String hiddenPartString4SecurityDisplay(String value) {
         if (null == value || "".equals(value)) {
             return value;
         }
+
         int len = value.length();
         int pamaone = len / 2;
         int pamatwo = pamaone - 1;

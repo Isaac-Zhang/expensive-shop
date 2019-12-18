@@ -41,7 +41,7 @@ public interface IOrderService {
     /**
      * 定时关闭超时的订单
      */
-    void AutoCloseOvertimeOrder();
+    void autoCloseOvertimeOrder();
 
     Orders getOrderById(String orderId);
 
@@ -62,5 +62,5 @@ public interface IOrderService {
      * @return java.lang.Integer
      * @throws
      */
-    UserCenterCounterResponseDTO CountOrderByStatus(String userId);
+    UserCenterCounterResponseDTO countOrderByStatus(String userId);
 }
