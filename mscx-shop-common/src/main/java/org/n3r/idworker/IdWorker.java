@@ -45,7 +45,6 @@ public class IdWorker {
         return workerId;
     }
 
-    @edu.umd.cs.findbugs.annotations.SuppressFBWarnings("VA_FORMAT_STRING_EXTRA_ARGUMENTS_PASSED")
     public synchronized long nextId() {
         long timestamp = millisGen();
 

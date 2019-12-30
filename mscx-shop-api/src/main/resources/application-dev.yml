@@ -9,7 +9,7 @@ spring:
     host: 127.0.0.1
     database: 0
     port: 6379
-    password: 12345678
+    # password: 12345678
 
 mybatis:
   configuration:
