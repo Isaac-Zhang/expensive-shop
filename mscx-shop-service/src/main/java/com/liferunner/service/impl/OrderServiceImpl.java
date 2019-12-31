@@ -4,6 +4,7 @@ import com.liferunner.custom.OrderCustomMapper;
 import com.liferunner.dto.MerchantOrderRequestDTO;
 import com.liferunner.dto.OrderRequestDTO;
 import com.liferunner.dto.OrderResponseDTO;
+import com.liferunner.dto.ShopcartRequestDTO;
 import com.liferunner.dto.UserCenterCounterResponseDTO;
 import com.liferunner.enums.BooleanEnum;
 import com.liferunner.enums.OrderStatusEnum;
@@ -19,6 +20,7 @@ import com.liferunner.service.IProductService;
 import com.liferunner.service.IUserService;
 import com.liferunner.utils.DateTools;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -54,7 +56,8 @@ public class OrderServiceImpl implements IOrderService {
 
     @Transactional(propagation = Propagation.REQUIRED)
     @Override
-    public OrderResponseDTO createOrder(OrderRequestDTO orderRequestDTO) {
+    public OrderResponseDTO createOrder(List<ShopcartRequestDTO> shopcartRequestDTOList,
+        OrderRequestDTO orderRequestDTO) {
         String orderId = sid.next();
         String userId = orderRequestDTO.getUserId();
         val addressId = orderRequestDTO.getAddressId();
@@ -70,8 +73,16 @@ public class OrderServiceImpl implements IOrderService {
         // 根据商品规格ids查询所有商品信息到内存,用于循环
         val productsSpecList = this.productService.getProductSpecByIds(productSpecIds);
         for (ProductsSpec productsSpec : productsSpecList) {
-            // TODO: 从Redis中获取实际SKU购买数量
-            Integer buyNumber = 1;
+            // 从Redis中获取实际SKU购买数量
+            ShopcartRequestDTO dto =
+                shopcartRequestDTOList.stream()
+                    .filter(i -> i.getSpecId().equals(productsSpec.getId()))
+                    .findFirst()
+                    .orElseGet(null);
+            if (log.isWarnEnabled()) {
+                log.warn("{} ----- {}中创建订单时候存在不匹配的数据。", shopcartRequestDTOList, productSpecIds);
+            }
+            Integer buyNumber = dto == null ? 0 : dto.getBuyCounts();
             totalFee += productsSpec.getPriceNormal() * buyNumber;
             realFee += productsSpec.getPriceDiscount() * buyNumber;
             // 查询商品主图

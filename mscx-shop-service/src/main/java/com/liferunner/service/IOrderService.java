@@ -2,13 +2,15 @@ package com.liferunner.service;
 
 import com.liferunner.dto.OrderRequestDTO;
 import com.liferunner.dto.OrderResponseDTO;
+import com.liferunner.dto.ShopcartRequestDTO;
 import com.liferunner.dto.UserCenterCounterResponseDTO;
 import com.liferunner.enums.OrderStatusEnum;
 import com.liferunner.pojo.OrderStatus;
 import com.liferunner.pojo.Orders;
+import java.util.List;
 
 /**
- * IOrderService for : TODO
+ * IOrderService for : 订单service接口
  *
  * @author <a href="mailto:magicianisaac@gmail.com">Isaac.Zhang | 若初</a>
  * @since 2019/11/17
@@ -20,7 +22,7 @@ public interface IOrderService {
      *
      * @param orderRequestDTO
      */
-    OrderResponseDTO createOrder(OrderRequestDTO orderRequestDTO);
+    OrderResponseDTO createOrder(List<ShopcartRequestDTO> shopcartRequestDTOList, OrderRequestDTO orderRequestDTO);
 
     /**
      * 订单支付成功，更新订单状态

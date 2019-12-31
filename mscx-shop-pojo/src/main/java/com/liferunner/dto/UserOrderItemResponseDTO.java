@@ -3,7 +3,7 @@ package com.liferunner.dto;
 import lombok.*;
 
 /**
- * UserOrderItemResponseDTO for : TODO
+ * UserOrderItemResponseDTO for : 用户订单返回对象
  *
  * @author <a href="mailto:magicianisaac@gmail.com">Isaac.Zhang | 若初</a>
  * @since 2019/11/24
