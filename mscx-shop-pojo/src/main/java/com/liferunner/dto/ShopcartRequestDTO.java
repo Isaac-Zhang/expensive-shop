@@ -1,5 +1,6 @@
 package com.liferunner.dto;
 
+import java.io.Serializable;
 import lombok.*;
 
 /**
@@ -13,7 +14,7 @@ import lombok.*;
 @AllArgsConstructor
 @Builder
 @ToString
-public class ShopcartRequestDTO {
+public class ShopcartRequestDTO implements Serializable {
     private String productId;
     private String productImgUrl;
     private String productName;
