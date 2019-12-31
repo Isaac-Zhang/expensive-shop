@@ -115,7 +115,17 @@ public class ShopcartController extends BaseController {
             return JsonResponse.errorMsg("删除购物车参数错误!");
         }
 
-        // TODO: 在Redis缓存中删除购物车信息
+        // 从Redis缓存中删除购物车信息
+        String shopcartFromRedisStr = redisUtils.get(SHOPCART_COOKIE_NAME + ":" + userId);
+        if (StringUtils.isNotBlank(shopcartFromRedisStr)) {
+            List<ShopcartRequestDTO> shopcartRequestDTOList = JSON.parseArray(shopcartFromRedisStr,
+                ShopcartRequestDTO.class);
+            // implement delete elements
+            shopcartRequestDTOList.removeIf(
+                i -> productSpecIds.contains(i.getSpecId())
+            );
+            redisUtils.set(SHOPCART_COOKIE_NAME + ":" + userId, JSON.toJSONString(shopcartRequestDTOList));
+        }
         log.info("当前需要删除的购物车的商品规格ids:{}", productSpecIds);
         return JsonResponse.ok();
     }
