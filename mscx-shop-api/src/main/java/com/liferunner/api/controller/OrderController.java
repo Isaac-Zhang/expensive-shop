@@ -7,6 +7,7 @@ import com.liferunner.dto.ShopcartRequestDTO;
 import com.liferunner.enums.OrderStatusEnum;
 import com.liferunner.enums.PayTypeEnum;
 import com.liferunner.service.IOrderService;
+import com.liferunner.utils.CookieTools;
 import com.liferunner.utils.JsonResponse;
 import com.liferunner.utils.RedisUtils;
 import io.swagger.annotations.Api;
@@ -75,11 +76,15 @@ public class OrderController extends BaseController {
         List<ShopcartRequestDTO> shopcartRequestDTOList = JSON.parseArray(shopcartFromRedisStr,
             ShopcartRequestDTO.class);
 
-        val orderResponseDTO = this.orderService.createOrder(shopcartRequestDTOList,orderRequestDTO);
+        val orderResponseDTO = this.orderService.createOrder(shopcartRequestDTOList, orderRequestDTO);
         String orderId = orderResponseDTO.getOrderId();
 
-        //TODO : Redis准备就绪之后，需要从Redis中删除掉已经付款的商品信息，并且同步需要删除前端cookie中的商品
-        //暂时屏蔽CookieTools.setCookie(request, response, SHOPCART_COOKIE_NAME, "", true);
+        //从Redis中删除掉已经付款的商品信息，并且同步需要删除前端cookie中的商品
+        shopcartRequestDTOList.removeAll(orderResponseDTO.getPaddingRemovedList());
+        redisUtils
+            .set(SHOPCART_COOKIE_NAME + ":" + orderRequestDTO.getUserId(), JSON.toJSONString(shopcartRequestDTOList));
+
+        CookieTools.setCookie(request, response, SHOPCART_COOKIE_NAME, JSON.toJSONString(shopcartRequestDTOList), true);
 
         // TODO: 发送请求到支付中心付款
         val merchantOrderRequestDTO = orderResponseDTO.getMerchantOrderRequestDTO();

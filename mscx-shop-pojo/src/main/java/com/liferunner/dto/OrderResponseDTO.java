@@ -1,5 +1,6 @@
 package com.liferunner.dto;
 
+import java.util.List;
 import lombok.*;
 
 /**
@@ -16,4 +17,5 @@ import lombok.*;
 public class OrderResponseDTO {
     private String orderId;
     private MerchantOrderRequestDTO merchantOrderRequestDTO;
+    private List<ShopcartRequestDTO> paddingRemovedList;
 }

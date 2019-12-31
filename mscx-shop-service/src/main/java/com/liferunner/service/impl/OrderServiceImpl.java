@@ -19,6 +19,7 @@ import com.liferunner.service.IOrderService;
 import com.liferunner.service.IProductService;
 import com.liferunner.service.IUserService;
 import com.liferunner.utils.DateTools;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -72,6 +73,8 @@ public class OrderServiceImpl implements IOrderService {
         val userAddress = this.userService.findUserAddress(userId, addressId);
         // 根据商品规格ids查询所有商品信息到内存,用于循环
         val productsSpecList = this.productService.getProductSpecByIds(productSpecIds);
+        // 获取待删除的商品信息list
+        List<ShopcartRequestDTO> paddingRemovedList = new ArrayList<>();
         for (ProductsSpec productsSpec : productsSpecList) {
             // 从Redis中获取实际SKU购买数量
             ShopcartRequestDTO dto =
@@ -79,6 +82,7 @@ public class OrderServiceImpl implements IOrderService {
                     .filter(i -> i.getSpecId().equals(productsSpec.getId()))
                     .findFirst()
                     .orElseGet(null);
+            paddingRemovedList.add(dto);
             if (log.isWarnEnabled()) {
                 log.warn("{} ----- {}中创建订单时候存在不匹配的数据。", shopcartRequestDTOList, productSpecIds);
             }
@@ -162,6 +166,7 @@ public class OrderServiceImpl implements IOrderService {
             .builder()
             .orderId(orderId)
             .merchantOrderRequestDTO(merchantOrderRequestDTO)
+            .paddingRemovedList(paddingRemovedList)
             .build();
     }
 
