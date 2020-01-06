@@ -10,7 +10,7 @@ spring:
     host: 192.168.14.201
     database: 0
     port: 6379
-    # password: 12345678
+    password: 12345678
   # redis 主备配置
 #  redis:
 #    sentinel:

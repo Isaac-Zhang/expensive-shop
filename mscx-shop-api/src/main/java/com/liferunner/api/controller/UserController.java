@@ -1,12 +1,14 @@
 package com.liferunner.api.controller;
 
 import com.alibaba.fastjson.JSON;
+import com.liferunner.dto.ShopcartRequestDTO;
 import com.liferunner.dto.UserAddressRequestDTO;
 import com.liferunner.dto.UserRequestDTO;
 import com.liferunner.dto.UserResponseDTO;
 import com.liferunner.service.IUserService;
 import com.liferunner.utils.CookieTools;
 import com.liferunner.utils.JsonResponse;
+import com.liferunner.utils.RedisUtils;
 import com.liferunner.utils.SecurityTools;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -28,6 +30,10 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import springfox.documentation.annotations.ApiIgnore;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+
 /**
  * UserController for : 用户API接口
  *
@@ -38,10 +44,12 @@ import springfox.documentation.annotations.ApiIgnore;
 @RequestMapping(value = "/users")
 @Slf4j
 @Api(tags = "用户管理")
-public class UserController {
+public class UserController extends BaseController {
 
     @Autowired
     private IUserService userService;
+    @Autowired
+    private RedisUtils redisUtils;
 
     @ApiOperation(value = "用户详情", notes = "查询用户")
     @ApiIgnore
@@ -78,6 +86,12 @@ public class UserController {
                 // 设置前端存储的cookie信息
                 CookieTools.setCookie(request, response, "user",
                         JSON.toJSONString(userResponseDTO), true);
+
+                //获取Redis中数据
+                val shopcartFromRedisStr = redisUtils.get(SHOPCART_COOKIE_NAME + ":" + user.getId());
+                val shopcartFromCookieStr = CookieTools.getCookieValue(request, SHOPCART_COOKIE_NAME, true);
+                syncShopcart(shopcartFromRedisStr, shopcartFromCookieStr, user.getId(), request, response);
+
                 return JsonResponse.ok(userResponseDTO);
             }
         } catch (Exception e) {
@@ -106,6 +120,12 @@ public class UserController {
                 // 设置前端存储的cookie信息
                 CookieTools.setCookie(request, response, "user",
                         JSON.toJSONString(userResponseDTO), true);
+
+                //获取Redis中数据
+                val shopcartFromRedisStr = redisUtils.get(SHOPCART_COOKIE_NAME + ":" + user.getId());
+                val shopcartFromCookieStr = CookieTools.getCookieValue(request, SHOPCART_COOKIE_NAME, true);
+                syncShopcart(shopcartFromRedisStr, shopcartFromCookieStr, user.getId(), request, response);
+
                 return JsonResponse.ok(userResponseDTO);
             }
         } catch (Exception e) {
@@ -121,6 +141,8 @@ public class UserController {
                                    HttpServletRequest request, HttpServletResponse response) {
         // clear front's user cookies
         CookieTools.deleteCookie(request, response, "user");
+        // clear user shopcart data
+        CookieTools.deleteCookie(request, response, SHOPCART_COOKIE_NAME);
         // return operational result
         return JsonResponse.ok();
     }
@@ -218,5 +240,60 @@ public class UserController {
             return JsonResponse.errorMsg("收货地址信息不能为空");
         }
         return JsonResponse.ok();
+    }
+
+    /**
+     * 同步Redis和本地Cookie中的数据
+     *
+     * @param shopcartFromRedisStr
+     * @param shopcartFromCookieStr
+     * @param request
+     * @param response
+     */
+    private void syncShopcart(String shopcartFromRedisStr,
+                              String shopcartFromCookieStr,
+                              String uid,
+                              HttpServletRequest request,
+                              HttpServletResponse response) {
+        // 1.如果Redis为空，Cookie数据为空，不做处理
+        // 2.如果Redis为空，Cookie数据不为空，将Cookie数据同步存储到Redis中
+        // 3.如果Redis不为空，Cookie数据为空，将Redis数据同步到Cookie中
+        // 4.如果Redis不为空，Cookie数据不为空，以Redis数据为主数据，合并数据（Cookie数据在Redis中已存在，以本地Cookie数据为主）
+
+        if (StringUtils.isNotBlank(shopcartFromRedisStr)) {
+            if (StringUtils.isNotBlank(shopcartFromCookieStr)) {
+                List<ShopcartRequestDTO> shopcartRedisList = JSON.parseArray(shopcartFromRedisStr, ShopcartRequestDTO.class);
+                List<ShopcartRequestDTO> shopcartCookieList = JSON.parseArray(shopcartFromCookieStr, ShopcartRequestDTO.class);
+
+                //循环redis中的数据
+                List<ShopcartRequestDTO> peddingRemovedList = new ArrayList<>();
+
+                shopcartRedisList.forEach(ri -> {
+                    shopcartCookieList.forEach(ci -> {
+                        // 判断redis中和cookie中是否存在相同的商品，如果存在，
+                        // 则标记要从cookie中删除的list,使用cookie中的数量覆盖redis数量
+                        if (ri.getSpecId().equals(ci.getSpecId())) {
+                            peddingRemovedList.add(ci);
+                            ri.setBuyCounts(ci.getBuyCounts());
+                        }
+                    });
+                });
+
+                // 首先删除掉cookie中标记要删除的数据
+                shopcartCookieList.removeAll(peddingRemovedList);
+                // 将两个list数据合并
+                shopcartRedisList.addAll(shopcartCookieList);
+
+                redisUtils.set(SHOPCART_COOKIE_NAME + ":" + uid, JSON.toJSONString(shopcartRedisList));
+                CookieTools.setCookie(request, response, SHOPCART_COOKIE_NAME, JSON.toJSONString(shopcartRedisList), true);
+
+            } else {
+                // 直接将Redis数据同步到cookie
+                CookieTools.setCookie(request, response, SHOPCART_COOKIE_NAME, shopcartFromRedisStr, true);
+            }
+        } else if (StringUtils.isNotBlank(shopcartFromCookieStr)) {
+            // 直接将cookie中的数据存储到Redis中
+            redisUtils.set(SHOPCART_COOKIE_NAME + ":" + uid, shopcartFromCookieStr);
+        }
     }
 }
