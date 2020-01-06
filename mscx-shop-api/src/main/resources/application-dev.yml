@@ -6,18 +6,18 @@ spring:
     username: root
     password: 12345678
   # redis 单机节点配置
-#  redis:
-#    host: 127.0.0.1
-#    database: 0
-#    port: 6379
-#    # password: 12345678
-  # redis 主备配置
   redis:
-    sentinel:
-      master: 127.0.0.1
-      nodes: 192.168.1.100,192.168.1.101,192.168.1.102
+    host: 192.168.14.201
     database: 0
-    password: 12345678
+    port: 6379
+    # password: 12345678
+  # redis 主备配置
+#  redis:
+#    sentinel:
+#      master: 127.0.0.1
+#      nodes: 192.168.14.200,192.168.14.201,192.168.14.2s02
+#    database: 0
+#    password: 12345678
 
 mybatis:
   configuration:
