@@ -1,6 +1,7 @@
 package com.liferunner.api.controller;
 
 import com.alibaba.fastjson.JSON;
+import com.liferunner.dto.SecondSubCategoryResponseDTO;
 import com.liferunner.service.ICategoryService;
 import com.liferunner.service.IProductService;
 import com.liferunner.service.ISlideAdService;
@@ -10,6 +11,7 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import java.util.Collections;
+import java.util.List;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import lombok.val;
@@ -83,8 +85,9 @@ public class IndexController {
         @PathVariable Integer parentId) {
         log.info("============查询id = {}的子分类==============", parentId);
         val subCatsFromRedisStr = redisUtils.get("subCategory:" + parentId);
+        List<SecondSubCategoryResponseDTO> categoryResponseDTOS = Collections.EMPTY_LIST;
         if (StringUtils.isBlank(subCatsFromRedisStr)) {
-            val categoryResponseDTOS = this.categoryService.getAllSubCategorys(parentId);
+            categoryResponseDTOS = this.categoryService.getAllSubCategorys(parentId);
             if (CollectionUtils.isEmpty(categoryResponseDTOS)) {
                 // 防止Redis缓存穿透
                 redisUtils.set("subCategory:" + parentId, JSON.toJSONString(categoryResponseDTOS), 5 * 60);
@@ -96,7 +99,7 @@ public class IndexController {
             }
             log.info("============子分类查询result：{}==============", categoryResponseDTOS);
         }
-
+        categoryResponseDTOS = JSON.parseArray(subCatsFromRedisStr, SecondSubCategoryResponseDTO.class);
         return JsonResponse.ok(categoryResponseDTOS);
     }
 
