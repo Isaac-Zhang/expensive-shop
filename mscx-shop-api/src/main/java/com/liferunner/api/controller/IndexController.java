@@ -13,9 +13,9 @@ import java.util.Collections;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import lombok.val;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.CollectionUtils;
-import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -55,7 +55,7 @@ public class IndexController {
             log.info("============轮播广告查询result：{}=============="
                 , slideAdsList);
             // 存储轮播广告到redis
-            this.redisUtils.set("slides",JSON.toJSONString(slideAdsList));
+            this.redisUtils.set("slides", JSON.toJSONString(slideAdsList));
             return JsonResponse.ok(slideAdsList);
         }
         log.info("============轮播广告查询来自于Redis：{}=============="
@@ -82,12 +82,21 @@ public class IndexController {
         @ApiParam(name = "parentId", value = "一级分类id", required = true, example = "0")
         @PathVariable Integer parentId) {
         log.info("============查询id = {}的子分类==============", parentId);
-        val categoryResponseDTOS = this.categoryService.getAllSubCategorys(parentId);
-        if (CollectionUtils.isEmpty(categoryResponseDTOS)) {
-            log.info("============未查询到任何分类==============");
-            return JsonResponse.ok(Collections.EMPTY_LIST);
+        val subCatsFromRedisStr = redisUtils.get("subCategory:" + parentId);
+        if (StringUtils.isBlank(subCatsFromRedisStr)) {
+            val categoryResponseDTOS = this.categoryService.getAllSubCategorys(parentId);
+            if (CollectionUtils.isEmpty(categoryResponseDTOS)) {
+                // 防止Redis缓存穿透
+                redisUtils.set("subCategory:" + parentId, JSON.toJSONString(categoryResponseDTOS), 5 * 60);
+                log.info("============未查询到任何分类==============");
+                return JsonResponse.ok(Collections.EMPTY_LIST);
+            } else {
+                // 如果查到值，正常设置redis
+                redisUtils.set("subCategory:" + parentId, JSON.toJSONString(categoryResponseDTOS));
+            }
+            log.info("============子分类查询result：{}==============", categoryResponseDTOS);
         }
-        log.info("============子分类查询result：{}==============", categoryResponseDTOS);
+
         return JsonResponse.ok(categoryResponseDTOS);
     }
 
