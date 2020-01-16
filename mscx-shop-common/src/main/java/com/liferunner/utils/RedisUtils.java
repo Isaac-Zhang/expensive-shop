@@ -1,5 +1,6 @@
 package com.liferunner.utils;
 
+import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -112,7 +113,7 @@ public class RedisUtils {
      * @param keys
      * @return
      */
-    public List<String> mget(List<String> keys) {
+    public List<String> mget(Collection<String> keys) {
         return redisTemplate.opsForValue().multiGet(keys);
     }
 
@@ -122,21 +123,18 @@ public class RedisUtils {
      * @param keys
      * @return
      */
-    public List<Object> batchGet(List<String> keys) {
+    public List<Object> batchGet(Collection<String> keys) {
 
 //		nginx -> keepalive
 //		redis -> pipeline
 
-        List<Object> result = redisTemplate.executePipelined(new RedisCallback<String>() {
-            @Override
-            public String doInRedis(RedisConnection connection) throws DataAccessException {
-                StringRedisConnection src = (StringRedisConnection) connection;
+        List<Object> result = redisTemplate.executePipelined((RedisCallback<String>) connection -> {
+            StringRedisConnection src = (StringRedisConnection) connection;
 
-                for (String k : keys) {
-                    src.get(k);
-                }
-                return null;
+            for (String k : keys) {
+                src.get(k);
             }
+            return null;
         });
 
         return result;
