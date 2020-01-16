@@ -11,5 +11,6 @@ import java.util.List;
  * @since 2019/11/14
  */
 public interface CategoryCustomMapper {
+
     List<SecondSubCategoryResponseDTO> getSubCategorys(Integer parentId);
 }

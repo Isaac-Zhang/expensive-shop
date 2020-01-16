@@ -21,7 +21,8 @@ import java.util.Date;
 @NoArgsConstructor
 @Builder
 @ApiModel(value = "轮播广告返回DTO", description = "轮播广告返回DTO")
-public class SlideAdResponseDTO{
+public class SlideAdResponseDTO {
+
     /**
      * 主键
      */
@@ -33,7 +34,7 @@ public class SlideAdResponseDTO{
     private String imageUrl;
 
     /**
-     *  背景颜色
+     * 背景颜色
      */
     private String backgroundColor;
 

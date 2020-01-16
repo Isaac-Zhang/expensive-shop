@@ -21,12 +21,7 @@ public class SecurityTools {
     private static final String SYMBOL = "*";
 
     /**
-     * 通用脱敏
-     * 可用于：
-     * 用户名
-     * 手机号
-     * 邮箱
-     * 地址等
+     * 通用脱敏 可用于： 用户名 手机号 邮箱 地址等
      *
      * @param value
      * @return
@@ -92,6 +87,7 @@ public class SecurityTools {
 
     /**
      * 检查email
+     *
      * @param email
      * @return
      */

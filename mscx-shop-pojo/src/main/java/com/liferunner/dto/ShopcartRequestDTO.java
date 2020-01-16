@@ -15,6 +15,7 @@ import lombok.*;
 @Builder
 @ToString
 public class ShopcartRequestDTO implements Serializable {
+
     private String productId;
     private String productImgUrl;
     private String productName;

@@ -14,6 +14,7 @@ import lombok.*;
 @Builder
 @ToString
 public class OrderRequestDTO {
+
     private String userId;
     private String productSpecIds;
     private String addressId;

@@ -10,6 +10,7 @@ import lombok.ToString;
 @ToString
 @Table(name = "`category`")
 public class Category {
+
     /**
      * 主键 分类id主键
      */
@@ -24,10 +25,7 @@ public class Category {
     private String name;
 
     /**
-     * 分类类型 分类得类型，
-1:一级大分类
-2:二级分类
-3:三级小分类
+     * 分类类型 分类得类型， 1:一级大分类 2:二级分类 3:三级小分类
      */
     @Column(name = "`type`")
     private Integer type;

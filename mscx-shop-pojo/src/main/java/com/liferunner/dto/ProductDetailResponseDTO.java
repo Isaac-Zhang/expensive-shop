@@ -20,6 +20,7 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 public class ProductDetailResponseDTO {
+
     private Products products;
     private List<ProductsImg> productsImgList;
     private List<ProductsSpec> productsSpecList;

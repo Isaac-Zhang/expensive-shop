@@ -23,19 +23,22 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping(value = "/certification")
 @Api(tags = "验证管理")
 public class CertificationController {
+
     @Autowired
     public IUserService userService;
 
     @ApiOperation(value = "校验用户名是否可用", notes = "校验用户名是否可用")
     @GetMapping("/validateUsername")
     public JsonResponse validateUsername(
-            @ApiParam(value = "用户名", required = true, example = "isaaczhang")
-            @RequestParam String username) {
+        @ApiParam(value = "用户名", required = true, example = "isaaczhang")
+        @RequestParam String username) {
         // 判断用户名是否非法
-        if (StringUtils.isBlank(username))
+        if (StringUtils.isBlank(username)) {
             return JsonResponse.errorMsg("用户名不能为空！");
-        if (null != userService.findUserByUserName(username))
+        }
+        if (null != userService.findUserByUserName(username)) {
             return JsonResponse.errorMsg("用户名已存在！");
+        }
         // 用户名可用
         return JsonResponse.ok();
     }

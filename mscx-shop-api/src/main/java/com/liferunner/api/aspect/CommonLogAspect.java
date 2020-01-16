@@ -23,8 +23,8 @@ public class CommonLogAspect {
     @Around("execution(* com.liferunner.api.controller..*.*(..))")
     public Object recordLogTime(ProceedingJoinPoint proceedingJoinPoint) throws Throwable {
         log.info("----------- {}.{} process log time started.---------------",
-                proceedingJoinPoint.getTarget().getClass(),
-                proceedingJoinPoint.getSignature().getName());
+            proceedingJoinPoint.getTarget().getClass(),
+            proceedingJoinPoint.getSignature().getName());
 
         val startTime = System.currentTimeMillis();
         //一定要将处理结果返回给原线程，否则会造成程序处理正常，但是数据请求返回结果为空！！！
@@ -37,8 +37,8 @@ public class CommonLogAspect {
         }
 
         log.info("----------- {}.{} process log time ended.---------------",
-                proceedingJoinPoint.getSourceLocation().getClass(),
-                proceedingJoinPoint.getSignature().getName());
+            proceedingJoinPoint.getSourceLocation().getClass(),
+            proceedingJoinPoint.getSignature().getName());
         return result;
     }
 }

@@ -14,6 +14,7 @@ import lombok.*;
 @Builder
 @ToString
 public class ProductCommentLevelCountsDTO {
+
     private Integer totalCounts;
     private Integer goodCounts;
     private Integer normalCounts;

@@ -117,6 +117,7 @@ public interface IProductService {
 
     /**
      * 下单之后扣减库存
+     *
      * @param specId
      * @param buyNumber
      * @return

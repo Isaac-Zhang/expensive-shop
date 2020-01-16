@@ -1,166 +1,166 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.liferunner.custom.ProductCustomMapper">
-    <resultMap id="IndexProductDTO" type="com.liferunner.dto.IndexProductDTO">
-        <id column="rootCategoryId" property="rootCategoryId"/>
-        <result column="rootCategoryName" property="rootCategoryName"/>
-        <result column="slogan" property="slogan"/>
-        <result column="categoryImage" property="categoryImage"/>
-        <result column="bgColor" property="bgColor"/>
-        <collection property="productItemList" ofType="com.liferunner.dto.IndexProductItemDTO">
-            <id column="productId" property="productId"/>
-            <result column="productName" property="productName"/>
-            <result column="productMainImageUrl" property="productMainImageUrl"/>
-            <result column="productCreateTime" property="productCreateTime"/>
-        </collection>
-    </resultMap>
-    <select id="getIndexProductDtoList" resultMap="IndexProductDTO" parameterType="Map">
-        SELECT
-        c.id as rootCategoryId,
-        c.name as rootCategoryName,
-        c.slogan as slogan,
-        c.cat_image as categoryImage,
-        c.bg_color as bgColor,
-        p.id as productId,
-        p.item_name as productName,
-        pi.url as productMainImageUrl,
-        p.created_time as productCreateTime
-        FROM category c
-        LEFT JOIN items p
-        ON c.id = p.root_cat_id
-        LEFT JOIN items_img pi
-        ON p.id = pi.item_id
-        WHERE c.type = 1
-        AND p.root_cat_id = #{paramMap.rootCategoryId}
-        AND pi.is_main = 1
-        LIMIT 0,6;
-    </select>
+  <resultMap id="IndexProductDTO" type="com.liferunner.dto.IndexProductDTO">
+    <id column="rootCategoryId" property="rootCategoryId"/>
+    <result column="rootCategoryName" property="rootCategoryName"/>
+    <result column="slogan" property="slogan"/>
+    <result column="categoryImage" property="categoryImage"/>
+    <result column="bgColor" property="bgColor"/>
+    <collection property="productItemList" ofType="com.liferunner.dto.IndexProductItemDTO">
+      <id column="productId" property="productId"/>
+      <result column="productName" property="productName"/>
+      <result column="productMainImageUrl" property="productMainImageUrl"/>
+      <result column="productCreateTime" property="productCreateTime"/>
+    </collection>
+  </resultMap>
+  <select id="getIndexProductDtoList" resultMap="IndexProductDTO" parameterType="Map">
+    SELECT
+    c.id as rootCategoryId,
+    c.name as rootCategoryName,
+    c.slogan as slogan,
+    c.cat_image as categoryImage,
+    c.bg_color as bgColor,
+    p.id as productId,
+    p.item_name as productName,
+    pi.url as productMainImageUrl,
+    p.created_time as productCreateTime
+    FROM category c
+    LEFT JOIN items p
+    ON c.id = p.root_cat_id
+    LEFT JOIN items_img pi
+    ON p.id = pi.item_id
+    WHERE c.type = 1
+    AND p.root_cat_id = #{paramMap.rootCategoryId}
+    AND pi.is_main = 1
+    LIMIT 0,6;
+  </select>
 
-    <select id="getProductCommentList" resultType="com.liferunner.dto.ProductCommentDTO" parameterType="Map">
-        SELECT
-        pc.comment_level as commentLevel,
-        pc.spec_name as specName,
-        pc.content as content,
-        pc.created_time as createdTime,
-        u.face as userFace,
-        u.nickname as nickname
-        FROM items_comments pc
-        LEFT JOIN users u
-        ON pc.user_id = u.id
-        WHERE pc.item_id = #{paramMap.productId}
-        <if test="paramMap.commentLevel != null and paramMap.commentLevel != ''">
-            AND pc.comment_level = #{paramMap.commentLevel}
-        </if>
-    </select>
+  <select id="getProductCommentList" resultType="com.liferunner.dto.ProductCommentDTO" parameterType="Map">
+    SELECT
+    pc.comment_level as commentLevel,
+    pc.spec_name as specName,
+    pc.content as content,
+    pc.created_time as createdTime,
+    u.face as userFace,
+    u.nickname as nickname
+    FROM items_comments pc
+    LEFT JOIN users u
+    ON pc.user_id = u.id
+    WHERE pc.item_id = #{paramMap.productId}
+    <if test="paramMap.commentLevel != null and paramMap.commentLevel != ''">
+      AND pc.comment_level = #{paramMap.commentLevel}
+    </if>
+  </select>
 
-    <select id="searchProductList" resultType="com.liferunner.dto.SearchProductDTO" parameterType="Map">
-        SELECT
-        p.id as productId,
-        p.item_name as productName,
-        p.sell_counts as sellCounts,
-        pi.url as imgUrl,
-        tp.priceDiscount
-        FROM items p
-        LEFT JOIN items_img pi
-        ON p.id = pi.item_id
-        LEFT JOIN
-        (
-        SELECT item_id, MIN(price_discount) as priceDiscount
-        FROM items_spec
-        GROUP BY item_id
-        ) tp
-        ON tp.item_id = p.id
-        WHERE pi.is_main = 1
-        <if test="paramMap.keyword != null and paramMap.keyword != ''">
-            AND p.item_name LIKE "%${paramMap.keyword}%"
-        </if>
-        ORDER BY
-        <choose>
-            <when test="paramMap.sortby != null and paramMap.sortby == 'sell'">
-                p.sell_counts DESC
-            </when>
-            <when test="paramMap.sortby != null and paramMap.sortby == 'price'">
-                tp.priceDiscount ASC
-            </when>
-            <otherwise>
-                p.created_time DESC
-            </otherwise>
-        </choose>
-    </select>
-    <select id="searchProductListByCategoryId" resultType="com.liferunner.dto.SearchProductDTO" parameterType="Map">
-        SELECT
-        p.id as productId,
-        p.item_name as productName,
-        p.sell_counts as sellCounts,
-        pi.url as imgUrl,
-        tp.priceDiscount
-        FROM items p
-        LEFT JOIN items_img pi
-        ON p.id = pi.item_id
-        LEFT JOIN
-        (
-        SELECT item_id, MIN(price_discount) as priceDiscount
-        FROM items_spec
-        GROUP BY item_id
-        ) tp
-        ON tp.item_id = p.id
-        WHERE pi.is_main = 1
-        AND p.cat_id = #{paramMap.categoryId}
-        ORDER BY
-        <choose>
-            <when test="paramMap.sortby != null and paramMap.sortby == 'sell'">
-                p.sell_counts DESC
-            </when>
-            <when test="paramMap.sortby != null and paramMap.sortby == 'price'">
-                tp.priceDiscount ASC
-            </when>
-            <otherwise>
-                p.created_time DESC
-            </otherwise>
-        </choose>
-    </select>
+  <select id="searchProductList" resultType="com.liferunner.dto.SearchProductDTO" parameterType="Map">
+    SELECT
+    p.id as productId,
+    p.item_name as productName,
+    p.sell_counts as sellCounts,
+    pi.url as imgUrl,
+    tp.priceDiscount
+    FROM items p
+    LEFT JOIN items_img pi
+    ON p.id = pi.item_id
+    LEFT JOIN
+    (
+    SELECT item_id, MIN(price_discount) as priceDiscount
+    FROM items_spec
+    GROUP BY item_id
+    ) tp
+    ON tp.item_id = p.id
+    WHERE pi.is_main = 1
+    <if test="paramMap.keyword != null and paramMap.keyword != ''">
+      AND p.item_name LIKE "%${paramMap.keyword}%"
+    </if>
+    ORDER BY
+    <choose>
+      <when test="paramMap.sortby != null and paramMap.sortby == 'sell'">
+        p.sell_counts DESC
+      </when>
+      <when test="paramMap.sortby != null and paramMap.sortby == 'price'">
+        tp.priceDiscount ASC
+      </when>
+      <otherwise>
+        p.created_time DESC
+      </otherwise>
+    </choose>
+  </select>
+  <select id="searchProductListByCategoryId" resultType="com.liferunner.dto.SearchProductDTO" parameterType="Map">
+    SELECT
+    p.id as productId,
+    p.item_name as productName,
+    p.sell_counts as sellCounts,
+    pi.url as imgUrl,
+    tp.priceDiscount
+    FROM items p
+    LEFT JOIN items_img pi
+    ON p.id = pi.item_id
+    LEFT JOIN
+    (
+    SELECT item_id, MIN(price_discount) as priceDiscount
+    FROM items_spec
+    GROUP BY item_id
+    ) tp
+    ON tp.item_id = p.id
+    WHERE pi.is_main = 1
+    AND p.cat_id = #{paramMap.categoryId}
+    ORDER BY
+    <choose>
+      <when test="paramMap.sortby != null and paramMap.sortby == 'sell'">
+        p.sell_counts DESC
+      </when>
+      <when test="paramMap.sortby != null and paramMap.sortby == 'price'">
+        tp.priceDiscount ASC
+      </when>
+      <otherwise>
+        p.created_time DESC
+      </otherwise>
+    </choose>
+  </select>
 
-    <select id="refreshShopcart" parameterType="list" resultType="com.liferunner.dto.ShopcartResponseDTO">
-        SELECT
-        p.id as productId,
-        p.item_name as productName,
-        pi.url as productImgUrl,
-        ps.id as specId,
-        ps.name as specName,
-        ps.price_discount as priceDiscount,
-        ps.price_normal as priceNormal
-        FROM items_spec ps
-        LEFT JOIN items p
-        ON p.id = ps.item_id
-        LEFT JOIN items_img pi
-        ON p.id = pi.item_id
-        WHERE pi.is_main = 1
-        AND ps.id IN
-        <foreach collection="specIdList" item="specId" index="index" open="(" separator="," close=")">
-            #{specId}
-        </foreach>
-    </select>
+  <select id="refreshShopcart" parameterType="list" resultType="com.liferunner.dto.ShopcartResponseDTO">
+    SELECT
+    p.id as productId,
+    p.item_name as productName,
+    pi.url as productImgUrl,
+    ps.id as specId,
+    ps.name as specName,
+    ps.price_discount as priceDiscount,
+    ps.price_normal as priceNormal
+    FROM items_spec ps
+    LEFT JOIN items p
+    ON p.id = ps.item_id
+    LEFT JOIN items_img pi
+    ON p.id = pi.item_id
+    WHERE pi.is_main = 1
+    AND ps.id IN
+    <foreach collection="specIdList" item="specId" index="index" open="(" separator="," close=")">
+      #{specId}
+    </foreach>
+  </select>
 
-    <select id="getAllProductSpec" parameterType="list" resultType="com.liferunner.pojo.ProductsSpec">
-        SELECT
-        id,
-        item_id as productId,
-        name,
-        stock,
-        discounts,
-        price_discount as priceDiscount,
-        price_normal as priceNormal,
-        created_time as createdTime,
-        updated_time as updatedTime
-        FROM items_spec ps
-        WHERE id IN
-        <foreach collection="specIdList" item="specId" index="index" open="(" separator="," close=")">
-            #{specId}
-        </foreach>
-    </select>
+  <select id="getAllProductSpec" parameterType="list" resultType="com.liferunner.pojo.ProductsSpec">
+    SELECT
+    id,
+    item_id as productId,
+    name,
+    stock,
+    discounts,
+    price_discount as priceDiscount,
+    price_normal as priceNormal,
+    created_time as createdTime,
+    updated_time as updatedTime
+    FROM items_spec ps
+    WHERE id IN
+    <foreach collection="specIdList" item="specId" index="index" open="(" separator="," close=")">
+      #{specId}
+    </foreach>
+  </select>
 
-    <update id="decreaseProductSpecStock">
-        UPDATE items_spec SET stock = stock - #{buyNumber}
-        WHERE id = #{specId} AND stock >= #{buyNumber}
-    </update>
+  <update id="decreaseProductSpecStock">
+    UPDATE items_spec SET stock = stock - #{buyNumber}
+    WHERE id = #{specId} AND stock >= #{buyNumber}
+  </update>
 </mapper>

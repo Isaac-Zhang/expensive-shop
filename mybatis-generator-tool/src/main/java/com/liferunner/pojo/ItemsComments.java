@@ -11,6 +11,7 @@ import lombok.ToString;
 @ToString
 @Table(name = "`items_comments`")
 public class ItemsComments {
+
     /**
      * id主键
      */

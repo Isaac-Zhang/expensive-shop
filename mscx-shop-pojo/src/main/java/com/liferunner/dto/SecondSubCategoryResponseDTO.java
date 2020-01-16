@@ -14,6 +14,7 @@ import java.util.List;
 @Data
 @ToString
 public class SecondSubCategoryResponseDTO {
+
     /**
      * 主键
      */
@@ -25,10 +26,7 @@ public class SecondSubCategoryResponseDTO {
     private String name;
 
     /**
-     * 分类类型
-     1:一级大分类
-     2:二级分类
-     3:三级小分类
+     * 分类类型 1:一级大分类 2:二级分类 3:三级小分类
      */
     private Integer type;
 

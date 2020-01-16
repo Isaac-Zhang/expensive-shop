@@ -11,6 +11,7 @@ import lombok.*;
 @Builder
 @Table(name = "order_items")
 public class OrderProducts {
+
     /**
      * 主键id
      */

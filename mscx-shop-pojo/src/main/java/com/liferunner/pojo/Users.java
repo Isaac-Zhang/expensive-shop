@@ -12,6 +12,7 @@ import lombok.*;
 @Table(name = "users")
 @Builder
 public class Users {
+
     /**
      * 主键id 用户id
      */

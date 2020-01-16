@@ -13,6 +13,7 @@ import lombok.*;
 @NoArgsConstructor
 @Table(name = "user_address")
 public class UserAddress {
+
     /**
      * 地址主键id
      */

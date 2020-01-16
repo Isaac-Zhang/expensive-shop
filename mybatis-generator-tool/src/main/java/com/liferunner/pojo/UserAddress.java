@@ -11,6 +11,7 @@ import lombok.ToString;
 @ToString
 @Table(name = "`user_address`")
 public class UserAddress {
+
     /**
      * 地址主键id
      */

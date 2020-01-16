@@ -11,6 +11,7 @@ import lombok.ToString;
 @ToString
 @Table(name = "slide_ads")
 public class SlideAds {
+
     /**
      * 主键
      */

@@ -14,6 +14,7 @@ import java.util.List;
 @Data
 @ToString
 public class IndexProductDTO {
+
     private Integer rootCategoryId;
     private String rootCategoryName;
     private String slogan;

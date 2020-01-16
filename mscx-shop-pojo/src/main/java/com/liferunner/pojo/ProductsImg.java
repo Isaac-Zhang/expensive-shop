@@ -11,6 +11,7 @@ import lombok.ToString;
 @ToString
 @Table(name = "items_img")
 public class ProductsImg {
+
     /**
      * 图片主键
      */

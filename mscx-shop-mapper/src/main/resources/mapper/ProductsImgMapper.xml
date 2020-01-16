@@ -5,12 +5,12 @@
     <!--
       WARNING - @mbg.generated
     -->
-    <id column="id" jdbcType="VARCHAR" property="id" />
-    <result column="item_id" jdbcType="VARCHAR" property="productd" />
-    <result column="url" jdbcType="VARCHAR" property="url" />
-    <result column="sort" jdbcType="INTEGER" property="sort" />
-    <result column="is_main" jdbcType="INTEGER" property="isMain" />
-    <result column="created_time" jdbcType="TIMESTAMP" property="createdTime" />
-    <result column="updated_time" jdbcType="TIMESTAMP" property="updatedTime" />
+    <id column="id" jdbcType="VARCHAR" property="id"/>
+    <result column="item_id" jdbcType="VARCHAR" property="productd"/>
+    <result column="url" jdbcType="VARCHAR" property="url"/>
+    <result column="sort" jdbcType="INTEGER" property="sort"/>
+    <result column="is_main" jdbcType="INTEGER" property="isMain"/>
+    <result column="created_time" jdbcType="TIMESTAMP" property="createdTime"/>
+    <result column="updated_time" jdbcType="TIMESTAMP" property="updatedTime"/>
   </resultMap>
 </mapper>

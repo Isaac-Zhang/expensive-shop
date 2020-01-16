@@ -7,16 +7,16 @@ spring:
     password: 12345678
   redis:
     # redis 单机节点配置
-#    host: 192.168.14.201
-#    database: 0
-#    port: 6379
-#    password: 12345678
-  # redis 哨兵模式（主备配置）
-#    database: 0
-#    password: 12345678
-#    sentinel:
-#      master: isaac-master
-#      nodes: 192.168.14.201:26379,192.168.14.202:26379,192.168.14.203:26379
+    #    host: 192.168.14.201
+    #    database: 0
+    #    port: 6379
+    #    password: 12345678
+    # redis 哨兵模式（主备配置）
+    #    database: 0
+    #    password: 12345678
+    #    sentinel:
+    #      master: isaac-master
+    #      nodes: 192.168.14.201:26379,192.168.14.202:26379,192.168.14.203:26379
     # 集群模式（最少需要3台master）
     cluster:
       nodes: 192.168.14.181:6379,192.168.14.182:6379,192.168.14.183:6379,192.168.14.184:6379,192.168.14.185:6379,192.168.14.186:6379

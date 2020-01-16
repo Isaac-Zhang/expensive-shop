@@ -27,8 +27,8 @@ import tk.mybatis.spring.annotation.MapperScan;
 @SpringBootApplication
 // 扫描 mybatis 通用 mapper 所在的包
 @MapperScan(basePackages = {
-        "com.liferunner.mapper",
-        "com.liferunner.custom"
+    "com.liferunner.mapper",
+    "com.liferunner.custom"
 })
 // 扫描所有包以及相关组件包
 @ComponentScan(basePackages = {"com.liferunner", "org.n3r.idworker"})
@@ -38,8 +38,8 @@ public class ApiApplication implements WebMvcConfigurer {
 
     public static void main(String[] args) {
         new SpringApplicationBuilder()
-                .sources(ApiApplication.class)
-                .run(args);
+            .sources(ApiApplication.class)
+            .run(args);
     }
 
     @Autowired
@@ -72,10 +72,10 @@ public class ApiApplication implements WebMvcConfigurer {
     @Override
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
         registry.addResourceHandler("/**")
-                //添加Swagger2文件路径映射
-                .addResourceLocations("classpath:META-INF/resources/")
-                //添加上传图片文件地址路径映射
-                .addResourceLocations("file:/promotion/sources/expensive-shop/");
+            //添加Swagger2文件路径映射
+            .addResourceLocations("classpath:META-INF/resources/")
+            //添加上传图片文件地址路径映射
+            .addResourceLocations("file:/promotion/sources/expensive-shop/");
     }
 
     /**

@@ -18,6 +18,7 @@ import lombok.NoArgsConstructor;
 @Builder
 @ApiModel(value = "用户信息返回DTO", description = "用户登录成功后需要的返回对象")
 public class UserResponseDTO {
+
     /**
      * 主键id
      */

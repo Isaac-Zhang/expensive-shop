@@ -15,6 +15,7 @@ import java.util.Properties;
 import java.util.Random;
 
 public class DefaultWorkerIdStrategy implements WorkerIdStrategy {
+
     static long workerIdBits = 10L;
     static long maxWorkerId = -1L ^ (-1L << workerIdBits);
     static Random random = new SecureRandom();
@@ -22,9 +23,9 @@ public class DefaultWorkerIdStrategy implements WorkerIdStrategy {
     public static final WorkerIdStrategy instance = new DefaultWorkerIdStrategy();
 
     private final Properties props =
-            Props.tryProperties("idworker-client.properties", Utils.DOT_IDWORKERS);
+        Props.tryProperties("idworker-client.properties", Utils.DOT_IDWORKERS);
     private final String idWorkerServerUrl =
-            props.getProperty("server.address", "http://id.worker.server:18001");
+        props.getProperty("server.address", "http://id.worker.server:18001");
 
     String userName = System.getProperty("user.name");
 
@@ -46,10 +47,14 @@ public class DefaultWorkerIdStrategy implements WorkerIdStrategy {
         } else {
             syncWithWorkerIdServer();
             workerId = findAvailWorkerId();
-            if (workerId < 0) workerId = increaseWithWorkerIdServer();
+            if (workerId < 0) {
+                workerId = increaseWithWorkerIdServer();
+            }
         }
 
-        if (workerId < 0) workerId = tryToCreateOnIp();
+        if (workerId < 0) {
+            workerId = tryToCreateOnIp();
+        }
         if (workerId < 0) {
             logger.warn("DANGEROUS!!! Try to use random worker id.");
             workerId = tryToRandomOnIp(); // Try avoiding! it could cause duplicated
@@ -81,10 +86,12 @@ public class DefaultWorkerIdStrategy implements WorkerIdStrategy {
 
     private long increaseWithWorkerIdServer() {
         String incId = HttpReq.get(idWorkerServerUrl)
-                .req("/inc")
-                .param("ipu", ipDotUsername)
-                .exec();
-        if (incId == null || incId.trim().isEmpty()) return -1L;
+            .req("/inc")
+            .param("ipu", ipDotUsername)
+            .exec();
+        if (incId == null || incId.trim().isEmpty()) {
+            return -1L;
+        }
 
         long lid = Long.parseLong(incId);
 
@@ -124,9 +131,11 @@ public class DefaultWorkerIdStrategy implements WorkerIdStrategy {
 
     private void syncWithWorkerIdServer() {
         String syncIds = HttpReq.get(idWorkerServerUrl).req("/sync")
-                .param("ipu", ipDotUsername).param("ids", buildWorkerIdsOfCurrentIp())
-                .exec();
-        if (syncIds == null || syncIds.trim().isEmpty()) return;
+            .param("ipu", ipDotUsername).param("ids", buildWorkerIdsOfCurrentIp())
+            .exec();
+        if (syncIds == null || syncIds.trim().isEmpty()) {
+            return;
+        }
 
         String[] syncIdsArr = syncIds.split(",");
         File idWorkerHome = Utils.createIdWorkerHome();
@@ -144,12 +153,18 @@ public class DefaultWorkerIdStrategy implements WorkerIdStrategy {
         File idWorkerHome = Utils.createIdWorkerHome();
         for (File lockFile : idWorkerHome.listFiles()) {
             // check the format like 10.142.1.151.lock.0001
-            if (!lockFile.getName().startsWith(ipudotlock)) continue;
+            if (!lockFile.getName().startsWith(ipudotlock)) {
+                continue;
+            }
 
             String workerId = lockFile.getName().substring(workerIdIndex);
-            if (!workerId.matches("\\d\\d\\d\\d")) continue;
+            if (!workerId.matches("\\d\\d\\d\\d")) {
+                continue;
+            }
 
-            if (sb.length() > 0) sb.append(',');
+            if (sb.length() > 0) {
+                sb.append(',');
+            }
             sb.append(workerId);
         }
 
@@ -167,10 +182,14 @@ public class DefaultWorkerIdStrategy implements WorkerIdStrategy {
 
         for (File lockFile : idWorkerHome.listFiles()) {
             // check the format like 10.142.1.151.lock.0001
-            if (!lockFile.getName().startsWith(ipudotlock)) continue;
+            if (!lockFile.getName().startsWith(ipudotlock)) {
+                continue;
+            }
 
             String workerId = lockFile.getName().substring(workerIdIndex);
-            if (!workerId.matches("\\d\\d\\d\\d")) continue;
+            if (!workerId.matches("\\d\\d\\d\\d")) {
+                continue;
+            }
 
             FileLock fileLock = new FileLock(lockFile);
             if (!fileLock.tryLock()) {
@@ -187,7 +206,9 @@ public class DefaultWorkerIdStrategy implements WorkerIdStrategy {
 
     @Override
     public void initialize() {
-        if (inited) return;
+        if (inited) {
+            return;
+        }
         init();
         this.inited = true;
     }
@@ -199,7 +220,9 @@ public class DefaultWorkerIdStrategy implements WorkerIdStrategy {
 
     @Override
     public void release() {
-        if (fileLock != null) fileLock.destroy();
+        if (fileLock != null) {
+            fileLock.destroy();
+        }
         inited = false;
     }
 }

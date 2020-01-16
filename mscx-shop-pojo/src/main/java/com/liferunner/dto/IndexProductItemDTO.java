@@ -14,6 +14,7 @@ import java.util.Date;
 @Data
 @ToString
 public class IndexProductItemDTO {
+
     private String productId;
     private String productName;
     private String productMainImageUrl;

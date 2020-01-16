@@ -15,6 +15,7 @@ import lombok.*;
 @AllArgsConstructor
 @ToString
 public class OrderResponseDTO {
+
     private String orderId;
     private MerchantOrderRequestDTO merchantOrderRequestDTO;
     private List<ShopcartRequestDTO> paddingRemovedList;

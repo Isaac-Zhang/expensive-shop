@@ -17,6 +17,7 @@ import java.util.List;
 @Builder
 @ToString
 public class UserOrderResponseDTO {
+
     private String orderId;
     private Date createdTime;
     private Integer payMethod;

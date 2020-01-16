@@ -5,15 +5,15 @@
     <!--
       WARNING - @mbg.generated
     -->
-    <id column="id" jdbcType="VARCHAR" property="id" />
-    <result column="image_url" jdbcType="VARCHAR" property="imageUrl" />
-    <result column="background_color" jdbcType="VARCHAR" property="backgroundColor" />
-    <result column="item_id" jdbcType="VARCHAR" property="itemId" />
-    <result column="cat_id" jdbcType="VARCHAR" property="catId" />
-    <result column="type" jdbcType="INTEGER" property="type" />
-    <result column="sort" jdbcType="INTEGER" property="sort" />
-    <result column="is_show" jdbcType="INTEGER" property="isShow" />
-    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
-    <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
+    <id column="id" jdbcType="VARCHAR" property="id"/>
+    <result column="image_url" jdbcType="VARCHAR" property="imageUrl"/>
+    <result column="background_color" jdbcType="VARCHAR" property="backgroundColor"/>
+    <result column="item_id" jdbcType="VARCHAR" property="itemId"/>
+    <result column="cat_id" jdbcType="VARCHAR" property="catId"/>
+    <result column="type" jdbcType="INTEGER" property="type"/>
+    <result column="sort" jdbcType="INTEGER" property="sort"/>
+    <result column="is_show" jdbcType="INTEGER" property="isShow"/>
+    <result column="create_time" jdbcType="TIMESTAMP" property="createTime"/>
+    <result column="update_time" jdbcType="TIMESTAMP" property="updateTime"/>
   </resultMap>
 </mapper>

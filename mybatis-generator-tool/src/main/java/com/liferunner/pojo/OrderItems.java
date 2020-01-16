@@ -10,6 +10,7 @@ import lombok.ToString;
 @ToString
 @Table(name = "`order_items`")
 public class OrderItems {
+
     /**
      * 主键id
      */

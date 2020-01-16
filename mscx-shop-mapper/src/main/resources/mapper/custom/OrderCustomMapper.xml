@@ -44,18 +44,18 @@
   </select>
   <!-- 解决mybatis-pagehelper 不支持嵌套对象分页查询bug-->
   <select id="getOrderSubItems" parameterType="String" resultType="com.liferunner.dto.UserOrderItemResponseDTO">
-        select
-        oi.item_id as productId,
-        oi.item_name as productName,
-        oi.item_img as productImage,
-        oi.item_spec_name as productSpecName,
-        oi.buy_counts as buyCounts,
-        oi.price as price
-        from
-        order_items oi
-        where
-        oi.order_id = #{orderId}
-    </select>
+    select
+    oi.item_id as productId,
+    oi.item_name as productName,
+    oi.item_img as productImage,
+    oi.item_spec_name as productSpecName,
+    oi.buy_counts as buyCounts,
+    oi.price as price
+    from
+    order_items oi
+    where
+    oi.order_id = #{orderId}
+  </select>
 
   <select id="CountOrderByStatus" parameterType="Map" resultType="int">
     SELECT
@@ -77,29 +77,29 @@
 
   <select id="getMyOrderJournal" parameterType="Map" resultType="com.liferunner.pojo.OrderStatus">
 
-        SELECT
-            os.order_id as orderId,
-            os.order_status as orderStatus,
-            os.created_time as createdTime,
-            os.pay_time as payTime,
-            os.deliver_time as deliverTime,
-            os.success_time as successTime,
-            os.close_time as closeTime,
-            os.comment_time as commentTime
-        FROM
-          orders o
-        LEFT JOIN
-          order_status os
-        on
-          o.id = os.order_id
-        WHERE
-          o.is_delete = 0
-        AND
-          o.user_id = #{paramMap.userId}
-        AND
-          os.order_status in (20, 30, 40)
-        ORDER BY
-          os.order_id
-        DESC
-    </select>
+    SELECT
+    os.order_id as orderId,
+    os.order_status as orderStatus,
+    os.created_time as createdTime,
+    os.pay_time as payTime,
+    os.deliver_time as deliverTime,
+    os.success_time as successTime,
+    os.close_time as closeTime,
+    os.comment_time as commentTime
+    FROM
+    orders o
+    LEFT JOIN
+    order_status os
+    on
+    o.id = os.order_id
+    WHERE
+    o.is_delete = 0
+    AND
+    o.user_id = #{paramMap.userId}
+    AND
+    os.order_status in (20, 30, 40)
+    ORDER BY
+    os.order_id
+    DESC
+  </select>
 </mapper>

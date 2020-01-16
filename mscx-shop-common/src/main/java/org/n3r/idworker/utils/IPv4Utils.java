@@ -3,8 +3,7 @@ package org.n3r.idworker.utils;
 /**
  * This utility provides methods to either convert an IPv4 address to its long format or a 32bit dotted format.
  *
- * @author Aion
- *         Created on 22/11/12
+ * @author Aion Created on 22/11/12
  */
 public class IPv4Utils {
 

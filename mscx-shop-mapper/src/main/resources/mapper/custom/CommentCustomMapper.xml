@@ -46,25 +46,25 @@
 
   <select id="getUserCommentList" parameterType="Map" resultMap="UserCommentDTO">
     SELECT
-        ic.id as commentId,
-        ic.content as content,
-        ic.created_time as createdTime,
-        ic.item_id as productId,
-        ic.item_name as productName,
-        ic.sepc_name as productSpecName,
-        ii.url as productImg
+    ic.id as commentId,
+    ic.content as content,
+    ic.created_time as createdTime,
+    ic.item_id as productId,
+    ic.item_name as productName,
+    ic.sepc_name as productSpecName,
+    ii.url as productImg
     FROM
-        items_comments ic
+    items_comments ic
     LEFT JOIN
-        items_img ii
+    items_img ii
     ON
-        ic.item_id = ii.item_id
+    ic.item_id = ii.item_id
     WHERE
-        ic.user_id = #{paramMap.userId}
+    ic.user_id = #{paramMap.userId}
     AND
-        ii.is_main = 1
+    ii.is_main = 1
     ORDER BY
-        ic.created_time
+    ic.created_time
     desc
   </select>
 </mapper>

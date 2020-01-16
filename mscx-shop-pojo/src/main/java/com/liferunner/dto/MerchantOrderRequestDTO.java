@@ -14,6 +14,7 @@ import lombok.*;
 @AllArgsConstructor
 @ToString
 public class MerchantOrderRequestDTO {
+
     /**
      * 商户订单号
      */

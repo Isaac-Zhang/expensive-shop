@@ -12,6 +12,7 @@ import lombok.ToString;
 @Data
 @ToString
 public class ThirdSubCategoryResponseDTO {
+
     /**
      * 主键
      */
@@ -23,10 +24,7 @@ public class ThirdSubCategoryResponseDTO {
     private String subName;
 
     /**
-     * 分类类型
-     1:一级大分类
-     2:二级分类
-     3:三级小分类
+     * 分类类型 1:一级大分类 2:二级分类 3:三级小分类
      */
     private Integer subType;
 

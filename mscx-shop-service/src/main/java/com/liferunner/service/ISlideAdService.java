@@ -15,6 +15,7 @@ public interface ISlideAdService {
 
     /**
      * 查询所有可用广告并排序
+     *
      * @param isShow
      * @return
      */

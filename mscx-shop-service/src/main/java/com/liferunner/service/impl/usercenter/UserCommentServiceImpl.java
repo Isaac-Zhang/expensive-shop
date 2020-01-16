@@ -82,8 +82,8 @@ public class UserCommentServiceImpl implements IUserCommentService {
 
     @Override
     public CommonPagedResult getUserCommentList(String uid, Integer pageNumber, Integer pageSize) {
-        Map<String,Object> paramMap = new HashMap<>();
-        paramMap.put("userId",uid);
+        Map<String, Object> paramMap = new HashMap<>();
+        paramMap.put("userId", uid);
         PageHelper.startPage(pageNumber, pageSize);
         val userCommentList = this.commentCustomMapper.getUserCommentList(paramMap);
         // 获取mybatis插件中获取到信息

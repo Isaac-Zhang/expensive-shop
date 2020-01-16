@@ -14,6 +14,7 @@ import lombok.*;
 @Builder
 @ToString
 public class UserAddressRequestDTO {
+
     private String addressId;
     private String userId;
     private String receiver;

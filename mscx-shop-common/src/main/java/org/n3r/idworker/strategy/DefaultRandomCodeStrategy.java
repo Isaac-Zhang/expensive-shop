@@ -14,6 +14,7 @@ import java.util.BitSet;
 import java.util.Queue;
 
 public class DefaultRandomCodeStrategy implements RandomCodeStrategy {
+
     public static final int MAX_BITS = 1000000;
 
     Logger log = LoggerFactory.getLogger(DefaultRandomCodeStrategy.class);
@@ -37,7 +38,9 @@ public class DefaultRandomCodeStrategy implements RandomCodeStrategy {
         release();
 
         while (++prefixIndex < 1000) {
-            if (tryUsePrefix()) return;
+            if (tryUsePrefix()) {
+                return;
+            }
         }
 
         throw new RuntimeException("all prefixes are used up, the world maybe ends!");
@@ -56,9 +59,15 @@ public class DefaultRandomCodeStrategy implements RandomCodeStrategy {
     protected boolean tryUsePrefix() {
         codePrefixIndex = new File(idWorkerHome, Id.getWorkerId() + ".code.prefix." + prefixIndex);
 
-        if (!createPrefixIndexFile()) return false;
-        if (!createFileLock()) return false;
-        if (!createBloomFilter()) return false;
+        if (!createPrefixIndexFile()) {
+            return false;
+        }
+        if (!createFileLock()) {
+            return false;
+        }
+        if (!createBloomFilter()) {
+            return false;
+        }
 
         log.info("get available prefix index file {}", codePrefixIndex);
 
@@ -66,7 +75,9 @@ public class DefaultRandomCodeStrategy implements RandomCodeStrategy {
     }
 
     private boolean createFileLock() {
-        if (fileLock != null) fileLock.destroy();
+        if (fileLock != null) {
+            fileLock.destroy();
+        }
         fileLock = new FileLock(codePrefixIndex);
         return fileLock.tryLock();
     }
@@ -120,7 +131,9 @@ public class DefaultRandomCodeStrategy implements RandomCodeStrategy {
 
     @Override
     public int next() {
-        if (availableCodes.isEmpty()) generate();
+        if (availableCodes.isEmpty()) {
+            generate();
+        }
 
         return availableCodes.poll();
     }
@@ -135,8 +148,9 @@ public class DefaultRandomCodeStrategy implements RandomCodeStrategy {
     }
 
     private void generate() {
-        for (int i = 0; i < CACHE_CODES_NUM; ++i)
+        for (int i = 0; i < CACHE_CODES_NUM; ++i) {
             availableCodes.add(generateOne());
+        }
 
         fileLock.writeObject(codesFilter);
     }
@@ -147,7 +161,9 @@ public class DefaultRandomCodeStrategy implements RandomCodeStrategy {
             boolean existed = contains(code);
 
             code = !existed ? add(code) : tryFindAvailableCode(code);
-            if (code >= 0) return code;
+            if (code >= 0) {
+                return code;
+            }
 
             init();
         }
@@ -155,10 +171,14 @@ public class DefaultRandomCodeStrategy implements RandomCodeStrategy {
 
     private int tryFindAvailableCode(int code) {
         int next = codesFilter.nextClearBit(code);
-        if (next != -1 && next < max(maxRandomSize)) return add(next);
+        if (next != -1 && next < max(maxRandomSize)) {
+            return add(next);
+        }
 
         next = codesFilter.previousClearBit(code);
-        if (next != -1) return add(next);
+        if (next != -1) {
+            return add(next);
+        }
 
         return -1;
     }

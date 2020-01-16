@@ -4,6 +4,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 
 public class DayPrefixRandomCodeStrategy extends DefaultRandomCodeStrategy {
+
     private final String dayFormat;
     private String lastDay;
 
@@ -14,8 +15,9 @@ public class DayPrefixRandomCodeStrategy extends DefaultRandomCodeStrategy {
     @Override
     public void init() {
         String day = createDate();
-        if (day.equals(lastDay))
+        if (day.equals(lastDay)) {
             throw new RuntimeException("init failed for day unrolled");
+        }
 
         lastDay = day;
 
@@ -23,7 +25,9 @@ public class DayPrefixRandomCodeStrategy extends DefaultRandomCodeStrategy {
         release();
 
         prefixIndex = Integer.parseInt(lastDay);
-        if (tryUsePrefix()) return;
+        if (tryUsePrefix()) {
+            return;
+        }
 
         throw new RuntimeException("prefix is not available " + prefixIndex);
     }
@@ -34,7 +38,9 @@ public class DayPrefixRandomCodeStrategy extends DefaultRandomCodeStrategy {
 
     @Override
     public int next() {
-        if (!lastDay.equals(createDate())) init();
+        if (!lastDay.equals(createDate())) {
+            init();
+        }
 
         return super.next();
     }

@@ -11,6 +11,7 @@ import lombok.ToString;
 @ToString
 @Table(name = "carousel")
 public class Carousel {
+
     /**
      * 主键
      */

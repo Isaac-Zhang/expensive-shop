@@ -62,22 +62,24 @@ public class UserController extends BaseController {
     @ApiOperation(value = "创建用户", notes = "用户注册接口")
     @PostMapping("/create")
     public JsonResponse createUser(@RequestBody UserRequestDTO userRequestDTO,
-                                   HttpServletRequest request,
-                                   HttpServletResponse response) {
+        HttpServletRequest request,
+        HttpServletResponse response) {
         log.info("======= UserRequestDTO = {}", userRequestDTO);
         try {
-            if (StringUtils.isBlank(userRequestDTO.getUsername()))
+            if (StringUtils.isBlank(userRequestDTO.getUsername())) {
                 return JsonResponse.errorMsg("用户名不能为空");
+            }
             if (null != this.userService.findUserByUserName(userRequestDTO.getUsername())) {
                 return JsonResponse.errorMsg("用户名已存在！");
             }
             if (StringUtils.isBlank(userRequestDTO.getPassword()) ||
-                    StringUtils.isBlank(userRequestDTO.getConfirmPassword()) ||
-                    userRequestDTO.getPassword().length() < 8) {
+                StringUtils.isBlank(userRequestDTO.getConfirmPassword()) ||
+                userRequestDTO.getPassword().length() < 8) {
                 return JsonResponse.errorMsg("密码为空或长度小于8位");
             }
-            if (!userRequestDTO.getPassword().equals(userRequestDTO.getConfirmPassword()))
+            if (!userRequestDTO.getPassword().equals(userRequestDTO.getConfirmPassword())) {
                 return JsonResponse.errorMsg("两次密码不一致！");
+            }
             val user = this.userService.createUser(userRequestDTO);
             UserResponseDTO userResponseDTO = new UserResponseDTO();
             BeanUtils.copyProperties(user, userResponseDTO);
@@ -85,7 +87,7 @@ public class UserController extends BaseController {
             if (null != userResponseDTO) {
                 // 设置前端存储的cookie信息
                 CookieTools.setCookie(request, response, "user",
-                        JSON.toJSONString(userResponseDTO), true);
+                    JSON.toJSONString(userResponseDTO), true);
 
                 //获取Redis中数据
                 val shopcartFromRedisStr = redisUtils.get(SHOPCART_COOKIE_NAME + ":" + user.getId());
@@ -103,13 +105,14 @@ public class UserController extends BaseController {
     @ApiOperation(value = "用户登录", notes = "用户登录接口")
     @PostMapping("/login")
     public JsonResponse userLogin(@RequestBody UserRequestDTO userRequestDTO,
-                                  HttpServletRequest request,
-                                  HttpServletResponse response) {
+        HttpServletRequest request,
+        HttpServletResponse response) {
         try {
-            if (StringUtils.isBlank(userRequestDTO.getUsername()))
+            if (StringUtils.isBlank(userRequestDTO.getUsername())) {
                 return JsonResponse.errorMsg("用户名不能为空");
+            }
             if (StringUtils.isBlank(userRequestDTO.getPassword()) ||
-                    userRequestDTO.getPassword().length() < 8) {
+                userRequestDTO.getPassword().length() < 8) {
                 return JsonResponse.errorMsg("密码为空或长度小于8位");
             }
             val user = this.userService.userLogin(userRequestDTO);
@@ -119,7 +122,7 @@ public class UserController extends BaseController {
             if (null != userResponseDTO) {
                 // 设置前端存储的cookie信息
                 CookieTools.setCookie(request, response, "user",
-                        JSON.toJSONString(userResponseDTO), true);
+                    JSON.toJSONString(userResponseDTO), true);
 
                 //获取Redis中数据
                 val shopcartFromRedisStr = redisUtils.get(SHOPCART_COOKIE_NAME + ":" + user.getId());
@@ -138,7 +141,7 @@ public class UserController extends BaseController {
     @ApiOperation(value = "用户登出", notes = "用户登出", httpMethod = "POST")
     @PostMapping("/logout")
     public JsonResponse userLogout(@RequestParam String uid,
-                                   HttpServletRequest request, HttpServletResponse response) {
+        HttpServletRequest request, HttpServletResponse response) {
         // clear front's user cookies
         CookieTools.deleteCookie(request, response, "user");
         // clear user shopcart data
@@ -161,7 +164,9 @@ public class UserController extends BaseController {
     @PostMapping("/address/add")
     public JsonResponse addAddress(@RequestBody UserAddressRequestDTO userAddressRequestDTO) {
         JsonResponse validateResult = validateUserAddress(userAddressRequestDTO);
-        if (validateResult.getStatus() != 200) return validateResult;
+        if (validateResult.getStatus() != 200) {
+            return validateResult;
+        }
         //插入地址信息
         this.userService.addAddress(userAddressRequestDTO);
         return JsonResponse.ok();
@@ -170,9 +175,11 @@ public class UserController extends BaseController {
     @ApiOperation(value = "更新用户收货地址", notes = "更新用户收货地址", httpMethod = "POST")
     @PostMapping("/address/update")
     public JsonResponse updateAddress(
-            @RequestBody UserAddressRequestDTO userAddressRequestDTO) {
+        @RequestBody UserAddressRequestDTO userAddressRequestDTO) {
         JsonResponse validateResult = validateUserAddress(userAddressRequestDTO);
-        if (validateResult.getStatus() != 200) return validateResult;
+        if (validateResult.getStatus() != 200) {
+            return validateResult;
+        }
         //更新地址信息
         this.userService.updateAddress(userAddressRequestDTO);
         return JsonResponse.ok();
@@ -181,8 +188,8 @@ public class UserController extends BaseController {
     @ApiOperation(value = "删除用户收货地址", notes = "删除用户收货地址", httpMethod = "POST")
     @PostMapping("/address/delete")
     public JsonResponse deleteAddress(
-            @RequestParam String userId,
-            @RequestParam String addressId
+        @RequestParam String userId,
+        @RequestParam String addressId
     ) {
         if (StringUtils.isBlank(userId) || StringUtils.isBlank(addressId)) {
             JsonResponse.errorMsg("");
@@ -195,8 +202,8 @@ public class UserController extends BaseController {
     @ApiOperation(value = "设置用户默认收货地址", notes = "设置用户默认收货地址", httpMethod = "POST")
     @PostMapping("/address/setDefault")
     public JsonResponse setDefaultAddress(
-            @RequestParam String userId,
-            @RequestParam String addressId
+        @RequestParam String userId,
+        @RequestParam String addressId
     ) {
         if (StringUtils.isBlank(userId) || StringUtils.isBlank(addressId)) {
             JsonResponse.errorMsg("");
@@ -234,9 +241,9 @@ public class UserController extends BaseController {
         String district = userAddressRequestDTO.getDistrict();
         String detail = userAddressRequestDTO.getDetail();
         if (StringUtils.isBlank(province) ||
-                StringUtils.isBlank(city) ||
-                StringUtils.isBlank(district) ||
-                StringUtils.isBlank(detail)) {
+            StringUtils.isBlank(city) ||
+            StringUtils.isBlank(district) ||
+            StringUtils.isBlank(detail)) {
             return JsonResponse.errorMsg("收货地址信息不能为空");
         }
         return JsonResponse.ok();
@@ -251,10 +258,10 @@ public class UserController extends BaseController {
      * @param response
      */
     private void syncShopcart(String shopcartFromRedisStr,
-                              String shopcartFromCookieStr,
-                              String uid,
-                              HttpServletRequest request,
-                              HttpServletResponse response) {
+        String shopcartFromCookieStr,
+        String uid,
+        HttpServletRequest request,
+        HttpServletResponse response) {
         // 1.如果Redis为空，Cookie数据为空，不做处理
         // 2.如果Redis为空，Cookie数据不为空，将Cookie数据同步存储到Redis中
         // 3.如果Redis不为空，Cookie数据为空，将Redis数据同步到Cookie中
@@ -262,8 +269,10 @@ public class UserController extends BaseController {
 
         if (StringUtils.isNotBlank(shopcartFromRedisStr)) {
             if (StringUtils.isNotBlank(shopcartFromCookieStr)) {
-                List<ShopcartRequestDTO> shopcartRedisList = JSON.parseArray(shopcartFromRedisStr, ShopcartRequestDTO.class);
-                List<ShopcartRequestDTO> shopcartCookieList = JSON.parseArray(shopcartFromCookieStr, ShopcartRequestDTO.class);
+                List<ShopcartRequestDTO> shopcartRedisList = JSON
+                    .parseArray(shopcartFromRedisStr, ShopcartRequestDTO.class);
+                List<ShopcartRequestDTO> shopcartCookieList = JSON
+                    .parseArray(shopcartFromCookieStr, ShopcartRequestDTO.class);
 
                 //循环redis中的数据
                 List<ShopcartRequestDTO> peddingRemovedList = new ArrayList<>();
@@ -285,7 +294,8 @@ public class UserController extends BaseController {
                 shopcartRedisList.addAll(shopcartCookieList);
 
                 redisUtils.set(SHOPCART_COOKIE_NAME + ":" + uid, JSON.toJSONString(shopcartRedisList));
-                CookieTools.setCookie(request, response, SHOPCART_COOKIE_NAME, JSON.toJSONString(shopcartRedisList), true);
+                CookieTools
+                    .setCookie(request, response, SHOPCART_COOKIE_NAME, JSON.toJSONString(shopcartRedisList), true);
 
             } else {
                 // 直接将Redis数据同步到cookie

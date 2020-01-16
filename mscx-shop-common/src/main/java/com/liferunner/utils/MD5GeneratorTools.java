@@ -13,7 +13,7 @@ import java.security.MessageDigest;
 public class MD5GeneratorTools {
 
     /**
-     *对字符串进行md5加密
+     * 对字符串进行md5加密
      */
     public static String getMD5Str(String strValue) throws Exception {
         MessageDigest md5 = MessageDigest.getInstance("MD5");

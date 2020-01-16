@@ -12,6 +12,7 @@ import lombok.ToString;
 @ToString
 @Table(name = "items_spec")
 public class ProductsSpec {
+
     /**
      * 商品规格id
      */

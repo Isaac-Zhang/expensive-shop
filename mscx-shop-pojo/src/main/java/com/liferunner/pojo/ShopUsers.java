@@ -11,6 +11,7 @@ import lombok.ToString;
 @ToString
 @Table(name = "shop_users")
 public class ShopUsers {
+
     /**
      * 乐观锁
      */

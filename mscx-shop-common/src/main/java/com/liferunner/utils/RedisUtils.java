@@ -90,8 +90,7 @@ public class RedisUtils {
      *
      * @param key
      * @param value
-     * @param timeout
-     *            （以秒为单位）
+     * @param timeout （以秒为单位）
      */
     public void set(String key, String value, long timeout) {
         redisTemplate.opsForValue().set(key, value, timeout, TimeUnit.SECONDS);
@@ -104,11 +103,12 @@ public class RedisUtils {
      * @return value
      */
     public String get(String key) {
-        return (String)redisTemplate.opsForValue().get(key);
+        return (String) redisTemplate.opsForValue().get(key);
     }
 
     /**
      * 批量查询，对应mget
+     *
      * @param keys
      * @return
      */
@@ -118,6 +118,7 @@ public class RedisUtils {
 
     /**
      * 批量查询，管道pipeline
+     *
      * @param keys
      * @return
      */
@@ -129,7 +130,7 @@ public class RedisUtils {
         List<Object> result = redisTemplate.executePipelined(new RedisCallback<String>() {
             @Override
             public String doInRedis(RedisConnection connection) throws DataAccessException {
-                StringRedisConnection src = (StringRedisConnection)connection;
+                StringRedisConnection src = (StringRedisConnection) connection;
 
                 for (String k : keys) {
                     src.get(k);
@@ -140,7 +141,6 @@ public class RedisUtils {
 
         return result;
     }
-
 
     // Hash（哈希表）
 
@@ -206,7 +206,7 @@ public class RedisUtils {
      * @return 列表key的头元素。
      */
     public String lpop(String key) {
-        return (String)redisTemplate.opsForList().leftPop(key);
+        return (String) redisTemplate.opsForList().leftPop(key);
     }
 
     /**

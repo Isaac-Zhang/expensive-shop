@@ -34,6 +34,7 @@ import java.util.List;
 @Service
 @Slf4j
 public class UserServiceImpl implements IUserService {
+
     private final String FACE_IMG = "https://avatars1.githubusercontent.com/u/4083152?s=88&v=4";
 
     // 构造器注入
@@ -53,7 +54,7 @@ public class UserServiceImpl implements IUserService {
         // 构建查询条件
         Example example = new Example(Users.class);
         val condition = example.createCriteria()
-                .andEqualTo("username", username);
+            .andEqualTo("username", username);
         return this.usersMapper.selectOneByExample(example);
     }
 
@@ -62,16 +63,16 @@ public class UserServiceImpl implements IUserService {
     public Users createUser(UserRequestDTO userRequestDTO) throws Exception {
         log.info("======begin create user : {}=======", userRequestDTO);
         val user = Users.builder()
-                .id(sid.next()) //生成分布式id
-                .username(userRequestDTO.getUsername())
-                .password(MD5GeneratorTools.getMD5Str(userRequestDTO.getPassword()))
-                .birthday(DateUtils.parseDate("1970-01-01", "yyyy-MM-dd"))
-                .nickname(userRequestDTO.getUsername())
-                .face(this.FACE_IMG)
-                .sex(SexEnum.SECRET.type)
-                .createdTime(new Date())
-                .updatedTime(new Date())
-                .build();
+            .id(sid.next()) //生成分布式id
+            .username(userRequestDTO.getUsername())
+            .password(MD5GeneratorTools.getMD5Str(userRequestDTO.getPassword()))
+            .birthday(DateUtils.parseDate("1970-01-01", "yyyy-MM-dd"))
+            .nickname(userRequestDTO.getUsername())
+            .face(this.FACE_IMG)
+            .sex(SexEnum.SECRET.type)
+            .createdTime(new Date())
+            .updatedTime(new Date())
+            .build();
         this.usersMapper.insertSelective(user);
         log.info("======end create user : {}=======", userRequestDTO);
         return user;
@@ -94,10 +95,10 @@ public class UserServiceImpl implements IUserService {
     @Override
     public List<UserAddress> getAddressByUserId(String uid) {
         return this.addressMapper.select(
-                new UserAddress()
-                        .builder()
-                        .userId(uid)
-                        .build()
+            new UserAddress()
+                .builder()
+                .userId(uid)
+                .build()
         );
     }
 
@@ -111,12 +112,12 @@ public class UserServiceImpl implements IUserService {
             isDefault = 1;
         }
         val userAddress = new UserAddress()
-                .builder()
-                .id(sid.nextShort())
-                .isDefault(isDefault)
-                .createdTime(new Date())
-                .updatedTime(new Date())
-                .build();
+            .builder()
+            .id(sid.nextShort())
+            .isDefault(isDefault)
+            .createdTime(new Date())
+            .updatedTime(new Date())
+            .build();
         // 通过工具类直接copy相同属性
         BeanUtils.copyProperties(addressRequestDTO, userAddress);
         this.addressMapper.insert(userAddress);
@@ -126,9 +127,9 @@ public class UserServiceImpl implements IUserService {
     @Override
     public void updateAddress(UserAddressRequestDTO addressRequestDTO) {
         val userAddress = new UserAddress()
-                .builder()
-                .updatedTime(new Date())
-                .build();
+            .builder()
+            .updatedTime(new Date())
+            .build();
         // 通过工具类直接copy相同属性
         BeanUtils.copyProperties(addressRequestDTO, userAddress);
         Example example = new Example(UserAddress.class);
@@ -155,23 +156,23 @@ public class UserServiceImpl implements IUserService {
         val condition = example.createCriteria();
         condition.andEqualTo("userId", uid);
         this.addressMapper.updateByExampleSelective(
-                new UserAddress()
-                        .builder()
-                        .isDefault(BooleanEnum.FALSE.type)
-                        .updatedTime(new Date())
-                        .build(),
-                example
+            new UserAddress()
+                .builder()
+                .isDefault(BooleanEnum.FALSE.type)
+                .updatedTime(new Date())
+                .build(),
+            example
         );
 
         //更新当前地址为默认地址
         condition.andEqualTo("id", addressId);
         this.addressMapper.updateByExampleSelective(
-                new UserAddress()
-                        .builder()
-                        .isDefault(BooleanEnum.TRUE.type)
-                        .updatedTime(new Date())
-                        .build(),
-                example
+            new UserAddress()
+                .builder()
+                .isDefault(BooleanEnum.TRUE.type)
+                .updatedTime(new Date())
+                .build(),
+            example
         );
     }
 

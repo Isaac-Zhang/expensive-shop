@@ -5,10 +5,10 @@
     <!--
       WARNING - @mbg.generated
     -->
-    <result column="REVISION" jdbcType="INTEGER" property="revision" />
-    <result column="CREATED_BY" jdbcType="VARCHAR" property="createdBy" />
-    <result column="CREATED_TIME" jdbcType="TIMESTAMP" property="createdTime" />
-    <result column="UPDATED_BY" jdbcType="VARCHAR" property="updatedBy" />
-    <result column="UPDATED_TIME" jdbcType="TIMESTAMP" property="updatedTime" />
+    <result column="REVISION" jdbcType="INTEGER" property="revision"/>
+    <result column="CREATED_BY" jdbcType="VARCHAR" property="createdBy"/>
+    <result column="CREATED_TIME" jdbcType="TIMESTAMP" property="createdTime"/>
+    <result column="UPDATED_BY" jdbcType="VARCHAR" property="updatedBy"/>
+    <result column="UPDATED_TIME" jdbcType="TIMESTAMP" property="updatedTime"/>
   </resultMap>
 </mapper>

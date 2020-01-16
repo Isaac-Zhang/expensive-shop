@@ -6,9 +6,10 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 public class IdWorker {
+
     protected long epoch = 1288834974657L;
 //    protected long epoch = 1387886498127L; // 2013-12-24 20:01:38.127
-    
+
 
     protected long workerIdBits = 10L;
     protected long maxWorkerId = -1L ^ (-1L << workerIdBits);
@@ -51,13 +52,14 @@ public class IdWorker {
         if (timestamp < lastMillis) {
             logger.error("clock is moving backwards.  Rejecting requests until {}.", lastMillis);
             throw new InvalidSystemClock(String.format(
-                    "Clock moved backwards.  Refusing to generate id for {} milliseconds", lastMillis - timestamp));
+                "Clock moved backwards.  Refusing to generate id for {} milliseconds", lastMillis - timestamp));
         }
 
         if (lastMillis == timestamp) {
             sequence = (sequence + 1) & sequenceMask;
-            if (sequence == 0)
+            if (sequence == 0) {
                 timestamp = tilNextMillis(lastMillis);
+            }
         } else {
             sequence = 0;
         }
@@ -65,14 +67,15 @@ public class IdWorker {
         lastMillis = timestamp;
         long diff = timestamp - getEpoch();
         return (diff << timestampLeftShift) |
-                (workerId << workerIdShift) |
-                sequence;
+            (workerId << workerIdShift) |
+            sequence;
     }
 
     protected long tilNextMillis(long lastMillis) {
         long millis = millisGen();
-        while (millis <= lastMillis)
+        while (millis <= lastMillis) {
             millis = millisGen();
+        }
 
         return millis;
     }

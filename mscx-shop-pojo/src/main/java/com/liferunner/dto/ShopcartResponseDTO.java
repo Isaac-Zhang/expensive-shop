@@ -14,6 +14,7 @@ import lombok.*;
 @Builder
 @ToString
 public class ShopcartResponseDTO {
+
     private String productId;
     private String productImgUrl;
     private String productName;

@@ -5,13 +5,13 @@
     <!--
       WARNING - @mbg.generated
     -->
-    <id column="id" jdbcType="INTEGER" property="id" />
-    <result column="name" jdbcType="VARCHAR" property="name" />
-    <result column="type" jdbcType="INTEGER" property="type" />
-    <result column="father_id" jdbcType="INTEGER" property="fatherId" />
-    <result column="logo" jdbcType="VARCHAR" property="logo" />
-    <result column="slogan" jdbcType="VARCHAR" property="slogan" />
-    <result column="cat_image" jdbcType="VARCHAR" property="catImage" />
-    <result column="bg_color" jdbcType="VARCHAR" property="bgColor" />
+    <id column="id" jdbcType="INTEGER" property="id"/>
+    <result column="name" jdbcType="VARCHAR" property="name"/>
+    <result column="type" jdbcType="INTEGER" property="type"/>
+    <result column="father_id" jdbcType="INTEGER" property="fatherId"/>
+    <result column="logo" jdbcType="VARCHAR" property="logo"/>
+    <result column="slogan" jdbcType="VARCHAR" property="slogan"/>
+    <result column="cat_image" jdbcType="VARCHAR" property="catImage"/>
+    <result column="bg_color" jdbcType="VARCHAR" property="bgColor"/>
   </resultMap>
 </mapper>

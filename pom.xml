@@ -1,151 +1,151 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project xmlns="http://maven.apache.org/POM/4.0.0"
-         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
-    <modelVersion>4.0.0</modelVersion>
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
 
-    <parent>
-        <groupId>org.springframework.boot</groupId>
-        <artifactId>spring-boot-starter-parent</artifactId>
-        <version>2.2.1.RELEASE</version>
-        <relativePath/>
-    </parent>
-    <groupId>com.life-runner</groupId>
-    <artifactId>expensive-shop</artifactId>
-    <version>1.0-SNAPSHOT</version>
+  <parent>
+    <groupId>org.springframework.boot</groupId>
+    <artifactId>spring-boot-starter-parent</artifactId>
+    <version>2.2.1.RELEASE</version>
+    <relativePath/>
+  </parent>
+  <groupId>com.life-runner</groupId>
+  <artifactId>expensive-shop</artifactId>
+  <version>1.0-SNAPSHOT</version>
 
-    <name>expensive-shop</name>
-    <description>develop a on-line shop</description>
+  <name>expensive-shop</name>
+  <description>develop a on-line shop</description>
 
-    <modules>
-        <module>mscx-shop-common</module>
-        <module>mscx-shop-pojo</module>
-        <module>mscx-shop-mapper</module>
-        <module>mscx-shop-service</module>
-        <module>mscx-shop-api</module>
-    </modules>
-    <packaging>pom</packaging>
+  <modules>
+    <module>mscx-shop-common</module>
+    <module>mscx-shop-pojo</module>
+    <module>mscx-shop-mapper</module>
+    <module>mscx-shop-service</module>
+    <module>mscx-shop-api</module>
+  </modules>
+  <packaging>pom</packaging>
 
-    <properties>
-        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
-        <java.version>1.8</java.version>
-    </properties>
+  <properties>
+    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+    <java.version>1.8</java.version>
+  </properties>
 
-    <dependencies>
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter</artifactId>
-            <exclusions>
-                <exclusion>
-                    <groupId>org.springframework.boot</groupId>
-                    <artifactId>spring-boot-starter-logging</artifactId>
-                </exclusion>
-            </exclusions>
-        </dependency>
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-web</artifactId>
-        </dependency>
-        <!--spring默认使用yml中的配置，有时候要用传统的xml或properties配置，就需要使用spring-boot-configuration-processor-->
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-configuration-processor</artifactId>
-            <optional>true</optional>
-        </dependency>
-        <!--监控端点依赖-->
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-actuator</artifactId>
-        </dependency>
+  <dependencies>
+    <dependency>
+      <groupId>org.springframework.boot</groupId>
+      <artifactId>spring-boot-starter</artifactId>
+      <exclusions>
+        <exclusion>
+          <groupId>org.springframework.boot</groupId>
+          <artifactId>spring-boot-starter-logging</artifactId>
+        </exclusion>
+      </exclusions>
+    </dependency>
+    <dependency>
+      <groupId>org.springframework.boot</groupId>
+      <artifactId>spring-boot-starter-web</artifactId>
+    </dependency>
+    <!--spring默认使用yml中的配置，有时候要用传统的xml或properties配置，就需要使用spring-boot-configuration-processor-->
+    <dependency>
+      <groupId>org.springframework.boot</groupId>
+      <artifactId>spring-boot-configuration-processor</artifactId>
+      <optional>true</optional>
+    </dependency>
+    <!--监控端点依赖-->
+    <dependency>
+      <groupId>org.springframework.boot</groupId>
+      <artifactId>spring-boot-starter-actuator</artifactId>
+    </dependency>
 
-        <!-- mysql8 驱动-->
-        <dependency>
-            <groupId>mysql</groupId>
-            <artifactId>mysql-connector-java</artifactId>
-            <version>8.0.18</version>
-        </dependency>
-        <!-- mybatis -->
-        <dependency>
-            <groupId>org.mybatis.spring.boot</groupId>
-            <artifactId>mybatis-spring-boot-starter</artifactId>
-            <version>2.1.1</version>
-        </dependency>
-        <!-- 引入mybatis-pagehelper 插件-->
-        <dependency>
-            <groupId>com.github.pagehelper</groupId>
-            <artifactId>pagehelper-spring-boot-starter</artifactId>
-            <version>1.2.12</version>
-        </dependency>
-        <!-- 通用mapper逆向工具 -->
-        <dependency>
-            <groupId>tk.mybatis</groupId>
-            <artifactId>mapper-spring-boot-starter</artifactId>
-            <version>2.1.5</version>
-        </dependency>
+    <!-- mysql8 驱动-->
+    <dependency>
+      <groupId>mysql</groupId>
+      <artifactId>mysql-connector-java</artifactId>
+      <version>8.0.18</version>
+    </dependency>
+    <!-- mybatis -->
+    <dependency>
+      <groupId>org.mybatis.spring.boot</groupId>
+      <artifactId>mybatis-spring-boot-starter</artifactId>
+      <version>2.1.1</version>
+    </dependency>
+    <!-- 引入mybatis-pagehelper 插件-->
+    <dependency>
+      <groupId>com.github.pagehelper</groupId>
+      <artifactId>pagehelper-spring-boot-starter</artifactId>
+      <version>1.2.12</version>
+    </dependency>
+    <!-- 通用mapper逆向工具 -->
+    <dependency>
+      <groupId>tk.mybatis</groupId>
+      <artifactId>mapper-spring-boot-starter</artifactId>
+      <version>2.1.5</version>
+    </dependency>
 
-        <dependency>
-            <groupId>org.projectlombok</groupId>
-            <artifactId>lombok</artifactId>
-            <version>1.18.8</version>
-        </dependency>
+    <dependency>
+      <groupId>org.projectlombok</groupId>
+      <artifactId>lombok</artifactId>
+      <version>1.18.8</version>
+    </dependency>
 
-        <!-- 添加工具类依赖 -->
-        <dependency>
-            <groupId>org.apache.commons</groupId>
-            <artifactId>commons-lang3</artifactId>
-            <version>3.9</version>
-        </dependency>
-        <!--整合Swagger2-->
-        <dependency>
-            <groupId>com.spring4all</groupId>
-            <artifactId>swagger-spring-boot-starter</artifactId>
-            <version>1.9.0.RELEASE</version>
-        </dependency>
-        <!--一种新的swagger ui-->
-        <dependency>
-            <groupId>com.github.xiaoymin</groupId>
-            <artifactId>swagger-bootstrap-ui</artifactId>
-            <version>1.6</version>
-        </dependency>
-        <!--引入日志依赖 抽象层 与 实现层-->
-        <dependency>
-            <groupId>org.slf4j</groupId>
-            <artifactId>slf4j-api</artifactId>
-            <version>1.7.28</version>
-        </dependency>
-        <dependency>
-            <groupId>org.slf4j</groupId>
-            <artifactId>slf4j-log4j12</artifactId>
-            <version>1.7.28</version>
-        </dependency>
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-aop</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-data-redis</artifactId>
-        </dependency>
-    </dependencies>
+    <!-- 添加工具类依赖 -->
+    <dependency>
+      <groupId>org.apache.commons</groupId>
+      <artifactId>commons-lang3</artifactId>
+      <version>3.9</version>
+    </dependency>
+    <!--整合Swagger2-->
+    <dependency>
+      <groupId>com.spring4all</groupId>
+      <artifactId>swagger-spring-boot-starter</artifactId>
+      <version>1.9.0.RELEASE</version>
+    </dependency>
+    <!--一种新的swagger ui-->
+    <dependency>
+      <groupId>com.github.xiaoymin</groupId>
+      <artifactId>swagger-bootstrap-ui</artifactId>
+      <version>1.6</version>
+    </dependency>
+    <!--引入日志依赖 抽象层 与 实现层-->
+    <dependency>
+      <groupId>org.slf4j</groupId>
+      <artifactId>slf4j-api</artifactId>
+      <version>1.7.28</version>
+    </dependency>
+    <dependency>
+      <groupId>org.slf4j</groupId>
+      <artifactId>slf4j-log4j12</artifactId>
+      <version>1.7.28</version>
+    </dependency>
+    <dependency>
+      <groupId>org.springframework.boot</groupId>
+      <artifactId>spring-boot-starter-aop</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.springframework.boot</groupId>
+      <artifactId>spring-boot-starter-data-redis</artifactId>
+    </dependency>
+  </dependencies>
 
-    <!--定义远程maven仓库-->
-    <repositories>
-        <repository>
-            <id>spring-milestones</id>
-            <name>Spring Milestones</name>
-            <url>https://repo.spring.io/milestone</url>
-            <snapshots>
-                <enabled>false</enabled>
-            </snapshots>
-        </repository>
-        <repository>
-            <id>alibaba-milestones</id>
-            <name>ali Milestones</name>
-            <url>http://maven.aliyun.com/nexus/content/groups/public/</url>
-            <snapshots>
-                <enabled>false</enabled>
-            </snapshots>
-        </repository>
-    </repositories>
+  <!--定义远程maven仓库-->
+  <repositories>
+    <repository>
+      <id>spring-milestones</id>
+      <name>Spring Milestones</name>
+      <url>https://repo.spring.io/milestone</url>
+      <snapshots>
+        <enabled>false</enabled>
+      </snapshots>
+    </repository>
+    <repository>
+      <id>alibaba-milestones</id>
+      <name>ali Milestones</name>
+      <url>http://maven.aliyun.com/nexus/content/groups/public/</url>
+      <snapshots>
+        <enabled>false</enabled>
+      </snapshots>
+    </repository>
+  </repositories>
 </project>

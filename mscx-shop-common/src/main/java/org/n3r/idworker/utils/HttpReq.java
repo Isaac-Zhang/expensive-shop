@@ -10,6 +10,7 @@ import java.io.UnsupportedEncodingException;
 import java.net.*;
 
 public class HttpReq {
+
     private final String baseUrl;
     private String req;
     private StringBuilder params = new StringBuilder();
@@ -29,7 +30,9 @@ public class HttpReq {
     }
 
     public HttpReq param(String name, String value) {
-        if (params.length() > 0) params.append('&');
+        if (params.length() > 0) {
+            params.append('&');
+        }
         try {
             params.append(name).append('=').append(URLEncoder.encode(value, "UTF-8"));
         } catch (UnsupportedEncodingException e) {
@@ -43,8 +46,8 @@ public class HttpReq {
         HttpURLConnection http = null;
         try {
             http = (HttpURLConnection) new URL(baseUrl
-                    + (req == null ? "" : req)
-                    + (params.length() > 0 ? ("?" + params) : "")).openConnection();
+                + (req == null ? "" : req)
+                + (params.length() > 0 ? ("?" + params) : "")).openConnection();
             http.setRequestProperty("Accept-Charset", "UTF-8");
             HttpURLConnection.setFollowRedirects(false);
             http.setConnectTimeout(5 * 1000);
@@ -64,7 +67,9 @@ public class HttpReq {
             logger.error("exec error {}", e.getMessage());
             return null;
         } finally {
-            if (http != null) http.disconnect();
+            if (http != null) {
+                http.disconnect();
+            }
         }
 
     }
@@ -98,7 +103,9 @@ public class HttpReq {
     }
 
     private static String getCharset(String contentType) {
-        if (contentType == null) return "UTF-8";
+        if (contentType == null) {
+            return "UTF-8";
+        }
 
         String charset = null;
         for (String param : contentType.replace(" ", "").split(";")) {

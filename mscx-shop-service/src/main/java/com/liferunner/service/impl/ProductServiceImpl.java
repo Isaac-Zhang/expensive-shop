@@ -119,11 +119,11 @@ public class ProductServiceImpl implements IProductService {
         PageInfo<?> pageInfo = new PageInfo<>(productCommentList);
         // 封装为返回到前端分页组件可识别的视图
         val commonPagedResult = CommonPagedResult.builder()
-                .pageNumber(pageNumber)
-                .rows(productCommentList)
-                .totalPage(pageInfo.getPages())
-                .records(pageInfo.getTotal())
-                .build();
+            .pageNumber(pageNumber)
+            .rows(productCommentList)
+            .totalPage(pageInfo.getPages())
+            .records(pageInfo.getTotal())
+            .build();
         return commonPagedResult;
     }
 
@@ -139,17 +139,18 @@ public class ProductServiceImpl implements IProductService {
         PageInfo<?> pageInfo = new PageInfo<>(searchProductDTOS);
         // 封装为返回到前端分页组件可识别的视图
         val commonPagedResult = CommonPagedResult.builder()
-                .pageNumber(pageNumber)
-                .rows(searchProductDTOS)
-                .totalPage(pageInfo.getPages())
-                .records(pageInfo.getTotal())
-                .build();
+            .pageNumber(pageNumber)
+            .rows(searchProductDTOS)
+            .totalPage(pageInfo.getPages())
+            .records(pageInfo.getTotal())
+            .build();
         return commonPagedResult;
     }
 
     // 方法重载
     @Override
-    public CommonPagedResult searchProductList(Integer categoryId, String sortby, Integer pageNumber, Integer pageSize) {
+    public CommonPagedResult searchProductList(Integer categoryId, String sortby, Integer pageNumber,
+        Integer pageSize) {
         Map<String, Object> paramMap = new HashMap<>();
         paramMap.put("categoryId", categoryId);
         paramMap.put("sortby", sortby);
@@ -160,11 +161,11 @@ public class ProductServiceImpl implements IProductService {
         PageInfo<?> pageInfo = new PageInfo<>(searchProductDTOS);
         // 封装为返回到前端分页组件可识别的视图
         val commonPagedResult = CommonPagedResult.builder()
-                .pageNumber(pageNumber)
-                .rows(searchProductDTOS)
-                .totalPage(pageInfo.getPages())
-                .records(pageInfo.getTotal())
-                .build();
+            .pageNumber(pageNumber)
+            .rows(searchProductDTOS)
+            .totalPage(pageInfo.getPages())
+            .records(pageInfo.getTotal())
+            .build();
         return commonPagedResult;
     }
 
@@ -179,7 +180,7 @@ public class ProductServiceImpl implements IProductService {
     @Override
     public List<ProductsSpec> getProductSpecByIds(String specIds) {
         return this.productCustomMapper.getAllProductSpec(
-                CollectionUtils.arrayToList(specIds.split(",")));
+            CollectionUtils.arrayToList(specIds.split(",")));
     }
 
     @Transactional

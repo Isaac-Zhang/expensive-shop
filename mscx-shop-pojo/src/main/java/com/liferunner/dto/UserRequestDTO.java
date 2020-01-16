@@ -19,6 +19,7 @@ import lombok.NoArgsConstructor;
 @Builder
 @ApiModel(value = "创建用户DTO", description = "用户注册需要的参数对象")
 public class UserRequestDTO {
+
     @ApiModelProperty(value = "用户名", notes = "username", example = "isaaczhang", required = true)
     private String username;
     @ApiModelProperty(value = "注册密码", notes = "password", example = "12345678", required = true)

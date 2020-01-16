@@ -12,6 +12,7 @@ import lombok.*;
 @ToString
 @Table(name = "order_status")
 public class OrderStatus {
+
     /**
      * 订单ID 对应订单表的主键id
      */

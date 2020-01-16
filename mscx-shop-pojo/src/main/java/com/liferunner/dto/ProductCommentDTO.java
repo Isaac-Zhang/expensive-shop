@@ -18,6 +18,7 @@ import java.util.Date;
 @AllArgsConstructor
 @Builder
 public class ProductCommentDTO {
+
     //评价等级
     private Integer commentLevel;
     //规格名称
