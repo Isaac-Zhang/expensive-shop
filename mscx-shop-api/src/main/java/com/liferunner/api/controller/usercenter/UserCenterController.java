@@ -10,6 +10,7 @@ import com.liferunner.service.usercenter.IUserCenterLoginUserService;
 import com.liferunner.utils.CommonPagedResult;
 import com.liferunner.utils.CookieTools;
 import com.liferunner.utils.JsonResponse;
+import com.liferunner.utils.RedisUtils;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
@@ -17,6 +18,7 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.UUID;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
@@ -50,6 +52,7 @@ public class UserCenterController extends BaseController {
 
     private final IUserCenterLoginUserService userCenterLoginUserService;
     private final IOrderService orderService;
+    private final RedisUtils redisUtils;
 
     /**
      * @return
@@ -86,6 +89,10 @@ public class UserCenterController extends BaseController {
             BeanUtils.copyProperties(updateUser, userResponseDTO);
             log.info("BeanUtils copy object {}", userResponseDTO);
             if (null != userResponseDTO) {
+                String userToken = UUID.randomUUID().toString();
+                //设置用户token到redis
+                redisUtils.set(REDIS_USER_TOKEN + ":" + updateUser.getId(), userToken);
+                userResponseDTO.setUserToken(userToken);
                 // 设置前端存储的cookie信息
                 CookieTools.setCookie(request, response, "user",
                     JSON.toJSONString(userResponseDTO), true);
@@ -165,6 +172,10 @@ public class UserCenterController extends BaseController {
             BeanUtils.copyProperties(userFace, userResponseDTO);
             log.info("BeanUtils copy object {}", userResponseDTO);
             if (null != userResponseDTO) {
+                String userToken = UUID.randomUUID().toString();
+                //设置用户token到redis
+                redisUtils.set(REDIS_USER_TOKEN + ":" + userFace.getId(), userToken);
+                userResponseDTO.setUserToken(userToken);
                 // 设置前端存储的cookie信息
                 CookieTools.setCookie(request, response, "user",
                     JSON.toJSONString(userResponseDTO), true);

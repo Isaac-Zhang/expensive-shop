@@ -127,6 +127,10 @@ public class UserController extends BaseController {
             BeanUtils.copyProperties(user, userResponseDTO);
             log.info("BeanUtils copy object {}", userResponseDTO);
             if (null != userResponseDTO) {
+                String userToken = UUID.randomUUID().toString();
+                // 设置用户token到redis
+                redisUtils.set(REDIS_USER_TOKEN + ":" + user.getId(), userToken);
+                userResponseDTO.setUserToken(userToken);
                 // 设置前端存储的cookie信息
                 CookieTools.setCookie(request, response, "user",
                         JSON.toJSONString(userResponseDTO), true);
@@ -153,6 +157,8 @@ public class UserController extends BaseController {
         CookieTools.deleteCookie(request, response, "user");
         // clear user shopcart data
         CookieTools.deleteCookie(request, response, SHOPCART_COOKIE_NAME);
+        //clear user redis data
+        redisUtils.del(REDIS_USER_TOKEN + ":" + uid);
         // return operational result
         return JsonResponse.ok();
     }
