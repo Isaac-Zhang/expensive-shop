@@ -87,7 +87,7 @@ public class ApiApplication implements WebMvcConfigurer {
     public void addInterceptors(InterceptorRegistry registry) {
         registry.addInterceptor(userTokenInterceptor)
                 .addPathPatterns("/usercenter/**")
-                .addPathPatterns("/**");
+                .addPathPatterns("/shopcart/**");
         WebMvcConfigurer.super.addInterceptors(registry);
     }
 
