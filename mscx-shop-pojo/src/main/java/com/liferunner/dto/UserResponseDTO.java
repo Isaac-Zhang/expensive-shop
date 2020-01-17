@@ -43,4 +43,9 @@ public class UserResponseDTO {
      * 性别  1:男  0:女  2:保密
      */
     private Integer sex;
+
+    /**
+     * 用于存储redis中的用户token信息到cookie
+     */
+    private String userToken;
 }

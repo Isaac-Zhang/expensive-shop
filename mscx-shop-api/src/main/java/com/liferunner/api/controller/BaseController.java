@@ -55,7 +55,10 @@ public class BaseController {
      * 支付中心账户密码
      */
     public static final String PAYMENT_PASSWORD = "1i12-pow0-pdwq-jgg8";
-
+    /**
+     * redis中存储用户token
+     */
+    public static final String REDIS_USER_TOKEN = "redis_user_token";
     /**
      * 文件上传路径
      */
