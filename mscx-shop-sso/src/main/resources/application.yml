@@ -1,0 +1,49 @@
+server:
+  tomcat:
+    uri-encoding: UTF-8
+  max-http-header-size: 80KB
+
+# 配置数据源信息
+spring:
+  datasource:                                           # 数据源的相关配置
+    type: com.zaxxer.hikari.HikariDataSource          # 数据源类型：HikariCP
+    driver-class-name: com.mysql.cj.jdbc.Driver          # mysql驱动
+    hikari:
+      connection-timeout: 30000       # 等待连接池分配连接的最大时长（毫秒），超过这个时长还没可用的连接则发生SQLException， 默认:30秒
+      minimum-idle: 5                 # 最小连接数
+      maximum-pool-size: 20           # 最大连接数
+      auto-commit: true               # 自动提交
+      idle-timeout: 600000            # 连接超时的最大时长（毫秒），超时则被释放（retired），默认:10分钟
+      pool-name: DateSourceHikariCP     # 连接池名字
+      max-lifetime: 1800000           # 连接的生命时长（毫秒），超时而且没被使用则被释放（retired），默认:30分钟 1800000ms
+      connection-test-query: SELECT 1
+  servlet:
+    multipart:
+      max-file-size: 204800 #文件大小不能超过200kb
+      max-request-size: 512000 #请求大小不能超过500kb
+  profiles:
+    active: dev
+# mybatis 配置
+mybatis:
+  type-aliases-package: com.liferunner.pojo          # 所有POJO类所在包路径
+  mapper-locations: classpath*:mapper/*.xml,classpath*:mapper/custom/*.xml      # mapper映射文件
+# mybatis 分页组件配置
+pagehelper:
+  helperDialect: mysql
+  supportMethodsArguments: true
+# 配置swagger2
+swagger:
+  enabled: true #是否启用swagger，默认：true
+  title: 实战电商api平台
+  description: provide 电商 API
+  version: 1.0.0.RC
+  license: Apache License, Version 2.0
+  license-url: https://www.apache.org/licenses/LICENSE-2.0.html
+  terms-of-service-url: http://www.life-runner.com
+  contact:
+    email: magicianisaac@gmail.com
+    name: Isaac-Zhang
+    url: http://www.life-runner.com
+  base-package: com.liferunner
+  base-path: /**
+

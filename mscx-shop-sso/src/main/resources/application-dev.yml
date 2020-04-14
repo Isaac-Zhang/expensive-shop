@@ -1,0 +1,24 @@
+server:
+  port: 8090
+spring:
+  datasource:                                           # 数据源的相关配置
+    url: jdbc:mysql://localhost:3306/expensiveshop?characterEncoding=UTF-8&useSSL=false&useUnicode=true&serverTimezone=Hongkong
+    username: root
+    password: 12345678
+  redis:
+     #redis 单机节点配置
+        host: 192.168.14.201
+        database: 0
+        port: 6379
+        password: 12345678
+
+mybatis:
+  configuration:
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+
+shop:
+  cors:
+    allowOrigin: http://localhost:8080
+    allowCredentials: true
+    allowedMethod: '*'
+    allowedHeader: '*'

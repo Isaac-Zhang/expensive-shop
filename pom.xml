@@ -23,6 +23,7 @@
     <module>mscx-shop-mapper</module>
     <module>mscx-shop-service</module>
     <module>mscx-shop-api</module>
+    <module>mscx-shop-sso</module>
   </modules>
   <packaging>pom</packaging>
 
