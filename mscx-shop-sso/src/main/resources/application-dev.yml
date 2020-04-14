@@ -7,7 +7,7 @@ spring:
     password: 12345678
   redis:
      #redis 单机节点配置
-        host: 192.168.14.201
+        host: 127.0.0.1
         database: 0
         port: 6379
         password: 12345678

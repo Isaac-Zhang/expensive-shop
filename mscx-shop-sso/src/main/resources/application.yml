@@ -23,6 +23,11 @@ spring:
       max-request-size: 512000 #请求大小不能超过500kb
   profiles:
     active: dev
+  thymeleaf:
+    mode: HTML
+    prefix: classpath:/templates/html/
+    suffix: .html
+    encoding: UTF-8
 # mybatis 配置
 mybatis:
   type-aliases-package: com.liferunner.pojo          # 所有POJO类所在包路径
