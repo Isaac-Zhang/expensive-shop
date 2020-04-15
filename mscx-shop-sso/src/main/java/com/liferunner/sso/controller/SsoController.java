@@ -9,6 +9,7 @@ import com.liferunner.utils.CookieTools;
 import com.liferunner.utils.JsonResponse;
 import com.liferunner.utils.MD5GeneratorTools;
 import com.liferunner.utils.RedisUtils;
+import io.swagger.annotations.ApiOperation;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -49,10 +50,24 @@ public class SsoController {
     public static final String COOKIE_USER_TICKET = "cookie_user_ticket";
     public static final String SHOPCART_COOKIE_NAME = "shopcart";
 
+    /**
+     * 用户登录页面
+     */
+    @ApiOperation("用户登录页面")
     @GetMapping("/login")
     public String login(Model model, HttpServletRequest request, HttpServletResponse response,
-        String returnUrl) {
+        String returnUrl) throws Exception {
         model.addAttribute("returnUrl", returnUrl);
+        // 校验用户是否已经登录
+        if (verifyUserLogin(request)) {
+            // 创建临时票据
+            String user_tmp_ticket = UUID.randomUUID().toString().trim();
+            //      4. 将临时ticket 写入 redis,有效期10分钟
+            redisUtils.set(REDIS_TMP_TICKET + ":" + user_tmp_ticket, MD5GeneratorTools.getMD5Str(user_tmp_ticket)
+                , 600);
+            //      5. 将临时ticket 跟随 returnUrl 回传到前端
+            return "redirect:" + returnUrl + "?tmpTicket=" + user_tmp_ticket;
+        }
         // 返回到login 页面
         return "login";
     }
@@ -104,7 +119,7 @@ public class SsoController {
                 redisUtils.set(REDIS_TMP_TICKET + ":" + user_tmp_ticket, MD5GeneratorTools.getMD5Str(user_tmp_ticket)
                     , 600);
                 //      5. 将临时ticket 跟随 returnUrl 回传到前端
-                 return "redirect:"+returnUrl+"?tmpTicket="+user_tmp_ticket;
+                return "redirect:" + returnUrl + "?tmpTicket=" + user_tmp_ticket;
                 //return "login";
             }
         } catch (Exception e) {
@@ -151,6 +166,25 @@ public class SsoController {
         }
         UserResponseDTO userResponseDTO = JSON.parseObject(redisUserInfo, UserResponseDTO.class);
         return JsonResponse.ok(userResponseDTO);
+    }
+
+    /**
+     * 用户全局会话退出
+     */
+    @PostMapping(path = "/logout")
+    @ResponseBody
+    public JsonResponse logout(HttpServletRequest request, HttpServletResponse response) {
+        // 验证是否登录
+        if (verifyUserLogin(request)) {
+            // 1. delete user ticket from cookie & redis
+            deleteUserTicketFromCookie(COOKIE_USER_TICKET, response);
+            redisUtils.del(REDIS_USER_TICKET + ":" + CookieTools.getCookieValue(request, COOKIE_USER_TICKET));
+            // 2. delete user login token
+            String userIdFromRedis = redisUtils.get(REDIS_USER_TICKET + ":" + CookieTools.getCookieValue(request,
+                COOKIE_USER_TICKET));
+            redisUtils.del(REDIS_USER_TOKEN + ":" + userIdFromRedis);
+        }
+        return JsonResponse.ok();
     }
 
     /**
@@ -215,5 +249,36 @@ public class SsoController {
         cookie.setPath("/");
         response.addCookie(cookie);
 //        CookieTools.setCookie(request, response, COOKIE_USER_TICKET, userTicket, true);
+    }
+
+    /**
+     * 删除前端SSO 用户ticket cookie
+     */
+    private void deleteUserTicketFromCookie(String key, HttpServletResponse response) {
+        Cookie cookie = new Cookie(key, null);
+        cookie.setDomain("sso.com");
+        cookie.setPath("/");
+        // 直接设置过期
+        cookie.setMaxAge(-1);
+        response.addCookie(cookie);
+    }
+
+    /**
+     * 验证用户是否在 SSO 已经登录
+     */
+    private Boolean verifyUserLogin(HttpServletRequest request) {
+        String cookieUserTicket = CookieTools.getCookieValue(request, COOKIE_USER_TICKET);
+        if (StringUtils.isBlank(cookieUserTicket)) {
+            return false;
+        }
+        String userIdFromRedis = redisUtils.get(REDIS_USER_TICKET + ":" + cookieUserTicket);
+        if (StringUtils.isBlank(userIdFromRedis)) {
+            return false;
+        }
+        String userInfoStrFromRedis = redisUtils.get(REDIS_USER_TOKEN + ":" + userIdFromRedis);
+        if (StringUtils.isBlank(userInfoStrFromRedis)) {
+            return false;
+        }
+        return true;
     }
 }
