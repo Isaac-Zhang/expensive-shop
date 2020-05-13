@@ -1,22 +1,25 @@
 创建工程，引入依赖
+```xml
 <dependency>
 	<groupId>org.springframework.boot</groupId>
 	<artifactId>spring-boot-starter-data-elasticsearch</artifactId>
 	<!--<version>2.1.5.RELEASE</version>-->
 	<version>2.2.2.RELEASE</version>
 </dependency>
-
 <dependency>
 	<groupId>org.springframework.boot</groupId>
 	<artifactId>spring-boot-starter-test</artifactId>
 	<scope>test</scope>
 </dependency>
+```
 配置yml
+```yaml
 spring:
   data:
     elasticsearch:
       cluster-name: es6
       cluster-nodes: 192.168.1.187:9300
+```
 版本协调
 目前springboot-data-elasticsearch中的es版本贴合为es-6.4.3，如此一来版本需要统一，把es进行降级。等springboot升级es版本后可以在对接最新版的7.4。
 
