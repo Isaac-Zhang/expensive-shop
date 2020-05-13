@@ -24,6 +24,7 @@
     <module>mscx-shop-service</module>
     <module>mscx-shop-api</module>
     <module>mscx-shop-sso</module>
+    <module>mscx-shop-search</module>
   </modules>
   <packaging>pom</packaging>
 
