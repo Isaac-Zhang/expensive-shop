@@ -8,6 +8,7 @@ logstash同步数据库配置
 把数据库驱动拷贝：
 
 > mysql-connector-java-5.1.41.jar 到配置目录
+
 配置内容如下：
 
 ```properties
@@ -89,3 +90,99 @@ WHERE
 ```
 启动logstatsh
 ./logstash -f /usr/local/logstash-6.4.3/sync/logstash-db-sync.conf
+
+## Logstatsh数据同步 - 自定义模板配置中文分词
+
+### 查看Logstash默认模板
+> GET     /_template/logstash
+
+### 修改模板如下
+
+```json
+{
+    "order": 0,
+    "version": 1,
+    "index_patterns": ["*"],
+    "settings": {
+        "index": {
+            "refresh_interval": "5s"
+        }
+    },
+    "mappings": {
+        "_default_": {
+            "dynamic_templates": [
+                {
+                    "message_field": {
+                        "path_match": "message",
+                        "match_mapping_type": "string",
+                        "mapping": {
+                            "type": "text",
+                            "norms": false
+                        }
+                    }
+                },
+                {
+                    "string_fields": {
+                        "match": "*",
+                        "match_mapping_type": "string",
+                        "mapping": {
+                            "type": "text",
+                            "norms": false,
+                            # 主要是这里，要指定自定义的 ik 分词器
+                            "analyzer": "ik_max_word",
+                            "fields": {
+                                "keyword": {
+                                    "type": "keyword",
+                                    "ignore_above": 256
+                                }
+                            }
+                        }
+                    }
+                }
+            ],
+            "properties": {
+                "@timestamp": {
+                    "type": "date"
+                },
+                "@version": {
+                    "type": "keyword"
+                },
+                "geoip": {
+                    "dynamic": true,
+                    "properties": {
+                        "ip": {
+                            "type": "ip"
+                        },
+                        "location": {
+                            "type": "geo_point"
+                        },
+                        "latitude": {
+                            "type": "half_float"
+                        },
+                        "longitude": {
+                            "type": "half_float"
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "aliases": {}
+}
+```
+
+### 新增如下配置，用于更新模板，设置中文分词
+
+```properties
+
+# 定义模板名称
+template_name => "myik"
+# 模板所在位置
+template => "/usr/local/logstash-6.4.3/sync/logstash-ik.json"
+# 重写模板
+template_overwrite => true
+# 默认为true，false关闭logstash自动管理模板功能，如果自定义模板，则设置为false
+manage_template => false
+```
+重新运行Logstash进行同步
+> ./logstash -f /usr/local/logstash-6.4.3/sync/logstash-db-sync.conf
