@@ -70,6 +70,55 @@ http.server_port=8888
 - 启动 storage (先启动 tracker )
 > /usr/bin/fdfs_storaged /etc/fdfs/storage.conf
 
+### 配置 storage 对于的 nginx
+> fastdfs安装好以后是无法通过http访问的，需要借助nginx，需要安装fastdfs的第三方模块到nginx中，就能使用了。
+
+注：nginx需要和storage在同一个节点。
+
+- 安装 nginx 插件
+> tar -zxvf fastdfs-nginx-module-1.22.tar.gz  
+cp mod_fastdfs.conf /etc/fdfs
+
+- 修改/fastdfs-nginx-module/src/config文件
+> 主要是修改路径，把local删除，因为fastdfs安装的时候我们没有修改路径，原路径是/usr
+
+- 安装 nginx 配置的时候需要添加一个 module
+```jshelllanguage
+./configure \
+--prefix=/usr/local/nginx \
+--pid-path=/var/run/nginx/nginx.pid \
+--lock-path=/var/lock/nginx.lock \
+--error-log-path=/var/log/nginx/error.log \
+--http-log-path=/var/log/nginx/access.log \
+--with-http_gzip_static_module \
+--http-client-body-temp-path=/var/temp/nginx/client \
+--http-proxy-temp-path=/var/temp/nginx/proxy \
+--http-fastcgi-temp-path=/var/temp/nginx/fastcgi \
+--http-uwsgi-temp-path=/var/temp/nginx/uwsgi \
+--http-scgi-temp-path=/var/temp/nginx/scgi \
+# 主要是下面这个
+--add-module=/home/software/fdfs/fastdfs-nginx-module-1.22/src
+```
+- 修改 mod_fastdfs.conf 配置文件
+```properties
+base_path=/usr/local/fastdfs/tmp
+tracker_server=192.168.1.200:22122
+group_name=sxzhongf
+url_have_group_name = true
+store0_path=/usr/local/fastdfs/storage
+```
+> mkdir /usr/local/fastdfs/tmp
+- 修改nginx.conf，添加如下虚拟主机：
+```properties
+server {
+    listen       8888;
+    server_name  localhost;
+
+    location /sxzhongf/M00 {
+            ngx_fastdfs_module;
+    }
+}
+```
 ## 参考文献
 https://github.com/happyfish100/
 https://github.com/happyfish100/fastdfs/wiki
