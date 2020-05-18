@@ -36,6 +36,40 @@ vim make.sh
 ```jshelllanguage
 cp /home/software/FastDFS/fastdfs-6.04/conf/* /etc/fdfs/
 ```
+
+## 使用手册
+### 配置 tracker
+- 编辑 tracker.conf
+```properties
+# 只需要修改配置文件的基础目录就行
+base_path=/usr/local/fastdfs/tracker
+```
+-p 表示递归创建目录
+> mkdir /usr/local/fastdfs/tracker -p
+- 启动 tracker
+> /usr/bin/fdfs_trackerd /etc/fdfs/tracker.conf
+- 停止 tracker
+> /usr/bin/stop.sh /etc/fdfs/tracker.conf
+
+### 配置 storage
+- 修改 storage.cond 配置文件
+```properties
+# 修改组名
+group_name=sxzhongf
+# 修改storage的工作空间
+base_path=/usr/local/fastdfs/storage
+# 修改storage的存储空间
+store_path0=/usr/local/fastdfs/storage
+# 修改tracker的地址和端口号，用于心跳
+tracker_server=192.168.1.200:22122
+# nginx的一个对外服务端口号
+http.server_port=8888
+```
+> mkdir /usr/local/fastdfs/storage -p
+
+- 启动 storage (先启动 tracker )
+> /usr/bin/fdfs_storaged /etc/fdfs/storage.conf
+
 ## 参考文献
 https://github.com/happyfish100/
 https://github.com/happyfish100/fastdfs/wiki
