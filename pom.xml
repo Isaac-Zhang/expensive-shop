@@ -25,6 +25,7 @@
     <module>mscx-shop-api</module>
     <module>mscx-shop-sso</module>
     <module>mscx-shop-search</module>
+    <module>mscx-shop-fastdfs</module>
   </modules>
   <packaging>pom</packaging>
 
