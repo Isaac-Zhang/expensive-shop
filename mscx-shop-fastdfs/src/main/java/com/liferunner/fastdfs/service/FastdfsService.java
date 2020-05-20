@@ -1,6 +1,7 @@
 package com.liferunner.fastdfs.service;
 
 import com.google.common.base.Strings;
+import com.sun.org.apache.xpath.internal.operations.Mult;
 import io.netty.util.internal.StringUtil;
 import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
@@ -23,6 +24,14 @@ public interface FastdfsService {
     default String upload(MultipartFile file, String fileExtName) throws Exception {
         return StringUtil.EMPTY_STRING;
     }
+
+    /**
+     * 上传文件存储到 OSS
+     * @param file
+     * @param uid
+     * @return
+     */
+    String uploadOSS(MultipartFile file, String fileExtName,String uid);
 
     ;
 }

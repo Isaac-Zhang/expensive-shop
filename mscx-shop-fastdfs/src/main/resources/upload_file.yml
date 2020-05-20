@@ -1,0 +1,9 @@
+file:
+  upload:
+    config:
+      endpoint: http://oss-cn-hangzhou.aliyuncs.com
+      accessKeyId: <yourAccessKeyId>
+      accessKeySecret: <yourAccessKeySecret>
+      bucketName: sxzhongf
+      objectName: sxzhongf/images
+      imageUri: BucketDomain.aliyuncs.com
